@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './misc/serviceWorker';
-import configureStore from './modules/store/configureStore';
 import { Store } from 'redux';
+import { Provider } from 'react-redux';
+
+import './index.css';
+import App from './components/App/App';
+import configureStore from './modules/store/configureStore';
+import * as serviceWorker from './misc/serviceWorker';
 
 const store = configureStore();
 
 const wrapApp = (AppComponent: React.ElementType, store: Store) => (
-  <Router>
-    <AppComponent store={store} />
-  </Router>
+  <Provider store={store}>
+    <AppComponent />
+  </Provider>
 );
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {

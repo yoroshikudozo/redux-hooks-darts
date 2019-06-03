@@ -1,3 +1,5 @@
+import R from 'ramda';
+
 /* eslint-disable fp/no-arguments */
 
 // How to master advanced TypeScript patterns
@@ -606,7 +608,7 @@ const test48 = curried09('Jane')(26, true, 'JJ', 'Jini'); // boolean
 // A placeholder or "gap" is an object that abstracts the fact that we are not
 // capable or willing to provide an argument at a certain moment. Let's start by
 // defining what a placeholder is. We can directly grab the one from Ramda:
-import R from 'ramda';
+// import R from 'ramda';
 
 type __ = typeof R.__;
 

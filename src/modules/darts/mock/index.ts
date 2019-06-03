@@ -14,5 +14,7 @@ console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss OOOO'));
 
 export function initDartsMock(mock: FetchMockStatic): void {
   mock.get(endpoint + qs({ score: 10 }), dart1);
+  mock.get(endpoint + qs({ gameId: '1' }), dart1);
+  mock.get(endpoint + qs({ gameId: '2' }), { status: 500, throws: new Error('Bad kitty') });
   mock.get(endpoint, [dart1, dart2, dart3]);
 }
