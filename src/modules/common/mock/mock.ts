@@ -9,23 +9,29 @@ export function getQueryString(params: any = {}) {
   );
 }
 
-function requestWithQuery(endpoint: string, method: Method, params?: any) {
+function requestWithQuery<T>(
+  endpoint: string,
+  method: Method,
+  params?: any,
+): T {
   const url = params ? endpoint + getQueryString(params) : endpoint;
-  return fetch(url, { method }).then(res => res.json());
+  return (fetch(url, { method }).then(res => res.json()) as unknown) as T;
 }
 
-function request(url: string, method: Method, params: any) {
+function request<T>(url: string, method: Method, params: any) {
   console.log(params);
   const body = JSON.stringify(params);
-  return fetch(url, { method, body }).then(res => res.json());
+  return (fetch(url, { method, body }).then(res => res.json()) as unknown) as T;
 }
 
 const callApi = {
-  get: (url: string, params?: any) => requestWithQuery(url, 'GET', params),
-  post: (url: string, params: any) => request(url, 'POST', params),
-  put: (url: string, params: any) => request(url, 'PUT', params),
-  patch: (url: string, params: any) => request(url, 'PATCH', params),
-  delete: (url: string, params?: any) => requestWithQuery(url, 'DELETE', params),
+  get: <T>(url: string, params?: any) =>
+    requestWithQuery<T>(url, 'GET', params),
+  post: <T>(url: string, params: any) => request<T>(url, 'POST', params),
+  put: <T>(url: string, params: any) => request<T>(url, 'PUT', params),
+  patch: <T>(url: string, params: any) => request<T>(url, 'PATCH', params),
+  delete: <T>(url: string, params?: any) =>
+    requestWithQuery<T>(url, 'DELETE', params),
 };
 
 export default callApi;

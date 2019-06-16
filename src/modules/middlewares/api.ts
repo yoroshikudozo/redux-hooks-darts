@@ -9,7 +9,9 @@ const getNextPageUrl = (response: Response) => {
     return null;
   }
 
-  const nextLink = link.split(',').find((s: string) => s.indexOf('rel="next"') > -1);
+  const nextLink = link
+    .split(',')
+    .find((s: string) => s.indexOf('rel="next"') > -1);
   if (!nextLink) {
     return null;
   }
@@ -25,7 +27,8 @@ const API_ROOT = 'https://api.github.com/';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 const callApi = (endpoint: string, schema: schema.Entity) => {
-  const fullUrl: string = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
+  const fullUrl: string =
+    endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
   return fetch(fullUrl).then(response => {
     if (!response.ok) {
@@ -35,7 +38,9 @@ const callApi = (endpoint: string, schema: schema.Entity) => {
       const camelizedJson = camelizeKeys(json);
       const nextPageUrl = getNextPageUrl(response);
 
-      return Object.assign({}, normalize(camelizedJson, schema), { nextPageUrl });
+      return Object.assign({}, normalize(camelizedJson, schema), {
+        nextPageUrl,
+      });
     });
   });
 };
@@ -116,7 +121,12 @@ const callApiMiddleware: Middleware = store => next => action => {
   return callApi(endpoint, schema).then(
     response => next(actionWith({ response, type: successType })),
     error =>
-      next(actionWith({ type: failureType, error: error.message || 'Something bad happened' })),
+      next(
+        actionWith({
+          type: failureType,
+          error: error.message || 'Something bad happened',
+        }),
+      ),
   );
 };
 

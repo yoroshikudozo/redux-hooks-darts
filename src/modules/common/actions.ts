@@ -42,7 +42,10 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
   asyncAction: AsyncActionCreators<TParameters, TSuccess, TError>,
   worker: (params: TParameters) => Promise<TSuccess>,
 ) {
-  return function wrappedWorker(dispatch: Dispatch, params: TParameters): Promise<TSuccess> {
+  return function wrappedWorker(
+    dispatch: Dispatch,
+    params: TParameters,
+  ): Promise<TSuccess> {
     console.log(asyncAction.started(params));
     dispatch(asyncAction.started(params));
     return worker(params).then(

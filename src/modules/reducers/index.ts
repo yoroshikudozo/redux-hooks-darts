@@ -11,7 +11,11 @@ const initialState = { users: {} };
 
 // Updates an entity cache in response to any action with result.entities.
 const entities = (state = initialState, action: AnyAction) => {
-  if (action.payload && action.payload.result && action.payload.result.entities) {
+  if (
+    action.payload &&
+    action.payload.result &&
+    action.payload.result.entities
+  ) {
     return merge({}, state, action.result.entities);
   }
 

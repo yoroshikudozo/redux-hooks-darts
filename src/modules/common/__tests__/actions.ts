@@ -1,9 +1,11 @@
 import wrapAsyncWorker, { createEntityActions } from '../actions';
 import actionCreatorFactory from 'typescript-fsa';
 import callApi from '../mock/mock';
-import CONSTS from '../../../consts';
-import { initDartsMock } from '../../darts/mock';
+import CONSTS from 'consts';
+import { initDartsMock } from 'modules/darts/mock';
 import fetchMock from 'fetch-mock';
+
+import dart1 from 'modules/darts/mock/resources/dart1.json';
 
 describe('ActionCreatorFactory', () => {
   it('returns actions', () => {
@@ -12,7 +14,13 @@ describe('ActionCreatorFactory', () => {
         started: undefined,
         done: {
           params: { gameId: 'asdf' },
-          result: { darts: [{ id: 1, score: 20 }, { id: 2, score: 20 }, { id: 3, score: 20 }] },
+          result: {
+            darts: [
+              { id: 1, score: 20 },
+              { id: 2, score: 20 },
+              { id: 3, score: 20 },
+            ],
+          },
         },
         failed: {},
       },
@@ -49,7 +57,9 @@ describe('ActionCreatorFactory', () => {
     id: string;
   }
 
-  const fetchDarts = actionCreator.async<{ gameId: string }, DartsResponse, {}>('FETCH');
+  const fetchDarts = actionCreator.async<{ gameId: string }, DartsResponse>(
+    'FETCH',
+  );
 
   const fetchDartsWorker = wrapAsyncWorker(fetchDarts, gameId =>
     callApi.get(CONSTS.API.DARTS, gameId),
@@ -57,9 +67,7 @@ describe('ActionCreatorFactory', () => {
 
   it('returns actions', async () => {
     initDartsMock(fetchMock);
-    const a = await fetchDartsWorker(b => b, { gameId: '1' });
-    console.log(a);
-    const b = await fetchDartsWorker(b => b, { gameId: '2' });
-    console.log(b);
+    const data = await fetchDartsWorker(b => b, { gameId: '1' });
+    expect(data).toEqual({ darts: [dart1] });
   });
 });

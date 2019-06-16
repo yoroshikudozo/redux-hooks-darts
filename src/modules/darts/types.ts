@@ -1,4 +1,4 @@
-import { Entity } from '../common/types';
+import { Entity } from 'modules/common/types';
 
 type DartType = 'single' | 'double' | 'triple' | 'bull';
 type Area = 'inner' | 'outer' | 'none';
@@ -17,4 +17,17 @@ export interface Dart extends Entity {
   roundId: string;
   scoreId: string;
   value: number;
+}
+
+export interface DartsResponse {
+  darts: Dart[];
+}
+
+export interface DartsRequestByGame {
+  gameId: string;
+}
+
+export interface CreateDartData {
+  area?: Area;
+  point: number;
 }
