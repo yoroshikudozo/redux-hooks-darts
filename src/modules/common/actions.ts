@@ -1,5 +1,6 @@
 import actionCreatorFactory, { AsyncActionCreators } from 'typescript-fsa';
 import { Dispatch } from 'redux';
+import { CallApiActionArgs } from 'modules/middlewares/api';
 
 export interface Options {
   name: string;
@@ -11,33 +12,6 @@ interface Meta {
   [name: string]: any;
 }
 
-interface AsyncActionPayload<T> {
-  started: any;
-  done: {
-    darts: T[];
-  };
-  failed: any;
-}
-
-function createEntityAsyncAction<T>(type: string, name: string) {
-  const NAME = name.toUpperCase();
-  return actionCreatorFactory(NAME).async<
-    AsyncActionPayload<T>['started'],
-    AsyncActionPayload<T>['done'],
-    AsyncActionPayload<T>['failed']
-  >(type);
-}
-
-export function createEntityActions(name: string) {
-  const NAME = name.toUpperCase();
-  return {
-    fetch: createEntityAsyncAction('FETCH', NAME),
-    create: createEntityAsyncAction('CREATE', NAME),
-    update: createEntityAsyncAction('UPDATE', NAME),
-    delete: createEntityAsyncAction('DELETE', NAME),
-  };
-}
-
 export function wrapAsyncWorker<TParameters, TSuccess, TError>(
   asyncAction: AsyncActionCreators<TParameters, TSuccess, TError>,
   worker: (params: TParameters) => Promise<TSuccess>,
@@ -46,16 +20,16 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
     dispatch: Dispatch,
     params: TParameters,
   ): Promise<TSuccess> {
-    console.log(asyncAction.started(params));
+    // console.log(asyncAction.started(params));
     dispatch(asyncAction.started(params));
     return worker(params).then(
       result => {
-        console.log(asyncAction.done({ params, result }));
+        // console.log(asyncAction.done({ params, result }));
         dispatch(asyncAction.done({ params, result }));
         return result;
       },
       (error: TError) => {
-        console.log(asyncAction.failed({ params, error }));
+        // console.log(asyncAction.failed({ params, error }));
         dispatch(asyncAction.failed({ params, error }));
         throw error;
       },
@@ -64,3 +38,23 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
 }
 
 export default wrapAsyncWorker;
+
+function callApiActionCreator(
+  requestType: CallApiActionArgs['requestType'],
+  name: CallApiActionArgs['name'],
+  endpoint: CallApiActionArgs['endpoint'] = undefined,
+) {
+  return function<P>(params: P) {
+    return {
+      type: 'CALL_API' as const,
+      meta: {
+        name,
+        requestType,
+        endpoint,
+        params,
+      },
+    };
+  };
+}
+
+export const fetchDarts = callApiActionCreator('fetch', 'darts');

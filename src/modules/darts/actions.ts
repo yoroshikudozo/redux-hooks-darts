@@ -2,8 +2,9 @@ import actionCreatorFactory from 'typescript-fsa';
 
 import wrapAsyncWorker from 'modules/common/actions';
 import CONSTS from 'consts';
-import { DartsResponse, CreateDartData } from 'modules/darts/types';
+import { DartsResponse, CreateDartData, Dart } from 'modules/darts/types';
 import callApi from 'modules/common/mock/mock';
+import { dartListSchema, dartSchema } from 'modules/darts/schema';
 
 const actionCreator = actionCreatorFactory('DARTS');
 
@@ -11,14 +12,13 @@ export const fetchDarts = actionCreator.async<
   { gameId: string },
   DartsResponse,
   string
->('FETCH');
+>('FETCH', { schema: dartListSchema });
 
-export const createDart = actionCreator.async<
-  CreateDartData,
-  DartsResponse,
-  {}
->('CREATE');
+export const createDart = actionCreator.async<CreateDartData, Dart, string>(
+  'CREATE',
+  { schema: dartSchema },
+);
 
-export const fetchDartsByGameId = wrapAsyncWorker(fetchDarts, gameId =>
-  callApi.get(CONSTS.API.DARTS, gameId),
+export const fetchDartsByGameId = wrapAsyncWorker(fetchDarts, params =>
+  callApi.get(CONSTS.API.DARTS, params),
 );
