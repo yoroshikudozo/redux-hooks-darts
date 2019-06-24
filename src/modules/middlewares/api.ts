@@ -1,10 +1,11 @@
-import { normalize, schema } from 'normalizr';
+import { normalize, schema, Schema } from 'normalizr';
 import { AnyAction, Middleware } from 'redux';
 import { fetchDarts, createDart } from 'modules/darts/actions';
 import { dartSchema } from 'modules/darts/schema';
 import callApi from 'modules/common/mock/mock';
 import wrapAsyncWorker from 'modules/common/actions';
 import CONSTS from 'consts';
+import { AsyncActionCreators } from 'typescript-fsa';
 
 const schemas = {
   darts: dartSchema,
@@ -31,34 +32,40 @@ interface Params {
   [key: string]: any;
 }
 
-export interface CallApiActionArgs<T extends Params = any> {
+export interface CallApiActionArgs<P, R, E> {
   name: ModuleNames;
-  params: T;
   requestType: RequestTypes;
   endpoint?: string;
+  asyncActions: AsyncActionCreators<P, R, E>;
+  schema: Schema;
 }
 
-export interface CallApiAction {
+export interface CallApiAction<P, R, E> {
   type: 'CALL_API';
-  meta: CallApiActionArgs;
+  payload: P;
+  meta: CallApiActionArgs<P, R, E>;
 }
 
-function isCallApiAction(action: AnyAction): action is CallApiAction {
+function isCallApiAction(
+  action: AnyAction,
+): action is CallApiAction<any, any, any> {
   return action.type === 'CALL_API';
 }
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
 const callApiMiddleware: Middleware = store => next => async action => {
+  console.log(action);
   if (isCallApiAction(action)) {
-    console.log('CALL_API');
-    const { name, params, requestType } = action.meta;
+    const { name, requestType, asyncActions } = action.meta;
+    const params = action.payload;
+    const worker = await wrapAsyncWorker(asyncActions, params =>
+      callApi.get(name, params),
+    );
 
-    const asyncAction = asyncActions[name][requestType];
-    const worker = await asyncAction(next, params);
-    console.log(worker);
+    const result = worker(next, params);
 
-    return await worker;
+    return await result;
   }
 
   return next(action);

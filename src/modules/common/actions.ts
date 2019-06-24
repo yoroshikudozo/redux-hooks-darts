@@ -20,16 +20,16 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
     dispatch: Dispatch,
     params: TParameters,
   ): Promise<TSuccess> {
-    // console.log(asyncAction.started(params));
+    console.log(asyncAction.started(params));
     dispatch(asyncAction.started(params));
     return worker(params).then(
       result => {
-        // console.log(asyncAction.done({ params, result }));
+        console.log(asyncAction.done({ params, result }));
         dispatch(asyncAction.done({ params, result }));
         return result;
       },
       (error: TError) => {
-        // console.log(asyncAction.failed({ params, error }));
+        console.log(asyncAction.failed({ params, error }));
         dispatch(asyncAction.failed({ params, error }));
         throw error;
       },
@@ -39,7 +39,7 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
 
 export default wrapAsyncWorker;
 
-function callApiActionCreator(
+export function callApiActionCreator(
   requestType: CallApiActionArgs['requestType'],
   name: CallApiActionArgs['name'],
   endpoint: CallApiActionArgs['endpoint'] = undefined,

@@ -5,7 +5,7 @@ import fetchMock from 'fetch-mock';
 import { initDartsMock } from 'modules/darts/mock';
 
 import api from '../api';
-import { fetchDarts } from 'modules/common/actions';
+import { fetchDarts } from 'modules/darts/duck';
 
 import dart1 from 'modules/darts/mock/resources/dart1.json';
 import { dartListSchema } from 'modules/darts/schema';
@@ -22,7 +22,6 @@ describe('apiMiddleware', () => {
       {
         type: 'DARTS/FETCH_STARTED',
         payload: { gameId: '1' },
-        meta: { schema: dartListSchema },
       },
       {
         type: 'DARTS/FETCH_DONE',
@@ -32,7 +31,6 @@ describe('apiMiddleware', () => {
             darts: [dart1],
           },
         },
-        meta: { schema: dartListSchema },
       },
     ];
     await store.dispatch(fetchDarts({ gameId: '1' }));
