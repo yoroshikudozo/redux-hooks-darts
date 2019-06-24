@@ -6,6 +6,7 @@ import callApi from 'modules/common/mock/mock';
 import wrapAsyncWorker from 'modules/common/actions';
 import CONSTS from 'consts';
 import { AsyncActionCreators } from 'typescript-fsa';
+import { Method } from '@babel/types';
 
 const schemas = {
   darts: dartSchema,
@@ -14,19 +15,8 @@ const schemas = {
   games: dartSchema,
 };
 
-const asyncActions = {
-  darts: {
-    create: wrapAsyncWorker(createDart, params =>
-      callApi.get(CONSTS.API.DARTS, params),
-    ),
-    fetch: wrapAsyncWorker(fetchDarts, params =>
-      callApi.get(CONSTS.API.DARTS, params),
-    ),
-  },
-};
-
-type ModuleNames = 'darts'; //| 'rounds' | 'scores' | 'games';
-type RequestTypes = 'fetch' | 'create'; // | 'update' | 'delete';
+export type ModuleNames = 'darts'; //| 'rounds' | 'scores' | 'games';
+export type RequestTypes = 'fetch' | 'create' | 'update' | 'delete';
 
 interface Params {
   [key: string]: any;

@@ -38,23 +38,3 @@ export function wrapAsyncWorker<TParameters, TSuccess, TError>(
 }
 
 export default wrapAsyncWorker;
-
-export function callApiActionCreator(
-  requestType: CallApiActionArgs['requestType'],
-  name: CallApiActionArgs['name'],
-  endpoint: CallApiActionArgs['endpoint'] = undefined,
-) {
-  return function<P>(params: P) {
-    return {
-      type: 'CALL_API' as const,
-      meta: {
-        name,
-        requestType,
-        endpoint,
-        params,
-      },
-    };
-  };
-}
-
-export const fetchDarts = callApiActionCreator('fetch', 'darts');

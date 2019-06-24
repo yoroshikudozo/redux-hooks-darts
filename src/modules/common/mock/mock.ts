@@ -1,27 +1,20 @@
-type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+import getQueryString from 'modules/common/utils/qs';
 
-export function getQueryString(params: any = {}) {
-  return (
-    '?' +
-    Object.keys(params)
-      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-      .join('&')
-  );
-}
+export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 function requestWithQuery<T>(
   endpoint: string,
   method: Method,
   params?: any,
-): T {
+): Promise<T> {
   const url = params ? endpoint + getQueryString(params) : endpoint;
-  return (fetch(url, { method }).then(res => res.json()) as unknown) as T;
+  return fetch(url, { method }).then(res => res.json());
 }
 
-function request<T>(url: string, method: Method, params: any) {
+function request<T>(url: string, method: Method, params: any): Promise<T> {
   console.log(params);
   const body = JSON.stringify(params);
-  return (fetch(url, { method, body }).then(res => res.json()) as unknown) as T;
+  return fetch(url, { method, body }).then(res => res.json());
 }
 
 const callApi = {

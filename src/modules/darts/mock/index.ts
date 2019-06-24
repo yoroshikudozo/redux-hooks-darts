@@ -2,7 +2,7 @@ import format from 'date-fns/format';
 import { FetchMockStatic } from 'fetch-mock';
 
 import API from 'consts/endpoints';
-import { getQueryString as qs } from 'modules/common/mock/mock';
+import { getQueryString as qs } from 'modules/common/utils/qs';
 
 import dart1 from './resources/dart1.json';
 import dart2 from './resources/dart2.json';
