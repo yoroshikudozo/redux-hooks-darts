@@ -28,6 +28,8 @@
     "@types/redux-mock-store": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
+    "axios": "^0.19.0",
+    "axios-mock-adapter": "^1.16.0",
     "date-fns": "^2.0.0-alpha.27",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
