@@ -2,6 +2,7 @@ import fetchMock from 'fetch-mock';
 
 import http from 'modules/common/utils/http';
 import { initDartsMock } from 'modules/darts/mock';
+import API from 'consts/endpoints';
 
 initDartsMock(fetchMock);
 
@@ -26,7 +27,7 @@ describe('http', () => {
         },
       ],
     };
-    http('darts', {
+    http(API.DARTS, {
       method: 'get',
       headers: { content: 'application/json' },
       body: { gameId: '1' },

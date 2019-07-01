@@ -8,8 +8,12 @@ import { dartListSchema, dartSchema } from 'modules/darts/schema';
 
 const actionCreator = actionCreatorFactory('DARTS');
 
+interface FetchDartsParams {
+  gameId: string;
+}
+
 export const fetchDarts = actionCreator.async<
-  { gameId: string },
+  FetchDartsParams,
   DartsResponse,
   string
 >('FETCH', { schema: dartListSchema });
