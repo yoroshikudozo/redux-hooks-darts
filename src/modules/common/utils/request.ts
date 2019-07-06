@@ -3,23 +3,28 @@ import axios, {
   CancelTokenSource,
   AxiosRequestConfig,
   Method,
+  CancelToken,
 } from 'axios';
-import actionCreatorFactory, {
-  AsyncActionCreators,
-  AnyAction,
-} from 'typescript-fsa';
+import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
+import { ThunkDispatch } from 'redux-thunk';
+
 import API, { Endpoints } from 'consts/endpoints';
-import { ThunkDispatch, ThunkAction } from 'redux-thunk';
 import { AppState } from 'modules/reducers';
 
 type AsyncActionType = 'create' | 'read' | 'update' | 'delete';
 
-interface InitArg<Params> {
+interface InitArg<P> {
   endpoint?: string;
   method: Method;
   id: Endpoints;
   type: AsyncActionType;
-  params: Params;
+  params: P;
+}
+
+interface SetConfigArgs<P> {
+  method: Method;
+  params: P;
+  cancelToken: CancelToken;
 }
 
 export default function request() {
@@ -37,12 +42,25 @@ export default function request() {
     return actionCreator.async<Params, Result, Error>(type.toUpperCase());
   };
 
-  function setConfig(method: Method, config: object): AxiosRequestConfig {
-    return {
-      ...defaultConfig,
-      ...config,
-      method,
-    };
+  function setConfig<Params>({
+    method,
+    params,
+    cancelToken,
+  }: SetConfigArgs<Params>): AxiosRequestConfig {
+    if (method === 'PUT' || 'POST' || 'PATCH' || 'put' || 'post' || 'patch') {
+      return {
+        ...defaultConfig,
+        data: params,
+        method,
+        cancelToken,
+      };
+    } else {
+      return {
+        ...defaultConfig,
+        ...params,
+        method,
+      };
+    }
   }
 
   function catchError(error: Error) {
@@ -54,33 +72,8 @@ export default function request() {
   }
 
   async function send(id: Endpoints, config: object = {}) {
+    console.log({ url: `${API[id]}`, ...config });
     return await axios({ url: `${API[id]}`, ...config });
-  }
-
-  function requestThunk<Param, Result, Error>(
-    id: Endpoints,
-    actions: AsyncActionCreators<Param, Result, Error>,
-    params: Param,
-    requestConfig: AxiosRequestConfig,
-    canceller: CancelTokenSource,
-  ): ThunkAction<CancelTokenSource, any, undefined, AnyAction> {
-    return (dispatch): CancelTokenSource => {
-      dispatch(actions.started(params));
-      try {
-        send(id, requestConfig)
-          .then((response: AxiosResponse<Result>) => {
-            const result = response.data;
-            dispatch(actions.done({ params, result }));
-          })
-          .catch((error: Error) => {
-            dispatch(actions.failed({ params, error }));
-          });
-      } catch (error) {
-        catchError(error);
-      }
-
-      return canceller;
-    };
   }
 
   function init<Params, Result, Error>({
@@ -91,8 +84,9 @@ export default function request() {
   }: InitArg<Params>) {
     const actions = asyncActions<Params, Result, Error>(id, type);
     const canceller = axios.CancelToken.source();
-    const requestConfig = setConfig(method, {
-      ...params,
+    const requestConfig = setConfig<Params>({
+      method,
+      params,
       cancelToken: canceller.token,
     });
 
@@ -107,41 +101,35 @@ export default function request() {
             dispatch(actions.done({ params, result }));
           })
           .catch((error: Error) => {
+            console.log(error);
             dispatch(actions.failed({ params, error }));
           });
       } catch (error) {
+        console.log(error);
         catchError(error);
       }
 
       return canceller;
     };
-
-    // requestThunk<Params, Result, Error>(
-    //   id,
-    //   actions,
-    //   params,
-    //   requestConfig,
-    //   canceller,
-    // );
   }
 
-  function post(id: Endpoints) {
-    return (params: object = {}) =>
+  function post<Params>(id: Endpoints) {
+    return (params: Params) =>
       init({ method: 'post', type: 'create', id, params });
   }
 
-  function get(id: Endpoints) {
-    return (params: object = {}) =>
+  function get<Params>(id: Endpoints) {
+    return (params: Params) =>
       init({ method: 'get', type: 'read', id, params });
   }
 
-  function put(id: Endpoints) {
-    return (params: object = {}) =>
+  function put<Params>(id: Endpoints) {
+    return (params: Params) =>
       init({ method: 'put', type: 'update', id, params });
   }
 
-  function del(id: Endpoints) {
-    return (params: object = {}) =>
+  function del<Params>(id: Endpoints) {
+    return (params: Params) =>
       init({ method: 'delete', type: 'delete', id, params });
   }
 

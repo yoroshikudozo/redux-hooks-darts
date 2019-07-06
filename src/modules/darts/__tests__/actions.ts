@@ -1,27 +1,30 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import fetchMock from 'fetch-mock';
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
 
-import api from 'modules/middlewares/api';
-
-import { initDartsMock } from '../mock';
 import * as actions from '../actions';
 
 import dart1 from '../mock/resources/dart1.json';
-import { dartListSchema } from 'modules/darts/schema';
 import { sleep } from 'modules/common/testHelpers';
+import API from 'consts/endpoints';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-initDartsMock(fetchMock);
+
+const mock = new MockAdapter(axios);
+
+mock.onGet(API.DARTS, { gameId: '1' }).reply(200, {
+  darts: [dart1],
+});
+
+mock.onPost(API.DARTS, { gameId: '1' }).reply(200, {
+  darts: [dart1],
+});
 
 describe('async actions', () => {
-  // afterEach(() => {
-  //   fetchMock.restore();
-  // });
-
-  it('returns normalized entity', async () => {
+  it('returns entity', async () => {
     const store = mockStore({});
 
     const expectedActions = [
@@ -30,7 +33,7 @@ describe('async actions', () => {
         payload: { gameId: '1' },
       },
       {
-        type: 'DARTS/FETCH_DONE',
+        type: 'DARTS/READ_DONE',
         payload: {
           params: { gameId: '1' },
           result: { darts: [dart1] },
@@ -38,11 +41,38 @@ describe('async actions', () => {
       },
     ];
 
-    await store.dispatch((actions.fetchDarts2({
+    store.dispatch((actions.fetchDarts({
       gameId: '1',
     }) as unknown) as any);
 
-    sleep(3500).then(() => {
+    await sleep(100).then(() => {
+      console.log(store.getActions());
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('returns created dart', async () => {
+    const store = mockStore({});
+
+    const expectedActions = [
+      {
+        type: 'DARTS/CREATE_STARTED',
+        payload: { gameId: '1' },
+      },
+      {
+        type: 'DARTS/CREATE_DONE',
+        payload: {
+          params: { gameId: '1' },
+          result: { darts: [dart1] },
+        },
+      },
+    ];
+
+    store.dispatch((actions.createDart({
+      gameId: '1',
+    }) as unknown) as any);
+
+    await sleep(100).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
