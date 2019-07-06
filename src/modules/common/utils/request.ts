@@ -4,9 +4,13 @@ import axios, {
   AxiosRequestConfig,
   Method,
 } from 'axios';
-import actionCreatorFactory from 'typescript-fsa';
-import { Dispatch } from 'redux';
+import actionCreatorFactory, {
+  AsyncActionCreators,
+  AnyAction,
+} from 'typescript-fsa';
 import API, { Endpoints } from 'consts/endpoints';
+import { ThunkDispatch, ThunkAction } from 'redux-thunk';
+import { AppState } from 'modules/reducers';
 
 type AsyncActionType = 'create' | 'read' | 'update' | 'delete';
 
@@ -18,54 +22,52 @@ interface InitArg<Params> {
   params: Params;
 }
 
-export default class Request {
-  static defaultConfig = {
+export default function request() {
+  const defaultConfig = {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },
   };
 
-  private static asyncActions = <Params, Result, Error>(
+  const asyncActions = <Params, Result, Error>(
     id: string,
     type: AsyncActionType,
   ) => {
-    const actionCreator = actionCreatorFactory(id.toUpperCase());
+    const actionCreator = actionCreatorFactory(id);
     return actionCreator.async<Params, Result, Error>(type.toUpperCase());
   };
 
-  public static post = (id: Endpoints, params: object = {}) => {
-    return Request.init({ method: 'post', type: 'create', id, params });
-  };
+  function setConfig(method: Method, config: object): AxiosRequestConfig {
+    return {
+      ...defaultConfig,
+      ...config,
+      method,
+    };
+  }
 
-  public static get = (id: Endpoints, params: object = {}) => {
-    return Request.init({ method: 'get', type: 'read', id, params });
-  };
+  function catchError(error: Error) {
+    if (axios.isCancel(error)) {
+      throw new Error(`Request cancelled: ${error.message}`);
+    } else {
+      throw new Error(`Error retrieving response: ${error.message}`);
+    }
+  }
 
-  public static put = (id: Endpoints, params: object = {}) => {
-    return Request.init({ method: 'put', type: 'update', id, params });
-  };
+  async function send(id: Endpoints, config: object = {}) {
+    return await axios({ url: `${API[id]}`, ...config });
+  }
 
-  public static delete = (id: Endpoints, params: object = {}) => {
-    return Request.init({ method: 'delete', type: 'delete', id, params });
-  };
-
-  private static init = <Param, Result, Error>({
-    id,
-    method,
-    type,
-    params,
-  }: InitArg<Param>) => {
-    const actions = Request.asyncActions<Param, Result, Error>(id, type);
-    const canceller = axios.CancelToken.source();
-    const requestConfig = Request.setConfig(method, {
-      ...params,
-      cancelToken: canceller.token,
-    });
-
-    return (dispatch: Dispatch): CancelTokenSource => {
+  function requestThunk<Param, Result, Error>(
+    id: Endpoints,
+    actions: AsyncActionCreators<Param, Result, Error>,
+    params: Param,
+    requestConfig: AxiosRequestConfig,
+    canceller: CancelTokenSource,
+  ): ThunkAction<CancelTokenSource, any, undefined, AnyAction> {
+    return (dispatch): CancelTokenSource => {
       dispatch(actions.started(params));
       try {
-        Request.send(requestConfig)(id)
+        send(id, requestConfig)
           .then((response: AxiosResponse<Result>) => {
             const result = response.data;
             dispatch(actions.done({ params, result }));
@@ -74,33 +76,79 @@ export default class Request {
             dispatch(actions.failed({ params, error }));
           });
       } catch (error) {
-        Request.catchError(error);
+        catchError(error);
       }
 
       return canceller;
     };
-  };
+  }
 
-  private static setConfig = (
-    method: Method,
-    config: object,
-  ): AxiosRequestConfig => {
-    return {
-      ...Request.defaultConfig,
-      ...config,
-      method,
+  function init<Params, Result, Error>({
+    id,
+    method,
+    type,
+    params,
+  }: InitArg<Params>) {
+    const actions = asyncActions<Params, Result, Error>(id, type);
+    const canceller = axios.CancelToken.source();
+    const requestConfig = setConfig(method, {
+      ...params,
+      cancelToken: canceller.token,
+    });
+
+    return (
+      dispatch: ThunkDispatch<AppState, undefined, AnyAction>,
+    ): CancelTokenSource => {
+      dispatch(actions.started(params));
+      try {
+        send(id, requestConfig)
+          .then((response: AxiosResponse<Result>) => {
+            const result = response.data;
+            dispatch(actions.done({ params, result }));
+          })
+          .catch((error: Error) => {
+            dispatch(actions.failed({ params, error }));
+          });
+      } catch (error) {
+        catchError(error);
+      }
+
+      return canceller;
     };
-  };
 
-  private static catchError = (error: Error) => {
-    if (axios.isCancel(error)) {
-      throw new Error(`Request cancelled: ${error.message}`);
-    } else {
-      throw new Error(`Error retrieving response: ${error.message}`);
-    }
-  };
+    // requestThunk<Params, Result, Error>(
+    //   id,
+    //   actions,
+    //   params,
+    //   requestConfig,
+    //   canceller,
+    // );
+  }
 
-  private static send = (config: object = {}) => (id: Endpoints) => {
-    return axios({ url: `${API[id]}`, ...config });
+  function post(id: Endpoints) {
+    return (params: object = {}) =>
+      init({ method: 'post', type: 'create', id, params });
+  }
+
+  function get(id: Endpoints) {
+    return (params: object = {}) =>
+      init({ method: 'get', type: 'read', id, params });
+  }
+
+  function put(id: Endpoints) {
+    return (params: object = {}) =>
+      init({ method: 'put', type: 'update', id, params });
+  }
+
+  function del(id: Endpoints) {
+    return (params: object = {}) =>
+      init({ method: 'delete', type: 'delete', id, params });
+  }
+
+  return {
+    post,
+    get,
+    put,
+    delete: del,
   };
 }

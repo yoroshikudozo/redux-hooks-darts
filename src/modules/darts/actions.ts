@@ -5,6 +5,7 @@ import CONSTS from 'consts';
 import { DartsResponse, CreateDartData, Dart } from 'modules/darts/types';
 import callApi from 'modules/common/mock/mock';
 import { dartListSchema, dartSchema } from 'modules/darts/schema';
+import request from 'modules/common/utils/request';
 
 const actionCreator = actionCreatorFactory('DARTS');
 
@@ -26,3 +27,5 @@ export const createDart = actionCreator.async<CreateDartData, Dart, string>(
 export const fetchDartsByGameId = wrapAsyncWorker(fetchDarts, params =>
   callApi.get(CONSTS.API.DARTS, params),
 );
+
+export const fetchDarts2 = request().get('DARTS');
