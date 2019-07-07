@@ -22,7 +22,7 @@ interface DeleteDartParams {
 
 type CreateDartData = Partial<Dart>;
 
-const initDart = (data: CreateDartData, rule: any): CreateDartParams => {
+const getDart = (data: CreateDartData, rule: any): CreateDartParams => {
   return (data as unknown) as CreateDartParams;
 };
 
@@ -35,7 +35,7 @@ export const createDart = (
   getState,
 ) => {
   const rule = getRules(getState());
-  const dart = initDart(data, rule);
+  const dart = getDart(data, rule);
   return dispatch(request().post<CreateDartParams>('DARTS')(dart));
 };
 
