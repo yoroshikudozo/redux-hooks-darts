@@ -4,46 +4,52 @@ import { AnyAction } from 'typescript-fsa';
 
 import request from 'modules/common/utils/request';
 import { AppState } from 'modules/reducers';
-import { Dart } from 'modules/darts/types';
 import API from 'consts/endpoints';
-import { getRules } from 'modules/rules/selectors';
+import { Rule } from 'modules/rules/types';
 
-interface FetchDartsParams {
-  gameId: string;
+interface FetchRulesParams {
+  userId: string;
 }
 
-interface CreateDartParams {
-  score: string;
-}
-
-interface DeleteDartParams {
+interface DeleteRuleParams {
   id: string;
 }
 
-type CreateDartData = Partial<Dart>;
+type CreateRuleData = Partial<Rule>;
 
-const getDart = (data: CreateDartData, rule: any): CreateDartParams => {
-  return (data as unknown) as CreateDartParams;
+export const fetchRules = request().get<FetchRulesParams>('RULES');
+
+const initRule = (data: CreateRuleData, userId: string): Rule => {
+  return {
+    ...data,
+    id: '1',
+    userId,
+    countUp: {
+      bullSeparate: false,
+      handicap: false,
+      ...data.countUp,
+    },
+  };
 };
 
-export const fetchDarts = request().get<FetchDartsParams>('DARTS');
-
-export const createDart = (
-  data: CreateDartData,
-): ThunkAction<CancelTokenSource, AppState, undefined, AnyAction> => (
-  dispatch,
-  getState,
-) => {
-  const rule = getRules(getState());
-  const dart = getDart(data, rule);
-  return dispatch(request().post<CreateDartParams>('DARTS')(dart));
+export const createRule = (
+  userId: string,
+  data: Partial<Rule>,
+): ThunkAction<
+  CancelTokenSource,
+  AppState,
+  undefined,
+  AnyAction
+> => dispatch => {
+  const rule = initRule(data, userId);
+  return dispatch(request().post<Rule>('RULES')(rule));
 };
 
-export const deleteDart = request().delete<DeleteDartParams>('DARTS');
+export const deleteRule = request().delete<DeleteRuleParams>('DARTS');
 
-export const updateDart = (
+export const updateRule = (
   id: string,
-  data: Partial<Dart>,
+  data: Partial<Rule>,
 ): ThunkAction<
   CancelTokenSource,
   AppState,
@@ -51,6 +57,6 @@ export const updateDart = (
   AnyAction
 > => dispatch => {
   return dispatch(
-    request().put<Partial<Dart>>('DARTS', `${API.DARTS}/${id}`)(data),
+    request().put<Partial<Rule>>('DARTS', `${API.DARTS}/${id}`)(data),
   );
 };

@@ -1,7 +1,6 @@
-import { Entity } from 'modules/common/types';
-
-export interface Rule extends Entity {
+export interface Rule {
   id: string;
+  userId: string;
   countUp: CountUpRule;
   // zeroOne: ZeroOneRule;
   // cricket: CricketRule;
@@ -9,7 +8,6 @@ export interface Rule extends Entity {
 
 export interface CountUpRule {
   bullSeparate: boolean;
-  calcuration: string;
   handicap: boolean;
 }
 
