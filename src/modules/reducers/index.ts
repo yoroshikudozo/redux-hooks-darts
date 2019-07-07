@@ -3,8 +3,13 @@ import merge from 'lodash/merge';
 
 type Keys = 'darts' | 'rounds' | 'games' | 'users';
 
+interface Rule {
+  bull: 'separate' | 'fat';
+}
+
 export interface AppState {
   entities: { [keyof in Keys]: any };
+  rules: Rule;
 }
 
 const initialState = { users: {} };

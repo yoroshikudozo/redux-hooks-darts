@@ -27,6 +27,10 @@ interface SetConfigArgs<P> {
   cancelToken: CancelToken;
 }
 
+export type Request = (
+  dispatch: ThunkDispatch<AppState, undefined, AnyAction>,
+) => CancelTokenSource;
+
 export default function request() {
   const defaultConfig = {
     headers: {
@@ -47,7 +51,7 @@ export default function request() {
     params,
     cancelToken,
   }: SetConfigArgs<Params>): AxiosRequestConfig {
-    if (method === 'PUT' || 'POST' || 'PATCH' || 'put' || 'post' || 'patch') {
+    if (method === 'put' || 'post' || 'patch') {
       return {
         ...defaultConfig,
         data: params,
@@ -71,9 +75,9 @@ export default function request() {
     }
   }
 
-  async function send(id: Endpoints, config: object = {}) {
-    console.log({ url: `${API[id]}`, ...config });
-    return await axios({ url: `${API[id]}`, ...config });
+  async function send(url: string, config: object = {}) {
+    console.log({ ...config, url });
+    return await axios({ ...config, url });
   }
 
   function init<Params, Result, Error>({
@@ -81,7 +85,8 @@ export default function request() {
     method,
     type,
     params,
-  }: InitArg<Params>) {
+    endpoint,
+  }: InitArg<Params>): Request {
     const actions = asyncActions<Params, Result, Error>(id, type);
     const canceller = axios.CancelToken.source();
     const requestConfig = setConfig<Params>({
@@ -89,13 +94,12 @@ export default function request() {
       params,
       cancelToken: canceller.token,
     });
+    const url = endpoint || API[id];
 
-    return (
-      dispatch: ThunkDispatch<AppState, undefined, AnyAction>,
-    ): CancelTokenSource => {
+    return dispatch => {
       dispatch(actions.started(params));
       try {
-        send(id, requestConfig)
+        send(url, requestConfig)
           .then((response: AxiosResponse<Result>) => {
             const result = response.data;
             dispatch(actions.done({ params, result }));
@@ -113,24 +117,24 @@ export default function request() {
     };
   }
 
-  function post<Params>(id: Endpoints) {
+  function post<Params>(id: Endpoints, endpoint: string = '') {
     return (params: Params) =>
-      init({ method: 'post', type: 'create', id, params });
+      init({ method: 'post', type: 'create', id, endpoint, params });
   }
 
-  function get<Params>(id: Endpoints) {
+  function get<Params>(id: Endpoints, endpoint: string = '') {
     return (params: Params) =>
-      init({ method: 'get', type: 'read', id, params });
+      init({ method: 'get', type: 'read', id, endpoint, params });
   }
 
-  function put<Params>(id: Endpoints) {
+  function put<Params>(id: Endpoints, endpoint: string = '') {
     return (params: Params) =>
-      init({ method: 'put', type: 'update', id, params });
+      init({ method: 'put', type: 'update', id, endpoint, params });
   }
 
-  function del<Params>(id: Endpoints) {
+  function del<Params>(id: Endpoints, endpoint: string = '') {
     return (params: Params) =>
-      init({ method: 'delete', type: 'delete', id, params });
+      init({ method: 'delete', type: 'delete', id, endpoint, params });
   }
 
   return {

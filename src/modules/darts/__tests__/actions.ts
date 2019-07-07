@@ -19,9 +19,20 @@ mock.onGet(API.DARTS, { gameId: '1' }).reply(200, {
   darts: [dart1],
 });
 
-mock.onPost(API.DARTS, { gameId: '1' }).reply(200, {
+mock.onPost(API.DARTS, { point: 20 }).reply(200, {
   darts: [dart1],
 });
+
+mock.onPut(`${API.DARTS}/1`, { point: 20 }).reply(200, {
+  darts: [dart1],
+});
+
+mock.onPut(`${API.DARTS}`, { id: '1', point: 20 }).reply(200, {
+  darts: [dart1],
+});
+
+mock.onDelete(`${API.DARTS}/1`).reply(200);
+mock.onDelete(API.DARTS, { id: '1' }).reply(200);
 
 describe('async actions', () => {
   it('returns entity', async () => {
@@ -57,22 +68,74 @@ describe('async actions', () => {
     const expectedActions = [
       {
         type: 'DARTS/CREATE_STARTED',
-        payload: { gameId: '1' },
+        payload: { point: 20 },
       },
       {
         type: 'DARTS/CREATE_DONE',
         payload: {
-          params: { gameId: '1' },
+          params: { point: 20 },
           result: { darts: [dart1] },
         },
       },
     ];
 
     store.dispatch((actions.createDart({
-      gameId: '1',
+      point: 20,
     }) as unknown) as any);
 
     await sleep(100).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('returns updated dart', async () => {
+    const store = mockStore({});
+
+    const expectedActions = [
+      {
+        type: 'DARTS/UPDATE_STARTED',
+        payload: { point: 20 },
+      },
+      {
+        type: 'DARTS/UPDATE_DONE',
+        payload: {
+          params: { point: 20 },
+          result: { darts: [dart1] },
+        },
+      },
+    ];
+
+    store.dispatch((actions.updateDart('1', {
+      point: 20,
+    }) as unknown) as any);
+
+    await sleep(100).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('deletes entity', async () => {
+    const store = mockStore({});
+
+    const expectedActions = [
+      {
+        type: 'DARTS/DELETE_STARTED',
+        payload: { id: '1' },
+      },
+      {
+        type: 'DARTS/DELETE_DONE',
+        payload: {
+          params: { id: '1' },
+        },
+      },
+    ];
+
+    store.dispatch((actions.deleteDart({
+      id: '1',
+    }) as unknown) as any);
+
+    await sleep(100).then(() => {
+      console.log(store.getActions());
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
