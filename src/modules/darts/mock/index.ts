@@ -1,23 +1,30 @@
-import format from 'date-fns/format';
-import { FetchMockStatic } from 'fetch-mock';
+import MockAdapter from 'axios-mock-adapter';
 
 import API from 'consts/endpoints';
-import { getQueryString as qs } from 'modules/common/utils/qs';
 
 import dart1 from './resources/dart1.json';
-import dart2 from './resources/dart2.json';
-import dart3 from './resources/dart3.json';
+// import dart2 from './resources/dart2.json';
+// import dart3 from './resources/dart3.json';
 
 const endpoint = API.DARTS;
 
-console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss zz'));
-
-export function initDartsMock(mock: FetchMockStatic): void {
-  mock.get(endpoint + qs({ score: 10 }), dart1);
-  mock.get(endpoint + qs({ gameId: '1' }), { darts: [dart1] });
-  mock.get(endpoint + qs({ gameId: '2' }), {
-    status: 500,
-    throws: new Error('Bad kitty'),
+export function initDartsMock(mock: MockAdapter): void {
+  mock.onGet(endpoint, { gameId: '1' }).reply(200, {
+    darts: [dart1],
   });
-  mock.get(endpoint, [dart1, dart2, dart3]);
+
+  mock.onPost(endpoint, { point: 20 }).reply(200, {
+    darts: [dart1],
+  });
+
+  mock.onPut(`${endpoint}/1`, { point: 20 }).reply(200, {
+    darts: [dart1],
+  });
+
+  mock.onPut(`${endpoint}`, { id: '1', point: 20 }).reply(200, {
+    darts: [dart1],
+  });
+
+  mock.onDelete(`${endpoint}/1`).reply(200);
+  mock.onDelete(endpoint, { id: '1' }).reply(200);
 }

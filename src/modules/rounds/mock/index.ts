@@ -1,26 +1,31 @@
-import format from 'date-fns/format';
-import { FetchMockStatic } from 'fetch-mock';
+import MockAdapter from 'axios-mock-adapter';
 
 import API from 'consts/endpoints';
-import { getQueryString as qs } from 'modules/common/utils/qs';
 
 import round1 from './resources/round1.json';
-import round2 from './resources/round2.json';
-import round3 from './resources/round3.json';
-import round4 from './resources/round4.json';
+// import round2 from './resources/round2.json';
+// import round3 from './resources/round3.json';
+// import round4 from './resources/round4.json';
 
 const endpoint = API.ROUNDS;
 
-console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss ZZ'));
+export function initRoundsMock(mock: MockAdapter): void {
+  mock.onGet(endpoint, { gameId: '1' }).reply(200, {
+    rounds: [round1],
+  });
 
-export function initRoundsMock(mock: FetchMockStatic): void {
-  mock.get(endpoint + qs({ score: 10 }), { rounds: round1 });
-  mock.get(endpoint + qs({ gameId: '1' }), {
-    rounds: [round1, round2, round3, round4],
+  mock.onPost(endpoint, { point: 20 }).reply(200, {
+    rounds: [round1],
   });
-  mock.get(endpoint + qs({ gameId: '2' }), {
-    status: 500,
-    throws: new Error('Bad kitty'),
+
+  mock.onPut(`${endpoint}/1`, { point: 20 }).reply(200, {
+    rounds: [round1],
   });
-  mock.get(endpoint, { rounds: [round1, round2, round3, round4] });
+
+  mock.onPut(`${endpoint}`, { id: '1', point: 20 }).reply(200, {
+    rounds: [round1],
+  });
+
+  mock.onDelete(`${endpoint}/1`).reply(200);
+  mock.onDelete(endpoint, { id: '1' }).reply(200);
 }

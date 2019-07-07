@@ -88,13 +88,13 @@ export default function request() {
     endpoint,
   }: InitArg<Params>): Request {
     const actions = asyncActions<Params, Result, Error>(id, type);
+    const url = endpoint || API[id];
     const canceller = axios.CancelToken.source();
     const requestConfig = setConfig<Params>({
       method,
       params,
       cancelToken: canceller.token,
     });
-    const url = endpoint || API[id];
 
     return dispatch => {
       dispatch(actions.started(params));

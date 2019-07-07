@@ -1,38 +1,17 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import MockAdapter from 'axios-mock-adapter';
-import axios from 'axios';
-
-import * as actions from '../actions';
+import mock from 'modules/common/mock';
+import { initDartsMock } from 'modules/darts/mock';
+import { sleep } from 'modules/common/testHelpers';
 
 import dart1 from '../mock/resources/dart1.json';
-import { sleep } from 'modules/common/testHelpers';
-import API from 'consts/endpoints';
+import * as actions from '../actions';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-const mock = new MockAdapter(axios);
-
-mock.onGet(API.DARTS, { gameId: '1' }).reply(200, {
-  darts: [dart1],
-});
-
-mock.onPost(API.DARTS, { point: 20 }).reply(200, {
-  darts: [dart1],
-});
-
-mock.onPut(`${API.DARTS}/1`, { point: 20 }).reply(200, {
-  darts: [dart1],
-});
-
-mock.onPut(`${API.DARTS}`, { id: '1', point: 20 }).reply(200, {
-  darts: [dart1],
-});
-
-mock.onDelete(`${API.DARTS}/1`).reply(200);
-mock.onDelete(API.DARTS, { id: '1' }).reply(200);
+initDartsMock(mock);
 
 describe('async actions', () => {
   it('returns entity', async () => {
@@ -89,7 +68,7 @@ describe('async actions', () => {
   });
 
   it('returns updated dart', async () => {
-    const store = mockStore({});
+    const store = mockStore({ rules: {} });
 
     const expectedActions = [
       {
