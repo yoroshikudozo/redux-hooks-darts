@@ -11,11 +11,6 @@
     "lint-check": "eslint --print-config . | eslint-config-prettier-check",
     "eject": "react-scripts eject"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint:fix"
-    }
-  },
   "dependencies": {
     "@material-ui/core": "^4.0.0-rc.0",
     "@types/cuid": "^1.3.0",
