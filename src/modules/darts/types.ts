@@ -1,8 +1,14 @@
 import { Entity } from 'modules/common/types';
 
-type DartType = 'single' | 'double' | 'triple' | 'bull';
+type OutOptionType = 'master' | 'double' | 'none';
+type DartType = 'single' | 'double' | 'triple' | 'bull' | 'out';
 type Area = 'inner' | 'outer' | 'none';
 type Index = 0 | 1 | 2;
+
+export interface OutOption {
+  type: OutOptionType;
+  isCompleted?: boolean;
+}
 
 export interface Dart extends Entity {
   area: Area;
@@ -10,7 +16,6 @@ export interface Dart extends Entity {
   date: string;
   id: string;
   index: Index;
-  inOption: boolean;
   isValid: boolean;
   playerId: string;
   point: number;
@@ -29,5 +34,7 @@ export interface DartsRequestByGame {
 
 export interface CreateDartData {
   area?: Area;
-  point: number;
+  value: number;
+  dartType: DartType;
+  index: Index;
 }

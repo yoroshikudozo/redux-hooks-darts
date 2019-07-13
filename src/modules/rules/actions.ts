@@ -2,6 +2,8 @@ import { CancelTokenSource } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'typescript-fsa';
 
+import cuid from 'cuid';
+
 import request from 'modules/common/utils/request';
 import { AppState } from 'modules/reducers';
 import API from 'consts/endpoints';
@@ -22,7 +24,7 @@ export const fetchRules = request().get<FetchRulesParams>('RULES');
 const initRule = (data: CreateRuleData, userId: string): Rule => {
   return {
     ...data,
-    id: '1',
+    id: cuid(),
     userId,
     countUp: {
       bullSeparate: false,

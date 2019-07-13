@@ -13,7 +13,7 @@ interface FetchDartsParams {
 }
 
 interface CreateDartParams {
-  score: string;
+  point: string;
 }
 
 interface DeleteDartParams {

@@ -1,10 +1,9 @@
 {
-  "area": "inner",
+  "area": "outer",
   "dartType": "bull",
   "date": "2019/03/21 22:48:29 GMT+09:00",
   "id": "2",
   "index": 1,
-  "inOption": true,
   "isValid": true,
   "playerId": "1",
   "point": 25,
