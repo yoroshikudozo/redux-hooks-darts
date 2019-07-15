@@ -1,20 +1,23 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 
 import CONSTS from 'consts';
-import theme from 'components/themes';
-
-function Dummy() {
-  return <div>adsf</div>;
-}
+import Home from 'components/pages/Home/Home';
+import Login from 'components/pages/Login/Login';
+import Auth from 'components/base/Auth/Auth';
 
 function Router() {
   return (
     <BrowserRouter>
-      <>
-        <Route path="/" component={Dummy} />
-      </>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Auth>
+          <Switch>
+            <Route path="/" exact={true} component={Home} />
+          </Switch>
+        </Auth>
+      </Switch>
     </BrowserRouter>
   );
 }

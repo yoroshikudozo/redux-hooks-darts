@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import api from 'modules/middlewares/api';
 import rootReducer from 'modules/reducers';
 
-const preloadedState = {};
+const preloadedState = { auth: { isAuthenticated: false } };
 
 declare global {
   interface Window {

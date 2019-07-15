@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Router from './Router';
+import Auth from './Auth';
+import Home from 'components/pages/Home/Home';
 
 const mockStore = createMockStore();
 const store = mockStore({ auth: { isAuthenticated: true } });
@@ -12,7 +14,13 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
     <Provider store={store}>
-      <Router />
+      <BrowserRouter>
+        <Auth>
+          <Switch>
+            <Route path="/" component={Home} />
+          </Switch>
+        </Auth>
+      </BrowserRouter>
     </Provider>,
     div,
   );
