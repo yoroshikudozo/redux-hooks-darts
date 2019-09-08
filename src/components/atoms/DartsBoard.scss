@@ -1,0 +1,63 @@
+.Dartsboard {
+  max-width: 787px;
+  margin: 0 auto;
+
+  & svg {
+    position: relative;
+    width: 100%;
+    max-width: 787px;
+    height: auto;
+    margin: 0 auto;
+    z-index: 1;
+    transition: all, 0.5s;
+
+    &.isFinished {
+      filter: blur(3px);
+    }
+  }
+
+  & path {
+    cursor: pointer;
+  }
+
+  & .single path {
+    fill: #ccc;
+    stroke: rgba(255, 255, 255, 0);
+    stroke-width: 1;
+    opacity: 1;
+    transition: all 0.15s;
+
+    &:nth-child(2n + 1) {
+      fill: #333;
+      stroke: rgba(0, 0, 0, 0);
+    }
+
+    &:hover {
+      opacity: 0.5;
+      transform: translate(0, 1px);
+    }
+  }
+
+  // & .double path,
+  // & .triple path {
+  //   fill: color(var(--colorRed) alpha(1));
+  //   stroke: color(var(--colorRed) alpha(0));
+  //   stroke-width: 1;
+
+  //   &:matches(:nth-child(2n)) {
+  //     fill: color(var(--colorDarkGreen) alpha(1));
+  //     stroke: color(var(--colorDarkGreen) alpha(0));
+  //   }
+  // }
+
+  // & .inner_bull {
+  //   fill: color(var(--colorRed) alpha(1));
+  //   stroke: color(var(--colorRed) alpha(0));
+  //   stroke-width: 1;
+  // }
+
+  // & .outer_bull {
+  //   fill: color(var(--colorDarkGreen) alpha(1));
+  //   stroke: color(var(--colorDarkGreen) alpha(0));
+  // }
+}

@@ -3,7 +3,10 @@ import cuid from 'cuid';
 import { CreateDartData, OutOption } from 'modules/darts/types';
 import { Round } from 'modules/rounds/types';
 
-export const inOptionCheck = (inOption: OutOption, data: CreateDartData) => {
+export const inOptionCheck = (
+  inOption: OutOption,
+  { dartType, area }: CreateDartData,
+) => {
   if (inOption.isCompleted) return inOption;
   switch (inOption.type) {
     case 'none':
@@ -12,15 +15,14 @@ export const inOptionCheck = (inOption: OutOption, data: CreateDartData) => {
       return {
         ...inOption,
         isCompleted:
-          data.dartType === 'double' ||
-          (data.dartType === 'bull' && data.area === 'inner')
+          dartType === 'double' || (dartType === 'bull' && area === 'inner')
             ? true
             : false,
       };
     case 'master':
       return {
         ...inOption,
-        isCompleted: data.dartType !== 'single' ? true : false,
+        isCompleted: dartType !== 'single' ? true : false,
       };
     default:
       return inOption;
