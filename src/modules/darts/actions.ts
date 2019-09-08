@@ -4,9 +4,9 @@ import { AnyAction } from 'typescript-fsa';
 
 import request from 'modules/common/utils/request';
 import { AppState } from 'modules/reducers';
-import { Dart } from 'modules/darts/types';
 import API from 'consts/endpoints';
 import { getRules } from 'modules/rules/selectors';
+import { Dart } from 'modules/darts/types';
 
 interface FetchDartsParams {
   gameId: string;

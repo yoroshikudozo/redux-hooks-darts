@@ -58,11 +58,13 @@
     "redux": "^4.0.1",
     "redux-form": "^8.2.0",
     "redux-mock-store": "^1.5.3",
+    "redux-observable": "^1.1.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "typescript": "3.4.5",
     "typescript-fsa": "^3.0.0-beta-2",
     "typescript-fsa-reducers": "^1.2.1",
+    "typescript-fsa-redux-observable": "https://github.com/m0a/typescript-fsa-redux-observable"
   },
   "browserslist": {
     "production": [

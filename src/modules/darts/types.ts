@@ -1,4 +1,7 @@
-import { Entity } from 'modules/common/types';
+export interface Entity {
+  id: string;
+  loading: boolean;
+}
 
 type OutOptionType = 'master' | 'double' | 'none';
 type DartType = 'single' | 'double' | 'triple' | 'bull' | 'out';
@@ -37,4 +40,12 @@ export interface CreateDartData {
   value: number;
   dartType: DartType;
   index: Index;
+}
+
+interface FetchDartsParams {
+  value: number;
+}
+
+interface FetchDartsResponse {
+  darts: Dart[];
 }
