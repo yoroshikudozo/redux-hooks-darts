@@ -100,9 +100,8 @@ export default function request() {
       dispatch(actions.started(params));
       try {
         send(url, requestConfig)
-          .then((response: AxiosResponse<Result>) => {
-            const result = response.data;
-            dispatch(actions.done({ params, result }));
+          .then(({ data }: AxiosResponse<Result>) => {
+            dispatch(actions.done({ params, result: data }));
           })
           .catch((error: Error) => {
             console.log(error);
