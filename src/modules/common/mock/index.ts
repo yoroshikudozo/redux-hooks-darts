@@ -7,14 +7,14 @@ import { initDartsMock } from 'modules/darts/mock';
 import { initRoundsMock } from 'modules/rounds/mock';
 import { initRulesMock } from 'modules/rules/mock';
 
+import fetchMock from 'fetch-mock';
+
+export function init() {
+  initDartsMock(fetchMock);
+}
+
 console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss zz'));
 
 export const mock = new MockAdapter(axios);
-
-export function init() {
-  initDartsMock(mock);
-  initRoundsMock(mock);
-  initRulesMock(mock);
-}
 
 export default mock;

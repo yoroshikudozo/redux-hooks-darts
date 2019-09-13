@@ -27,6 +27,21 @@ interface SetConfigArgs<P> {
   cancelToken: CancelToken;
 }
 
+export interface TypedResponse<T = any> extends Response {
+  /**
+   * this will override `json` method from `Body` that is extended by `Response`
+   * interface Body {
+   *     json(): Promise<any>;
+   * }
+   */
+  json<P = T>(): Promise<P>;
+}
+declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
+
+export const toJson = <T>(req: TypedResponse<T>) => req.json();
+
+export const http = fetch;
+
 export type Request = (
   dispatch: ThunkDispatch<AppState, undefined, AnyAction>,
 ) => CancelTokenSource;

@@ -1,120 +1,51 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import mock from 'modules/common/mock';
+import fetchMock from 'fetch-mock';
+
 import { initDartsMock } from 'modules/darts/mock';
 import { sleep } from 'modules/common/testHelpers';
 
-import dart1 from '../mock/resources/dart1.json';
+import dart1 from '../mock/resources/dart1';
 import * as actions from '../actions';
+import { epicMiddleware } from 'modules/store/configureStore';
+import { combineEpics } from 'redux-observable';
+import { fetchDartsEpic } from 'modules/darts/epics';
+import { loggingEpic } from 'modules/common/utils/rx';
 
-const middlewares = [thunk];
+const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
+const rootEpic = combineEpics(fetchDartsEpic, loggingEpic);
 
-initDartsMock(mock);
+initDartsMock(fetchMock);
 
 describe('async actions', () => {
   it('returns entity', async () => {
     const store = mockStore({});
+    epicMiddleware.run(rootEpic);
 
     const expectedActions = [
       {
-        type: 'DARTS/READ_STARTED',
-        payload: { gameId: '1' },
-      },
-      {
-        type: 'DARTS/READ_DONE',
-        payload: {
-          params: { gameId: '1' },
-          result: { darts: [dart1] },
-        },
-      },
-    ];
-
-    store.dispatch((actions.fetchDarts({
-      gameId: '1',
-    }) as unknown) as any);
-
-    await sleep(100).then(() => {
-      console.log(store.getActions());
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('returns created dart', async () => {
-    const store = mockStore({});
-
-    const expectedActions = [
-      {
-        type: 'DARTS/CREATE_STARTED',
-        payload: { point: 20 },
-      },
-      {
-        type: 'DARTS/CREATE_DONE',
-        payload: {
-          params: { point: 20 },
-          result: { darts: [dart1] },
-        },
-      },
-    ];
-
-    store.dispatch((actions.createDart({
-      point: 20,
-    }) as unknown) as any);
-
-    await sleep(100).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('returns updated dart', async () => {
-    const store = mockStore({ rules: {} });
-
-    const expectedActions = [
-      {
-        type: 'DARTS/UPDATE_STARTED',
-        payload: { point: 20 },
-      },
-      {
-        type: 'DARTS/UPDATE_DONE',
-        payload: {
-          params: { point: 20 },
-          result: { darts: [dart1] },
-        },
-      },
-    ];
-
-    store.dispatch((actions.updateDart('1', {
-      point: 20,
-    }) as unknown) as any);
-
-    await sleep(100).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('deletes entity', async () => {
-    const store = mockStore({});
-
-    const expectedActions = [
-      {
-        type: 'DARTS/DELETE_STARTED',
+        type: 'DARTS/FETCH_STARTED',
         payload: { id: '1' },
       },
       {
-        type: 'DARTS/DELETE_DONE',
+        type: 'DARTS/FETCH_DONE',
         payload: {
           params: { id: '1' },
+          result: {
+            entities: {
+              darts: { 1: dart1 },
+            },
+            result: ['1'],
+          },
         },
       },
     ];
 
-    store.dispatch((actions.deleteDart({
-      id: '1',
-    }) as unknown) as any);
+    store.dispatch(actions.fetchDarts.started({ id: '1' }));
 
     await sleep(100).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

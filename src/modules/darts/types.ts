@@ -13,10 +13,11 @@ export interface OutOption {
   isCompleted?: boolean;
 }
 
-export interface Dart extends Entity {
+export interface Dart {
   area: Area;
   dartType: DartType;
   date: string;
+  gameId: string;
   id: string;
   index: Index;
   isValid: boolean;
@@ -26,6 +27,8 @@ export interface Dart extends Entity {
   scoreId: string;
   value: number;
 }
+
+export type DartEntity = Dart & Entity;
 
 export interface DartsResponse {
   darts: Dart[];
@@ -42,10 +45,25 @@ export interface CreateDartData {
   index: Index;
 }
 
-interface FetchDartsParams {
+export interface FetchDartsParams {
+  id: string;
+}
+
+export interface FetchDartsResponse {
+  darts: Dart[];
+}
+
+export interface FetchDartsResult {
+  entities: {
+    [key: string]: Dart;
+  };
+  result: string[];
+}
+
+export interface CreateDartsParams {
   value: number;
 }
 
-interface FetchDartsResponse {
-  darts: Dart[];
+export interface CreateDartsResponse {
+  value: number;
 }

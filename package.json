@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
-    "lint": "yarn run eslint --ext .tsx --ext .ts --ignore-pattern serviceWorker.ts src/ --fix",
+    "lint": "yarn run eslint --ext .tsx --ext .ts --ignore-pattern serviceWorker.ts src/",
     "lint:fix": "npm run lint --fix",
     "lint-check": "eslint --print-config . | eslint-config-prettier-check",
     "eject": "react-scripts eject"

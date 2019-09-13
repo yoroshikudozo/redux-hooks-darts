@@ -1,7 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import api from 'modules/middlewares/api';
-import rootReducer from 'modules/reducers';
+import rootReducer, { AppState } from 'modules/reducers';
+import { createEpicMiddleware } from 'redux-observable';
+import { AnyAction } from 'typescript-fsa';
+import { rootEpic } from 'modules/common/epics';
 
 const preloadedState = { auth: { isAuthenticated: true } };
 
@@ -11,14 +13,22 @@ declare global {
   }
 }
 
+export const epicMiddleware = createEpicMiddleware<
+  AnyAction,
+  AnyAction,
+  AppState
+>();
+
 function configureStore() {
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
     rootReducer,
     preloadedState,
-    composeEnhancers(applyMiddleware(thunk, api)),
+    composeEnhancers(applyMiddleware(thunk, epicMiddleware)),
   );
+
+  epicMiddleware.run(rootEpic);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
