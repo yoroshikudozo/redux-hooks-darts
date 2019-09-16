@@ -1,41 +1,55 @@
-import { createEpic } from 'modules/common/utils/rx';
-import API from 'consts/endpoints';
+import { normalize, NormalizedSchema } from 'normalizr';
 
+import API from 'consts/endpoints';
+import http from 'modules/common/utils/request';
 import {
   FetchDartsParams,
   FetchDartsResponse,
-  CreateDartsParams,
-  FetchDartsResult,
   Dart,
-  CreateDartsResponse,
+  CreateDartData,
 } from 'modules/darts/types';
-import actions from 'modules/darts/actions';
-import { normalize, NormalizedSchema } from 'normalizr';
-import { dartSchema, dartListSchema } from 'modules/darts/schema';
+import {
+  epicFactory,
+  actionTransformEpicFactory,
+} from 'modules/common/utils/rx';
+import actions, { initCreateDartRequestData } from 'modules/darts/actions';
+import { dartListSchema, dartSchema } from 'modules/darts/schema';
+import { combineEpics } from 'redux-observable';
 
-export interface TypedResponse<T = any> extends Response {
-  /**
-   * this will override `json` method from `Body` that is extended by `Response`
-   * interface Body {
-   *     json(): Promise<any>;
-   * }
-   */
-  json<P = T>(): Promise<P>;
-}
-
-declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
-
-const fetchDartsEndpoint = (id: string) => `${API.DARTS}/${id}`;
-const createDartsEndpoint = `${API.DARTS}`;
-
-const fetchDartsRequest = ({ id }: FetchDartsParams) =>
-  fetch<FetchDartsResponse>(fetchDartsEndpoint(id));
+const dartNormalize = (data: Dart) =>
+  normalize<{ [key: string]: Dart }, string[]>(data, dartSchema);
 
 const dartsNormalize = (data: FetchDartsResponse) =>
   normalize<{ [key: string]: Dart }, string[]>(data.darts, dartListSchema);
 
-export const fetchDartsEpic = createEpic<
+const fetchDartsRequest = ({ id }: FetchDartsParams) =>
+  http<FetchDartsResponse>(`${API.DARTS}/${id}`);
+
+const createDartsRequest = (data: CreateDartData) =>
+  http<Dart>(API.DARTS, { method: 'post', body: JSON.stringify(data) });
+
+export const fetchDartsEpic = epicFactory<
   FetchDartsParams,
   FetchDartsResponse,
   NormalizedSchema<{ [key: string]: Dart }, string[]>
->(actions.fetchDarts, fetchDartsRequest, dartsNormalize);
+>(actions.fetchDartsASync, fetchDartsRequest, dartsNormalize);
+
+export const createDartEpic = epicFactory<
+  CreateDartData,
+  Dart,
+  NormalizedSchema<{ [key: string]: Dart }, string[]>
+>(actions.createDartAsync, createDartsRequest, dartNormalize);
+
+export const createDartDataEpic = actionTransformEpicFactory(
+  actions.createDart,
+  actions.createDartAsync.started,
+  initCreateDartRequestData,
+);
+
+const dartsEpic = combineEpics(
+  fetchDartsEpic,
+  createDartEpic,
+  createDartDataEpic,
+);
+
+export default dartsEpic;

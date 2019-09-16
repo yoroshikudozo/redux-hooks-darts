@@ -39,6 +39,7 @@ export interface DartsRequestByGame {
 }
 
 export interface CreateDartData {
+  id: string;
   area?: Area;
   value: number;
   dartType: DartType;
@@ -61,9 +62,5 @@ export interface FetchDartsResult {
 }
 
 export interface CreateDartsParams {
-  value: number;
-}
-
-export interface CreateDartsResponse {
   value: number;
 }

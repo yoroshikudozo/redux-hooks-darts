@@ -6,7 +6,7 @@ import { ById } from 'modules/common/types';
 const initialState: ById<Dart> = { entities: {} };
 
 export const byId = reducerWithInitialState(initialState).case(
-  actions.fetchDarts.done,
+  actions.fetchDartsASync.done,
   (state, action) => ({
     entities: {
       ...action.result.entities,

@@ -1,18 +1,45 @@
-import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
+import actionCreatorFactory from 'typescript-fsa';
+import cuid from 'cuid';
 
-import { Dart, FetchDartsParams } from 'modules/darts/types';
+import {
+  Dart,
+  FetchDartsParams,
+  CreateDartData,
+  CreateDartsParams,
+} from 'modules/darts/types';
 import { NormalizedSchema } from 'normalizr';
+import { AppState } from 'modules/reducers';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
-export const fetchDarts = dartsActionCreator.async<
+export const fetchDartsASync = dartsActionCreator.async<
   FetchDartsParams,
   NormalizedSchema<{ [key: string]: Dart }, string[]>
 >('FETCH');
 
+export const createDartAsync = dartsActionCreator.async<
+  CreateDartData,
+  NormalizedSchema<{ [key: string]: Dart }, string[]>
+>('CREATE');
+
+export const createDart = dartsActionCreator<CreateDartsParams>('CREATE');
+
 const actions = {
-  fetchDarts,
+  fetchDartsASync,
+  createDart,
+  createDartAsync,
 };
+
+export const initCreateDartRequestData = (
+  params: CreateDartsParams,
+  state: AppState,
+): CreateDartData => ({
+  id: cuid(),
+  area: 'inner',
+  dartType: 'single',
+  value: params.value,
+  index: 1,
+});
 
 export default actions;
 

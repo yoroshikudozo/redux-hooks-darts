@@ -1,9 +1,8 @@
 import { Epic } from 'redux-observable';
-import { tap, ignoreElements } from 'rxjs/operators';
+import { map, tap, ignoreElements } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { AsyncActionCreators, AnyAction } from 'typescript-fsa';
+import { AsyncActionCreators, AnyAction, ActionCreator } from 'typescript-fsa';
 import { ofAction } from 'typescript-fsa-redux-observable';
-import { TypedResponse, toJson } from 'modules/common/utils/request';
 
 import { AppState } from 'modules/reducers';
 
@@ -13,21 +12,36 @@ export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
     ignoreElements(),
   );
 
-export const createEpic = <Params, Result, Data, Error = {}>(
+export const epicFactory = <Params, Result, Data = Result, Error = {}>(
   asyncActions: AsyncActionCreators<Params, Data, Error>,
-  request: (params: Params) => Promise<TypedResponse<Result>>,
+  request: (params: Params) => Promise<Result>,
   operator: (result: Result) => Data,
-): Epic<AnyAction> => action$ =>
+): Epic => action$ =>
   action$.pipe(
     ofAction(asyncActions.started),
     mergeMap(action =>
       request(action.payload)
-        .then(toJson)
         .then(result =>
           asyncActions.done({
             result: operator(result),
             params: action.payload,
           }),
+        )
+        .catch(error =>
+          asyncActions.failed({
+            params: action.payload,
+            error: error,
+          }),
         ),
     ),
+  );
+
+export const actionTransformEpicFactory = <Params, Result>(
+  flagmentAction: ActionCreator<Params>,
+  resultAction: ActionCreator<Result>,
+  operator: (params: Params, state: AppState) => Result,
+): Epic<AnyAction, AnyAction, AppState> => (action$, state$) =>
+  action$.pipe(
+    ofAction(flagmentAction),
+    map(action => resultAction(operator(action.payload, state$.value))),
   );
