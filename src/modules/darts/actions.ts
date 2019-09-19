@@ -1,4 +1,4 @@
-import actionCreatorFactory from 'typescript-fsa';
+import actionCreatorFactory, { Action, AnyAction } from 'typescript-fsa';
 import cuid from 'cuid';
 
 import {
@@ -9,37 +9,57 @@ import {
 } from 'modules/darts/types';
 import { NormalizedSchema } from 'normalizr';
 import { AppState } from 'modules/reducers';
+import { ThunkAction } from 'redux-thunk';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
-export const fetchDartsASync = dartsActionCreator.async<
+export const fetchDartsAsync = dartsActionCreator.async<
   FetchDartsParams,
   NormalizedSchema<{ [key: string]: Dart }, string[]>
 >('FETCH');
 
+export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
+  'FETCH_CANCEL',
+);
+
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedSchema<{ [key: string]: Dart }, string[]>
+  NormalizedSchema<{ [key: string]: Dart }, string>
 >('CREATE');
 
-export const createDart = dartsActionCreator<CreateDartsParams>('CREATE');
-
-const actions = {
-  fetchDartsASync,
-  createDart,
-  createDartAsync,
-};
+export const createDartAction = dartsActionCreator<number>('CREATE');
+export const createDartCancel = dartsActionCreator<CreateDartData>(
+  'CREATE_CANCEL',
+);
 
 export const initCreateDartRequestData = (
-  params: CreateDartsParams,
+  value: number,
   state: AppState,
 ): CreateDartData => ({
   id: cuid(),
   area: 'inner',
   dartType: 'single',
-  value: params.value,
   index: 1,
+  value,
 });
+
+export const createDart = (
+  value: number,
+): ThunkAction<void, AppState, undefined, AnyAction> => (
+  dispatch,
+  getState,
+) => {
+  const createDartData = initCreateDartRequestData(value, getState());
+  dispatch(createDartAsync.started(createDartData));
+};
+
+const actions = {
+  fetchDartsAsync,
+  fetchDartsCancel,
+  createDart,
+  createDartAsync,
+  createDartCancel,
+};
 
 export default actions;
 

@@ -42,7 +42,7 @@ describe('darts epics', () => {
       },
     ];
 
-    store.dispatch(actions.fetchDartsASync.started({ id: '1' }));
+    store.dispatch(actions.fetchDartsAsync.started({ id: '1' }));
 
     await sleep(100).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
@@ -54,10 +54,6 @@ describe('darts epics', () => {
     epicMiddleware.run(rootEpic);
 
     const expectedActions = [
-      {
-        type: 'DARTS/CREATE',
-        payload: { value: 20 },
-      },
       {
         type: 'DARTS/CREATE_STARTED',
         payload: {
@@ -88,23 +84,22 @@ describe('darts epics', () => {
       },
     ];
 
-    store.dispatch(actions.createDart({ value: 20 }));
+    store.dispatch<any>(actions.createDart(20));
 
     await sleep(100).then(() => {
       const actions = store.getActions();
-      expect(actions[0]).toEqual(expectedActions[0]);
-      expect(actions[1].payload.value).toEqual(
-        expectedActions[1].payload.value,
+      expect(actions[0].payload.value).toEqual(
+        expectedActions[0].payload.value,
       );
-      expect(actions[1].payload.area).toEqual(expectedActions[1].payload.area);
-      expect(actions[1].payload.dartType).toEqual(
-        expectedActions[1].payload.dartType,
+      expect(actions[0].payload.area).toEqual(expectedActions[0].payload.area);
+      expect(actions[0].payload.dartType).toEqual(
+        expectedActions[0].payload.dartType,
       );
-      expect(actions[1].payload.index).toEqual(
-        expectedActions[1].payload.index,
+      expect(actions[0].payload.index).toEqual(
+        expectedActions[0].payload.index,
       );
-      expect(actions[2].payload.result).toEqual(
-        expectedActions[2].payload.result,
+      expect(actions[1].payload.result).toEqual(
+        expectedActions[1].payload.result,
       );
     });
   });

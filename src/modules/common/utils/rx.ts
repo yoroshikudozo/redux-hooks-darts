@@ -1,5 +1,5 @@
 import { Epic } from 'redux-observable';
-import { map, tap, ignoreElements } from 'rxjs/operators';
+import { map, tap, ignoreElements, takeUntil } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
 import { AsyncActionCreators, AnyAction, ActionCreator } from 'typescript-fsa';
 import { ofAction } from 'typescript-fsa-redux-observable';
@@ -12,11 +12,17 @@ export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
     ignoreElements(),
   );
 
-export const epicFactory = <Params, Result, Data = Result, Error = {}>(
-  asyncActions: AsyncActionCreators<Params, Data, Error>,
-  request: (params: Params) => Promise<Result>,
-  operator: (result: Result) => Data,
-): Epic => action$ =>
+export const epicFactory = <Params, Result, Data = Result, Error = {}>({
+  asyncActions,
+  request,
+  operator,
+  cancelAction,
+}: {
+  asyncActions: AsyncActionCreators<Params, Data, Error>;
+  request: (params: Params) => Promise<Result>;
+  operator: (result: Result) => Data;
+  cancelAction: ActionCreator<Params>;
+}): Epic => action$ =>
   action$.pipe(
     ofAction(asyncActions.started),
     mergeMap(action =>
@@ -34,6 +40,7 @@ export const epicFactory = <Params, Result, Data = Result, Error = {}>(
           }),
         ),
     ),
+    takeUntil(action$.pipe(ofAction(cancelAction))),
   );
 
 export const actionTransformEpicFactory = <Params, Result>(
