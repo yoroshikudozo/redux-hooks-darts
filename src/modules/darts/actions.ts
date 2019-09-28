@@ -1,12 +1,7 @@
-import actionCreatorFactory, { Action, AnyAction } from 'typescript-fsa';
+import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
 import cuid from 'cuid';
 
-import {
-  Dart,
-  FetchDartsParams,
-  CreateDartData,
-  CreateDartsParams,
-} from 'modules/darts/types';
+import { Dart, FetchDartsParams, CreateDartData } from 'modules/darts/types';
 import { NormalizedSchema } from 'normalizr';
 import { AppState } from 'modules/reducers';
 import { ThunkAction } from 'redux-thunk';
@@ -15,7 +10,8 @@ const dartsActionCreator = actionCreatorFactory('DARTS');
 
 export const fetchDartsAsync = dartsActionCreator.async<
   FetchDartsParams,
-  NormalizedSchema<{ [key: string]: Dart }, string[]>
+  NormalizedSchema<{ [key: string]: Dart }, string[]>,
+  Error
 >('FETCH');
 
 export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
@@ -24,7 +20,8 @@ export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedSchema<{ [key: string]: Dart }, string>
+  NormalizedSchema<{ [key: string]: Dart }, string>,
+  Error
 >('CREATE');
 
 export const createDartAction = dartsActionCreator<number>('CREATE');
@@ -33,15 +30,22 @@ export const createDartCancel = dartsActionCreator<CreateDartData>(
 );
 
 export const initCreateDartRequestData = (
+  id: string,
   value: number,
   state: AppState,
 ): CreateDartData => ({
-  id: cuid(),
   area: 'inner',
   dartType: 'single',
+  id,
   index: 1,
   value,
 });
+
+export const fetchDart = (
+  id: string,
+): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
+  dispatch(fetchDartsAsync.started({ id }));
+};
 
 export const createDart = (
   value: number,
@@ -49,7 +53,8 @@ export const createDart = (
   dispatch,
   getState,
 ) => {
-  const createDartData = initCreateDartRequestData(value, getState());
+  const id = cuid();
+  const createDartData = initCreateDartRequestData(id, value, getState());
   dispatch(createDartAsync.started(createDartData));
 };
 

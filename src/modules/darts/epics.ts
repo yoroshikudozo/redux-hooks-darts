@@ -28,6 +28,19 @@ const fetchDartsRequest = ({ id }: FetchDartsParams) =>
 const createDartsRequest = (data: CreateDartData) =>
   http<Dart>(API.DARTS, { method: 'post', body: JSON.stringify(data) });
 
+// export const fetchDartsComplexEpic = complexEpicFactory<
+//   FetchDartsParams,
+//   FetchDartsResponse,
+//   NormalizedSchema<{ [key: string]: Dart }, string[]>
+// >({
+//   beforeAsync: actions.fetchDartsAsync,
+//   asyncActions: actions.fetchDartsAsync,
+//   request: fetchDartsRequest,
+//   afterAsync: actions.fetchDartsAsync,
+//   operator: dartsNormalize,
+//   cancelAction: fetchDartsCancel,
+// });
+
 export const fetchDartsEpic = epicFactory<
   FetchDartsParams,
   FetchDartsResponse,

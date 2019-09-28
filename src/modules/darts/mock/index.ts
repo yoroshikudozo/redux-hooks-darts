@@ -21,5 +21,6 @@ export function initDartsMock(mock: FetchMockStatic): void {
     throws: new Error('Bad kitty'),
   });
   mock.get(endpoint, [dart1, dart2, dart3]);
+  mock.get((url, opts) => url === `${endpoint}/2`, { status: 404 });
   mock.post(endpoint, dart1);
 }

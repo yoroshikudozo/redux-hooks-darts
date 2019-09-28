@@ -1,23 +1,24 @@
+import ResponseError from 'modules/common/errors/requestError';
+
+const handleErrors = function(response: Response) {
+  if (!response.ok) {
+    throw new ResponseError(response);
+  }
+
+  return response;
+};
+
 export const wrap = <T>(task: Promise<Response>): Promise<T> => {
   return new Promise((resolve, reject) => {
     task
-      .then(response => {
-        if (response.ok) {
-          response
-            .json()
-            .then(json => {
-              resolve(json);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        } else {
-          reject(response);
-        }
-      })
-      .catch(error => {
-        reject(error);
-      });
+      .then(handleErrors)
+      .then(response =>
+        response
+          .json()
+          .then(json => resolve(json))
+          .catch(error => reject(error)),
+      )
+      .catch(error => reject({ message: error.message, url: error.url }));
   });
 };
 

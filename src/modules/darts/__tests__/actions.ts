@@ -103,4 +103,37 @@ describe('darts epics', () => {
       );
     });
   });
+
+  it('return error', async () => {
+    const store = mockStore({});
+    epicMiddleware.run(rootEpic);
+
+    const expectedActions = [
+      {
+        type: 'DARTS/FETCH_STARTED',
+        payload: {
+          id: '2',
+        },
+      },
+      {
+        type: 'DARTS/FETCH_FAILED',
+        error: true,
+        payload: {
+          params: {
+            id: '2',
+          },
+          error: {
+            message: 'データが見つかりませんでした。',
+            url: '/api/darts/2',
+          },
+        },
+      },
+    ];
+
+    store.dispatch<any>(actions.fetchDartsAsync.started({ id: '2' }));
+
+    await sleep(100).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 });

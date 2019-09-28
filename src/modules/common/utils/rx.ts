@@ -12,13 +12,13 @@ export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
     ignoreElements(),
   );
 
-export const epicFactory = <Params, Result, Data = Result, Error = {}>({
+export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
   asyncActions,
   request,
   operator,
   cancelAction,
 }: {
-  asyncActions: AsyncActionCreators<Params, Data, Error>;
+  asyncActions: AsyncActionCreators<Params, Data, ErrorType>;
   request: (params: Params) => Promise<Result>;
   operator: (result: Result) => Data;
   cancelAction: ActionCreator<Params>;
@@ -33,10 +33,10 @@ export const epicFactory = <Params, Result, Data = Result, Error = {}>({
             params: action.payload,
           }),
         )
-        .catch(error =>
+        .catch((error: ErrorType) =>
           asyncActions.failed({
             params: action.payload,
-            error: error,
+            error,
           }),
         ),
     ),
