@@ -22,5 +22,9 @@ export function initDartsMock(mock: FetchMockStatic): void {
   });
   mock.get(endpoint, [dart1, dart2, dart3]);
   mock.get((url, opts) => url === `${endpoint}/2`, { status: 404 });
+  mock.get(
+    (url, opts) => url === `${endpoint}/3`,
+    '<!doctype html><head><title>500</title></head><body>internal server error 500</body></html>',
+  );
   mock.post(endpoint, dart1);
 }

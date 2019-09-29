@@ -33,7 +33,7 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
             params: action.payload,
           }),
         )
-        .catch((error: ErrorType) =>
+        .catch(error =>
           asyncActions.failed({
             params: action.payload,
             error,

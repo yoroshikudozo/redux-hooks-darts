@@ -1,6 +1,23 @@
-import ResponseError from 'modules/common/errors/requestError';
+import ResponseError from 'modules/common/errors/responseError';
+import ParseError from 'modules/common/errors/ParseError';
 
-const handleErrors = function(response: Response) {
+export interface TypedResponse<T = any> extends Response {
+  /**
+   * this will override `json` method from `Body` that is extended by `Response`
+   * interface Body {
+   *     json(): Promise<any>;
+   * }
+   */
+  json<P = T>(): Promise<P>;
+}
+
+declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
+
+const handleParseError = function(error: Error) {
+  throw new ParseError(error);
+};
+
+const handleResponseErrors = function(response: Response) {
   if (!response.ok) {
     throw new ResponseError(response);
   }
@@ -8,22 +25,34 @@ const handleErrors = function(response: Response) {
   return response;
 };
 
-export const wrap = <T>(task: Promise<Response>): Promise<T> => {
-  return new Promise((resolve, reject) => {
-    task
-      .then(handleErrors)
-      .then(response =>
-        response
-          .json()
-          .then(json => resolve(json))
-          .catch(error => reject(error)),
-      )
-      .catch(error => reject({ message: error.message, url: error.url }));
-  });
+const toJson = (response: Response) => response.json().catch(handleParseError);
+
+// const isResponseError = (error: Error): error is ResponseError =>
+//   error instanceof ResponseError;
+
+// const isParseError = (error: Error): error is ParseError =>
+//   error instanceof ParseError;
+
+const handleRequestErrors = function(error: ResponseError | ParseError) {
+  console.log(error);
+  // if (isResponseError(error)) {
+  //   console.log('ResponseError');
+  //   console.log(error);
+  //   throw error;
+  // }
+  // if (isParseError(error)) {
+  //   console.log('ParseError');
+  //   console.log(error);
+  //   throw error;
+  // }
+  throw error;
 };
 
 const http = <T = any>(input: RequestInfo, init?: RequestInit): Promise<T> => {
-  return wrap<T>(fetch(input, init));
+  return fetch(input, init)
+    .then(handleResponseErrors)
+    .then(toJson)
+    .catch(handleRequestErrors);
 };
 
 export default http;
