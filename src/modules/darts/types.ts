@@ -1,6 +1,6 @@
 export interface Entity {
   id: string;
-  loading: boolean;
+  // loading: boolean;
 }
 
 type OutOptionType = 'master' | 'double' | 'none';
