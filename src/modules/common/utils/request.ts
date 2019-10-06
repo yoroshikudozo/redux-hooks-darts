@@ -1,5 +1,5 @@
 import ResponseError from 'modules/common/errors/responseError';
-import ParseError from 'modules/common/errors/ParseError';
+import ParseError from 'modules/common/errors/parseError';
 
 export interface TypedResponse<T = any> extends Response {
   /**
