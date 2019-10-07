@@ -51,63 +51,26 @@ describe('darts epics', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
-  });
 
-  describe('createDart epic', () => {
-    it('creates dart', async () => {
+    it('canceles collectly', async () => {
       const store = mockStore({});
       epicMiddleware.run(rootEpic);
-
       const expectedActions = [
         {
-          type: 'DARTS/CREATE_STARTED',
-          payload: {
-            id: 'cuid, so it is not able to testing',
-            value: 20,
-            area: 'inner',
-            dartType: 'single',
-            index: 1,
-          },
+          type: 'DARTS/FETCH_STARTED',
+          payload: { id: '1' },
         },
         {
-          type: 'DARTS/CREATE_DONE',
-          payload: {
-            params: {
-              id: 'cuid, so it is not able to testing',
-              value: 20,
-              area: 'inner',
-              dartType: 'single',
-              index: 1,
-            },
-            result: {
-              entities: {
-                darts: { 1: dart1 },
-              },
-              result: '1',
-            },
-          },
+          type: 'DARTS/FETCH_CANCEL',
+          payload: { id: '1' },
         },
       ];
 
-      store.dispatch<any>(actions.createDart(20));
+      store.dispatch(actions.fetchDartsAsync.started({ id: '1' }));
+      store.dispatch(actions.fetchDartsCancel({ id: '1' }));
 
       await sleep(100).then(() => {
-        const actions = store.getActions();
-        expect(actions[0].payload.value).toEqual(
-          expectedActions[0].payload.value,
-        );
-        expect(actions[0].payload.area).toEqual(
-          expectedActions[0].payload.area,
-        );
-        expect(actions[0].payload.dartType).toEqual(
-          expectedActions[0].payload.dartType,
-        );
-        expect(actions[0].payload.index).toEqual(
-          expectedActions[0].payload.index,
-        );
-        expect(actions[1].payload.result).toEqual(
-          expectedActions[1].payload.result,
-        );
+        expect(store.getActions()).toEqual(expectedActions);
       });
     });
 
@@ -172,6 +135,65 @@ describe('darts epics', () => {
 
       await sleep(100).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+  });
+
+  describe('createDart epic', () => {
+    it('creates dart', async () => {
+      const store = mockStore({});
+      epicMiddleware.run(rootEpic);
+
+      const expectedActions = [
+        {
+          type: 'DARTS/CREATE_STARTED',
+          payload: {
+            id: 'cuid, so it is not able to testing',
+            value: 20,
+            area: 'inner',
+            dartType: 'single',
+            index: 1,
+          },
+        },
+        {
+          type: 'DARTS/CREATE_DONE',
+          payload: {
+            params: {
+              id: 'cuid, so it is not able to testing',
+              value: 20,
+              area: 'inner',
+              dartType: 'single',
+              index: 1,
+            },
+            result: {
+              entities: {
+                darts: { 1: dart1 },
+              },
+              result: '1',
+            },
+          },
+        },
+      ];
+
+      store.dispatch<any>(actions.createDart(20));
+
+      await sleep(100).then(() => {
+        const actions = store.getActions();
+        expect(actions[0].payload.value).toEqual(
+          expectedActions[0].payload.value,
+        );
+        expect(actions[0].payload.area).toEqual(
+          expectedActions[0].payload.area,
+        );
+        expect(actions[0].payload.dartType).toEqual(
+          expectedActions[0].payload.dartType,
+        );
+        expect(actions[0].payload.index).toEqual(
+          expectedActions[0].payload.index,
+        );
+        expect(actions[1].payload.result).toEqual(
+          expectedActions[1].payload.result,
+        );
       });
     });
   });
