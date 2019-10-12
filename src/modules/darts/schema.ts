@@ -1,6 +1,8 @@
-import { schema, NormalizedSchema, normalize } from 'normalizr';
+import { schema, NormalizedSchema, normalize, Schema } from 'normalizr';
 import { Dart, FetchDartsResponse } from 'modules/darts/types';
-import { Either, tryCatch } from 'fp-ts/lib/Either';
+import { Either, tryCatch, fold } from 'fp-ts/lib/Either';
+import { identity } from 'fp-ts/lib/function';
+import * as R from 'ramda';
 
 export const dartSchema = new schema.Entity('darts');
 export const dartListSchema = [dartSchema];
@@ -21,17 +23,31 @@ export type NormalizedDarts = NormalizedEntities<Dart>;
 export const dartNormalize = (data: Dart): NormalizedEntity<Dart> =>
   normalize(data, dartSchema);
 
+const normalizeCurried = R.curry((schema: Schema, data: any) =>
+  normalize(data, schema),
+);
+
+export const dartNormalizePartial = normalizeCurried(dartSchema);
+export const dartsNormalizePartial = normalizeCurried(dartListSchema);
+
+export const dartNormalizePartialResult = (data: Dart) =>
+  dartNormalizePartial(data);
+
+export const dartsNormalizePartialResult = (data: FetchDartsResponse) =>
+  dartsNormalizePartial(data.darts);
+
 export const dartsNormalize = (
   data: FetchDartsResponse,
 ): NormalizedEntities<Dart> => normalize(data.darts, dartListSchema);
 
-// export const dartsNormalize_ = (data: FetchDartsResponse) =>
-//   tryCatch(
-//     () => dartsNormalize(data),
-//     e => {
-//       console.log(e);
-//       // throw new NormalizeError(e);
-//     },
-//   );
+export const dartNormalizeEither = (
+  data: Dart,
+): Either<string, NormalizedEntity<Dart>> =>
+  tryCatch(() => dartNormalizePartialResult(data), e => `${e}`);
 
-// export const dartsNormalize = (data: Dart) => dartsNormalizeEither(data);
+export const dartsNormalizeEither = (
+  data: FetchDartsResponse,
+): Either<string, NormalizedDarts> =>
+  tryCatch(() => dartsNormalizePartialResult(data), e => `${e}`);
+
+export const dartsNormalize_ = fold(identity, identity);

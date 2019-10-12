@@ -12,7 +12,7 @@ import actions from '../actions';
 import { epicMiddleware } from 'modules/store/configureStore';
 import dartsEpic from 'modules/darts/epics';
 import { loggingEpic } from 'modules/common/utils/rx';
-import ParseError from 'modules/common/errors/ParseError';
+import ParseError from 'modules/common/errors/parseError';
 import ResponseError from 'modules/common/errors/responseError';
 
 const middlewares = [thunk, epicMiddleware];

@@ -23,7 +23,7 @@ const entities = (state = initialState, action: AnyAction) => {
     action.payload.result &&
     action.payload.result.entities
   ) {
-    return merge({}, state, action.result.entities);
+    return merge({}, state, action.payload.result.entities);
   }
 
   return state;

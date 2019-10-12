@@ -5,6 +5,7 @@ import { AsyncActionCreators, AnyAction, ActionCreator } from 'typescript-fsa';
 import { ofAction } from 'typescript-fsa-redux-observable';
 
 import { AppState } from 'modules/reducers';
+import * as R from 'ramda';
 
 export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
   action$.pipe(
@@ -15,7 +16,7 @@ export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
 export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
   asyncActions,
   request,
-  operator,
+  operator: operator = R.identity as (result: Result) => Data,
   cancelAction,
 }: {
   asyncActions: AsyncActionCreators<Params, Data, ErrorType>;
@@ -27,9 +28,10 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
     ofAction(asyncActions.started),
     mergeMap(action =>
       request(action.payload)
+        .then(operator)
         .then(result =>
           asyncActions.done({
-            result: operator(result),
+            result: result,
             params: action.payload,
           }),
         )
