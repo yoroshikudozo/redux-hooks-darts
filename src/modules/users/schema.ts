@@ -4,6 +4,9 @@ import { User, FetchUsersResponse } from 'modules/users/types';
 export const userSchema = new schema.Entity('users');
 export const userListSchema = [userSchema];
 
+export const playerSchema = new schema.Entity('players');
+export const playerListSchema = [playerSchema];
+
 export type NormalizedEntity<T> = NormalizedSchema<
   { [key: string]: T },
   string

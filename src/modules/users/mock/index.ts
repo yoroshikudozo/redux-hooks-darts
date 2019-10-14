@@ -17,7 +17,7 @@ export function initUsersMock(mock: FetchMockStatic): void {
     status: 500,
     throws: new Error('Bad kitty'),
   });
-  mock.get(endpoint, [user1, user2, user3]);
+  mock.get(endpoint, { users: [user1, user2, user3] });
   mock.get((url, opts) => url === `${endpoint}/2`, { status: 404 });
   mock.get(
     (url, opts) => url === `${endpoint}/3`,

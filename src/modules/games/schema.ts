@@ -1,11 +1,12 @@
 import { schema, NormalizedSchema, normalize } from 'normalizr';
 import { Game, FetchGamesResponse } from 'modules/games/types';
-import { userListSchema } from 'modules/users/schema';
+import { playerListSchema } from 'modules/users/schema';
 
 export const gameSchema = new schema.Entity('games', {
-  players: userListSchema,
+  players: playerListSchema,
 });
-export const gameListSchema = [gameSchema];
+
+export const gameListSchema = new schema.Array(gameSchema);
 
 export type NormalizedEntity<T> = NormalizedSchema<
   { [key: string]: T },
@@ -20,9 +21,8 @@ export type NormalizedEntities<T> = NormalizedSchema<
 export type NormalizedGame = NormalizedEntity<Game>;
 export type NormalizedGames = NormalizedEntities<Game>;
 
-export const gameNormalize = (data: Game): NormalizedEntity<Game> =>
+export const gameNormalize = (data: Game): NormalizedGame =>
   normalize(data, gameSchema);
 
-export const gamesNormalize = (
-  data: FetchGamesResponse,
-): NormalizedEntities<Game> => normalize(data.games, gameListSchema);
+export const gamesNormalize = (data: FetchGamesResponse): NormalizedGames =>
+  normalize(data.games, gameListSchema);

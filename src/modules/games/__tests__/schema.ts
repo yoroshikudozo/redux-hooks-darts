@@ -6,6 +6,21 @@ import user1 from 'modules/users/mock/resources/user1';
 import user2 from 'modules/users/mock/resources/user2';
 import user3 from 'modules/users/mock/resources/user3';
 
+describe('gameSchema', () => {
+  it('returns normalized entity', async () => {
+    const data = game1;
+    const normalizedData = schema.gameNormalize(data);
+
+    expect(normalizedData).toEqual({
+      entities: {
+        games: { '1': { ...game1, players: ['1'] } },
+        players: { 1: user1 },
+      },
+      result: '1',
+    });
+  });
+});
+
 describe('gameListSchema', () => {
   it('returns normalized entity', async () => {
     const data = { games: [game1, game2, game3] };
