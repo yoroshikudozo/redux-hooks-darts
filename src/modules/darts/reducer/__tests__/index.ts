@@ -1,7 +1,7 @@
 import byId from 'modules/darts/reducer/byId';
 import allIds from 'modules/darts/reducer/allIds';
 import { fetchDartsAsync } from 'modules/darts/actions';
-import { dartsNormalize } from 'modules/darts/schema';
+import { dartsNormalize } from 'modules/darts/schemas';
 
 import dart1 from 'modules/darts/mock/resources/dart1';
 

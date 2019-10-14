@@ -1,21 +1,13 @@
-import { schema, NormalizedSchema, normalize, Schema } from 'normalizr';
-import { Dart, FetchDartsResponse } from 'modules/darts/types';
+import * as R from 'ramda';
+import { schema, normalize, Schema } from 'normalizr';
 import { Either, tryCatch, fold } from 'fp-ts/lib/Either';
 import { identity } from 'fp-ts/lib/function';
-import * as R from 'ramda';
+
+import { Dart, FetchDartsResponse } from 'modules/darts/types';
+import { NormalizedEntity, NormalizedEntities } from 'modules/common/schemas';
 
 export const dartSchema = new schema.Entity('darts');
 export const dartListSchema = [dartSchema];
-
-export type NormalizedEntity<T> = NormalizedSchema<
-  { [key: string]: T },
-  string
->;
-
-export type NormalizedEntities<T> = NormalizedSchema<
-  { [key: string]: T },
-  string[]
->;
 
 export type NormalizedDart = NormalizedEntity<Dart>;
 export type NormalizedDarts = NormalizedEntities<Dart>;

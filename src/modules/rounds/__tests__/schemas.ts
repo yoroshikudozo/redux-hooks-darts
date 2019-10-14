@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 
-import { roundListSchema } from '../schema';
+import { roundListSchema } from '../schemas';
 import round1 from '../mock/resources/round1.json';
 import round2 from '../mock/resources/round2.json';
 import round3 from '../mock/resources/round3.json';

@@ -18,7 +18,7 @@ import {
   NormalizedGame,
   gamesNormalize,
   gameNormalize,
-} from 'modules/games/schema';
+} from 'modules/games/schemas';
 import { combineEpics } from 'redux-observable';
 
 const fetchGamesRequest = ({ playerId }: FetchGamesParams) =>

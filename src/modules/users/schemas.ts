@@ -1,21 +1,12 @@
-import { schema, NormalizedSchema, normalize } from 'normalizr';
+import { schema, normalize } from 'normalizr';
 import { User, FetchUsersResponse } from 'modules/users/types';
+import { NormalizedEntity, NormalizedEntities } from 'modules/common/schemas';
 
 export const userSchema = new schema.Entity('users');
 export const userListSchema = [userSchema];
 
 export const playerSchema = new schema.Entity('players');
 export const playerListSchema = [playerSchema];
-
-export type NormalizedEntity<T> = NormalizedSchema<
-  { [key: string]: T },
-  string
->;
-
-export type NormalizedEntities<T> = NormalizedSchema<
-  { [key: string]: T },
-  string[]
->;
 
 export type NormalizedUser = NormalizedEntity<User>;
 export type NormalizedUsers = NormalizedEntities<User>;

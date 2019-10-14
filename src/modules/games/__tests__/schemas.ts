@@ -1,4 +1,4 @@
-import * as schema from '../schema';
+import * as schemas from '../schemas';
 import game1 from '../mock/resources/game1';
 import game2 from '../mock/resources/game2';
 import game3 from '../mock/resources/game3';
@@ -9,7 +9,7 @@ import user3 from 'modules/users/mock/resources/user3';
 describe('gameSchema', () => {
   it('returns normalized entity', async () => {
     const data = game1;
-    const normalizedData = schema.gameNormalize(data);
+    const normalizedData = schemas.gameNormalize(data);
 
     expect(normalizedData).toEqual({
       entities: {
@@ -24,7 +24,7 @@ describe('gameSchema', () => {
 describe('gameListSchema', () => {
   it('returns normalized entity', async () => {
     const data = { games: [game1, game2, game3] };
-    const normalizedData = schema.gamesNormalize(data);
+    const normalizedData = schemas.gamesNormalize(data);
 
     expect(normalizedData).toEqual({
       entities: {

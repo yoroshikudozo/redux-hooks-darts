@@ -1,5 +1,5 @@
 import { schema } from 'normalizr';
-import { dartListSchema } from 'modules/darts/schema';
+import { dartListSchema } from 'modules/darts/schemas';
 
 export const roundSchema = new schema.Entity('rounds', {
   darts: dartListSchema,

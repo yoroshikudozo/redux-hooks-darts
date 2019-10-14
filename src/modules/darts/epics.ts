@@ -1,4 +1,4 @@
-import { normalize } from 'normalizr';
+import { combineEpics } from 'redux-observable';
 
 import API from 'consts/endpoints';
 import http from 'modules/common/utils/request';
@@ -18,8 +18,7 @@ import {
   NormalizedDart,
   dartsNormalize,
   dartNormalize,
-} from 'modules/darts/schema';
-import { combineEpics } from 'redux-observable';
+} from 'modules/darts/schemas';
 
 const fetchDartsRequest = ({ id }: FetchDartsParams) =>
   http<FetchDartsResponse>(`${API.DARTS}/${id}`);
