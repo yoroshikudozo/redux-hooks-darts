@@ -2,11 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Dartsboard } from 'components/atoms/DartsBoard';
-import {
-  fetchDartsAsync,
-  fetchDartsCancel,
-  fetchDart,
-} from 'modules/darts/actions';
+import { fetchDartsCancel, fetchDart } from 'modules/darts/actions';
 
 function Home() {
   const handleClick = ({ currentTarget }: React.MouseEvent<SVGElement>) => {

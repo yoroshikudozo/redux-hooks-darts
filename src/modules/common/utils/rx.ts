@@ -1,11 +1,10 @@
-import { Epic } from 'redux-observable';
-import { map, tap, ignoreElements, takeUntil } from 'rxjs/operators';
-import { mergeMap } from 'rxjs/operators';
 import { AsyncActionCreators, AnyAction, ActionCreator } from 'typescript-fsa';
 import { ofAction } from 'typescript-fsa-redux-observable';
+import { Epic } from 'redux-observable';
+import { map, mergeMap, tap, ignoreElements, takeUntil } from 'rxjs/operators';
+import * as R from 'ramda';
 
 import { AppState } from 'modules/reducers';
-import * as R from 'ramda';
 
 export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
   action$.pipe(
