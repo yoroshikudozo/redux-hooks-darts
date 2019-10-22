@@ -7,6 +7,7 @@ import {
   FetchDartsResponse,
   Dart,
   CreateDartData,
+  FetchDartParams,
 } from 'modules/darts/types';
 import { epicFactory } from 'modules/common/utils/rx';
 import actions, {
@@ -21,9 +22,12 @@ import {
 } from 'modules/darts/schemas';
 
 const fetchDartsRequest = ({ id }: FetchDartsParams) =>
-  http<FetchDartsResponse>(`${API.DARTS}/${id}`);
+  http<FetchDartsResponse>(`${API.DARTS}/games/${id}`);
 
-const createDartsRequest = (data: CreateDartData) =>
+const fetchDartRequest = ({ id }: FetchDartParams) =>
+  http<Dart>(`${API.DARTS}/${id}`);
+
+const createDartRequest = (data: CreateDartData) =>
   http<Dart>(API.DARTS, { method: 'post', body: JSON.stringify(data) });
 
 // export const fetchDartsComplexEpic = complexEpicFactory<
@@ -50,10 +54,19 @@ export const fetchDartsEpic = epicFactory<
   cancelAction: fetchDartsCancel,
 });
 
+export const fetchDartEpic = epicFactory<FetchDartParams, Dart, NormalizedDart>(
+  {
+    asyncActions: actions.fetchDartAsync,
+    request: fetchDartRequest,
+    operator: dartNormalize,
+    cancelAction: actions.fetchDartCancel,
+  },
+);
+
 export const createDartEpic = epicFactory<CreateDartData, Dart, NormalizedDart>(
   {
     asyncActions: actions.createDartAsync,
-    request: createDartsRequest,
+    request: createDartRequest,
     operator: dartNormalize,
     cancelAction: createDartCancel,
   },
@@ -66,6 +79,7 @@ export const createDartEpic = epicFactory<CreateDartData, Dart, NormalizedDart>(
 // );
 
 const dartsEpic = combineEpics(
+  fetchDartEpic,
   fetchDartsEpic,
   createDartEpic,
   // createDartDataEpic,

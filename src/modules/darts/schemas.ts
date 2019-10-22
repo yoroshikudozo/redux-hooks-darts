@@ -13,10 +13,10 @@ export type NormalizedDart = NormalizedEntity<Dart>;
 export type NormalizedDarts = NormalizedEntities<Dart>;
 
 export const dartNormalize = (data: Dart): NormalizedEntity<Dart> =>
-  normalize(data, dartSchema);
+  normalize({ darts: data }, { darts: dartSchema });
 
 const normalizeCurried = R.curry((schema: Schema, data: any) =>
-  normalize(data, schema),
+  normalize(data, { darts: schema }),
 );
 
 export const dartNormalizePartial = normalizeCurried(dartSchema);
@@ -26,11 +26,11 @@ export const dartNormalizePartialResult = (data: Dart) =>
   dartNormalizePartial(data);
 
 export const dartsNormalizePartialResult = (data: FetchDartsResponse) =>
-  dartsNormalizePartial(data.darts);
+  dartsNormalizePartial(data);
 
 export const dartsNormalize = (
   data: FetchDartsResponse,
-): NormalizedEntities<Dart> => normalize(data.darts, dartListSchema);
+): NormalizedEntities<Dart> => normalize(data, { darts: dartListSchema });
 
 export const dartNormalizeEither = (
   data: Dart,

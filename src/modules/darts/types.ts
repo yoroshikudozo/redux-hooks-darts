@@ -50,6 +50,10 @@ export interface FetchDartsParams {
   id: string;
 }
 
+export interface FetchDartParams {
+  id: string;
+}
+
 export interface FetchDartsResponse {
   darts: Dart[];
 }
@@ -59,6 +63,13 @@ export interface FetchDartsResult {
     [key: string]: Dart;
   };
   result: string[];
+}
+
+export interface FetchDartResult {
+  entities: {
+    [key: string]: Dart;
+  };
+  result: string;
 }
 
 export interface CreateDartsParams {

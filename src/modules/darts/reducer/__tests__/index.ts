@@ -32,7 +32,9 @@ describe('dartsReducer', () => {
         params: { id: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
-      expect(allIds({ result: [] }, action)).toEqual({ result: ['1'] });
+      expect(allIds({ result: [] }, action)).toEqual({
+        result: { darts: ['1'] },
+      });
     });
   });
 });

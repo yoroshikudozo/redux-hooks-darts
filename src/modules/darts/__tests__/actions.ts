@@ -28,18 +28,20 @@ describe('darts epics', () => {
       epicMiddleware.run(rootEpic);
       const expectedActions = [
         {
-          type: 'DARTS/FETCH_STARTED',
+          type: 'DARTS/LIST/FETCH_STARTED',
           payload: { id: '1' },
         },
         {
-          type: 'DARTS/FETCH_DONE',
+          type: 'DARTS/LIST/FETCH_DONE',
           payload: {
             params: { id: '1' },
             result: {
               entities: {
                 darts: { 1: dart1 },
               },
-              result: ['1'],
+              result: {
+                darts: ['1'],
+              },
             },
           },
         },
@@ -57,11 +59,11 @@ describe('darts epics', () => {
       epicMiddleware.run(rootEpic);
       const expectedActions = [
         {
-          type: 'DARTS/FETCH_STARTED',
+          type: 'DARTS/LIST/FETCH_STARTED',
           payload: { id: '1' },
         },
         {
-          type: 'DARTS/FETCH_CANCEL',
+          type: 'DARTS/LIST/FETCH_CANCEL',
           payload: { id: '1' },
         },
       ];
@@ -80,13 +82,13 @@ describe('darts epics', () => {
 
       const expectedActions = [
         {
-          type: 'DARTS/FETCH_STARTED',
+          type: 'DARTS/LIST/FETCH_STARTED',
           payload: {
             id: '2',
           },
         },
         {
-          type: 'DARTS/FETCH_FAILED',
+          type: 'DARTS/LIST/FETCH_FAILED',
           error: true,
           payload: {
             params: {
@@ -114,13 +116,13 @@ describe('darts epics', () => {
 
       const expectedActions = [
         {
-          type: 'DARTS/FETCH_STARTED',
+          type: 'DARTS/LIST/FETCH_STARTED',
           payload: {
             id: '3',
           },
         },
         {
-          type: 'DARTS/FETCH_FAILED',
+          type: 'DARTS/LIST/FETCH_FAILED',
           error: true,
           payload: {
             params: {
@@ -169,7 +171,9 @@ describe('darts epics', () => {
               entities: {
                 darts: { 1: dart1 },
               },
-              result: '1',
+              result: {
+                darts: '1',
+              },
             },
           },
         },

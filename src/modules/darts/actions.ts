@@ -1,26 +1,40 @@
 import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
 import cuid from 'cuid';
-
-import { Dart, FetchDartsParams, CreateDartData } from 'modules/darts/types';
-import { NormalizedSchema } from 'normalizr';
-import { AppState } from 'modules/reducers';
 import { ThunkAction } from 'redux-thunk';
+
+import {
+  FetchDartsParams,
+  CreateDartData,
+  FetchDartParams,
+} from 'modules/darts/types';
+import { AppState } from 'modules/reducers';
+import { NormalizedDart, NormalizedDarts } from 'modules/darts/schemas';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
 export const fetchDartsAsync = dartsActionCreator.async<
   FetchDartsParams,
-  NormalizedSchema<{ [key: string]: Dart }, string[]>,
+  NormalizedDarts,
+  Error
+>('LIST/FETCH');
+
+export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
+  'LIST/FETCH_CANCEL',
+);
+
+export const fetchDartAsync = dartsActionCreator.async<
+  FetchDartParams,
+  NormalizedDart,
   Error
 >('FETCH');
 
-export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
+export const fetchDartCancel = dartsActionCreator<FetchDartParams>(
   'FETCH_CANCEL',
 );
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedSchema<{ [key: string]: Dart }, string>,
+  NormalizedDart,
   Error
 >('CREATE');
 
@@ -44,6 +58,12 @@ export const initCreateDartRequestData = (
 export const fetchDart = (
   id: string,
 ): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
+  dispatch(fetchDartAsync.started({ id }));
+};
+
+export const fetchDarts = (
+  id: string,
+): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
   dispatch(fetchDartsAsync.started({ id }));
 };
 
@@ -59,8 +79,12 @@ export const createDart = (
 };
 
 const actions = {
+  fetchDarts,
   fetchDartsAsync,
   fetchDartsCancel,
+  fetchDart,
+  fetchDartAsync,
+  fetchDartCancel,
   createDart,
   createDartAsync,
   createDartCancel,

@@ -51,8 +51,7 @@ const handleRequestErrors = function(error: ResponseError | ParseError) {
 const http = <T = any>(input: RequestInfo, init?: RequestInit): Promise<T> => {
   return fetch(input, init)
     .then(handleResponseErrors)
-    .then(toJson)
-    .catch(handleRequestErrors);
+    .then(toJson);
 };
 
 export default http;

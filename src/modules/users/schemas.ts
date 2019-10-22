@@ -12,8 +12,8 @@ export type NormalizedUser = NormalizedEntity<User>;
 export type NormalizedUsers = NormalizedEntities<User>;
 
 export const userNormalize = (data: User): NormalizedEntity<User> =>
-  normalize(data, userSchema);
+  normalize(data, { users: userSchema });
 
 export const usersNormalize = (
   data: FetchUsersResponse,
-): NormalizedEntities<User> => normalize(data.users, userListSchema);
+): NormalizedEntities<User> => normalize(data, { users: userListSchema });

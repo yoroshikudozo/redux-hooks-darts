@@ -7,12 +7,14 @@ import { initDartsMock } from 'modules/darts/mock';
 // import { initRoundsMock } from 'modules/rounds/mock';
 // import { initRulesMock } from 'modules/rules/mock';
 import { initGamesMock } from 'modules/games/mock';
+import { initUsersMock } from 'modules/users/mock';
 
 import fetchMock from 'fetch-mock';
 
 export function init() {
   initDartsMock(fetchMock);
   initGamesMock(fetchMock);
+  initUsersMock(fetchMock);
 }
 
 console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss zz'));

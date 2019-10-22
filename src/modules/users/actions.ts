@@ -88,6 +88,8 @@ export const createUser = (
 const actions = {
   fetchUserAsync,
   fetchUserCancel,
+  fetchPlayersAsync,
+  fetchPlayersCancel,
   createUser,
   createUserAsync,
   createUserCancel,
