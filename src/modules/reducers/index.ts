@@ -36,7 +36,7 @@ const resultReducer = (state = initialState, action: AnyAction) => {
   const params = getParams(action);
   if (!params) return state;
 
-  return R.mergeDeepRight(state, { [qs(action.payload.params)]: result });
+  return R.mergeDeepRight(state, { [qs(params)]: result });
 };
 
 const rootReducer = combineReducers({

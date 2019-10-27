@@ -1,27 +1,26 @@
 import { ThunkAction } from 'redux-thunk';
-import { NormalizedSchema } from 'normalizr';
 import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
 import cuid from 'cuid';
 
 import {
-  User,
   FetchUserParams,
   CreateUserData,
   CreateUserFormData,
 } from 'modules/users/types';
 import { AppState } from 'modules/reducers';
+import { NormalizedUsers } from 'modules/users/schemas';
 
 const usersActionCreator = actionCreatorFactory('USERS');
 
 export const fetchUserAsync = usersActionCreator.async<
   FetchUserParams,
-  NormalizedSchema<{ [key: string]: User }, string>,
+  NormalizedUsers,
   Error
 >('FETCH');
 
 export const fetchPlayersAsync = usersActionCreator.async<
   undefined,
-  NormalizedSchema<{ [key: string]: User }, string[]>,
+  NormalizedUsers,
   Error
 >('PLAYERS/FETCH');
 
@@ -39,7 +38,7 @@ export const fetchPlayersCancel = usersActionCreator<undefined>(
 
 export const createUserAsync = usersActionCreator.async<
   CreateUserData,
-  NormalizedSchema<{ [key: string]: User }, string>,
+  NormalizedUsers,
   Error
 >('CREATE');
 

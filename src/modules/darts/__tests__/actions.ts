@@ -172,7 +172,7 @@ describe('darts epics', () => {
                 darts: { 1: dart1 },
               },
               result: {
-                darts: '1',
+                darts: ['1'],
               },
             },
           },

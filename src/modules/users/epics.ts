@@ -10,7 +10,6 @@ import { epicFactory } from 'modules/common/utils/rx';
 import actions from 'modules/users/actions';
 import {
   NormalizedUsers,
-  NormalizedUser,
   usersNormalize,
   userNormalize,
 } from 'modules/users/schemas';
@@ -31,14 +30,16 @@ const fetchPlayersRequest = async () => {
 const createUsersRequest = (data: CreateUserData) =>
   http<User>(API.USERS, { method: 'post', body: JSON.stringify(data) });
 
-export const fetchUserEpic = epicFactory<FetchUserParams, User, NormalizedUser>(
-  {
-    asyncActions: actions.fetchUserAsync,
-    request: fetchUserRequest,
-    operator: userNormalize,
-    cancelAction: actions.fetchUserCancel,
-  },
-);
+export const fetchUserEpic = epicFactory<
+  FetchUserParams,
+  User,
+  NormalizedUsers
+>({
+  asyncActions: actions.fetchUserAsync,
+  request: fetchUserRequest,
+  operator: userNormalize,
+  cancelAction: actions.fetchUserCancel,
+});
 
 export const fetchPlayersEpic = epicFactory<
   undefined,
@@ -51,14 +52,16 @@ export const fetchPlayersEpic = epicFactory<
   cancelAction: actions.fetchPlayersCancel,
 });
 
-export const createUserEpic = epicFactory<CreateUserData, User, NormalizedUser>(
-  {
-    asyncActions: actions.createUserAsync,
-    request: createUsersRequest,
-    operator: userNormalize,
-    cancelAction: actions.createUserCancel,
-  },
-);
+export const createUserEpic = epicFactory<
+  CreateUserData,
+  User,
+  NormalizedUsers
+>({
+  asyncActions: actions.createUserAsync,
+  request: createUsersRequest,
+  operator: userNormalize,
+  cancelAction: actions.createUserCancel,
+});
 
 // export const createUserDataEpic = actionTransformEpicFactory(
 //   actions.createUser,

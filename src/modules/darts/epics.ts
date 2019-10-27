@@ -16,7 +16,6 @@ import actions, {
 } from 'modules/darts/actions';
 import {
   NormalizedDarts,
-  NormalizedDart,
   dartsNormalize,
   dartNormalize,
 } from 'modules/darts/schemas';
@@ -54,23 +53,27 @@ export const fetchDartsEpic = epicFactory<
   cancelAction: fetchDartsCancel,
 });
 
-export const fetchDartEpic = epicFactory<FetchDartParams, Dart, NormalizedDart>(
-  {
-    asyncActions: actions.fetchDartAsync,
-    request: fetchDartRequest,
-    operator: dartNormalize,
-    cancelAction: actions.fetchDartCancel,
-  },
-);
+export const fetchDartEpic = epicFactory<
+  FetchDartParams,
+  Dart,
+  NormalizedDarts
+>({
+  asyncActions: actions.fetchDartAsync,
+  request: fetchDartRequest,
+  operator: dartNormalize,
+  cancelAction: actions.fetchDartCancel,
+});
 
-export const createDartEpic = epicFactory<CreateDartData, Dart, NormalizedDart>(
-  {
-    asyncActions: actions.createDartAsync,
-    request: createDartRequest,
-    operator: dartNormalize,
-    cancelAction: createDartCancel,
-  },
-);
+export const createDartEpic = epicFactory<
+  CreateDartData,
+  Dart,
+  NormalizedDarts
+>({
+  asyncActions: actions.createDartAsync,
+  request: createDartRequest,
+  operator: dartNormalize,
+  cancelAction: createDartCancel,
+});
 
 // export const createDartDataEpic = actionTransformEpicFactory(
 //   actions.createDart,

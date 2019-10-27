@@ -2,27 +2,26 @@ import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
 import cuid from 'cuid';
 
 import {
-  Game,
   FetchGameParams,
   FetchGamesParams,
   CreateGameData,
   GameType,
 } from 'modules/games/types';
-import { NormalizedSchema } from 'normalizr';
 import { AppState } from 'modules/reducers';
 import { ThunkAction } from 'redux-thunk';
+import { NormalizedGames } from 'modules/games/schemas';
 
 const gamesActionCreator = actionCreatorFactory('GAMES');
 
 export const fetchGameAsync = gamesActionCreator.async<
   FetchGameParams,
-  NormalizedSchema<{ [key: string]: Game }, string>,
+  NormalizedGames,
   Error
 >('FETCH');
 
 export const fetchGamesAsync = gamesActionCreator.async<
   FetchGamesParams,
-  NormalizedSchema<{ [key: string]: Game }, string[]>,
+  NormalizedGames,
   Error
 >('FETCH_LIST');
 
@@ -36,7 +35,7 @@ export const fetchGamesCancel = gamesActionCreator<FetchGamesParams>(
 
 export const createGameAsync = gamesActionCreator.async<
   CreateGameData,
-  NormalizedSchema<{ [key: string]: Game }, string>,
+  NormalizedGames,
   Error
 >('CREATE');
 

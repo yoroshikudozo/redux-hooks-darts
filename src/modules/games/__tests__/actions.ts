@@ -40,7 +40,7 @@ describe('games epics', () => {
                 games: { 1: { ...game1, players: ['1'] } },
                 players: { 1: user1 },
               },
-              result: '1',
+              result: { games: ['1'] },
             },
             params: { id: '1' },
           },
@@ -158,7 +158,7 @@ describe('games epics', () => {
                 games: { 1: { ...game1, players: ['1'] } },
                 players: { 1: user1 },
               },
-              result: '1',
+              result: { games: ['1'] },
             },
             params: { id: '1' },
           },
@@ -290,13 +290,13 @@ describe('games epics', () => {
                 games: { 1: { ...game1, players: ['1'] } },
                 players: { 1: user1 },
               },
-              result: '1',
+              result: { games: ['1'] },
             },
           },
         },
       ];
 
-      store.dispatch<any>(actions.createGame(20));
+      store.dispatch<any>(actions.createGame('countUp'));
 
       await sleep(100).then(() => {
         const actions = store.getActions();

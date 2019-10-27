@@ -15,7 +15,6 @@ import actions, {
 } from 'modules/games/actions';
 import {
   NormalizedGames,
-  NormalizedGame,
   gamesNormalize,
   gameNormalize,
 } from 'modules/games/schemas';
@@ -30,14 +29,16 @@ const fetchGameRequest = ({ id }: FetchGameParams) =>
 const createGamesRequest = (data: CreateGameData) =>
   http<Game>(API.GAMES, { method: 'post', body: JSON.stringify(data) });
 
-export const fetchGameEpic = epicFactory<FetchGameParams, Game, NormalizedGame>(
-  {
-    asyncActions: actions.fetchGameAsync,
-    request: fetchGameRequest,
-    operator: gameNormalize,
-    cancelAction: fetchGameCancel,
-  },
-);
+export const fetchGameEpic = epicFactory<
+  FetchGameParams,
+  Game,
+  NormalizedGames
+>({
+  asyncActions: actions.fetchGameAsync,
+  request: fetchGameRequest,
+  operator: gameNormalize,
+  cancelAction: fetchGameCancel,
+});
 
 export const fetchGamesEpic = epicFactory<
   FetchGamesParams,
@@ -50,14 +51,16 @@ export const fetchGamesEpic = epicFactory<
   cancelAction: fetchGamesCancel,
 });
 
-export const createGameEpic = epicFactory<CreateGameData, Game, NormalizedGame>(
-  {
-    asyncActions: actions.createGameAsync,
-    request: createGamesRequest,
-    operator: gameNormalize,
-    cancelAction: createGameCancel,
-  },
-);
+export const createGameEpic = epicFactory<
+  CreateGameData,
+  Game,
+  NormalizedGames
+>({
+  asyncActions: actions.createGameAsync,
+  request: createGamesRequest,
+  operator: gameNormalize,
+  cancelAction: createGameCancel,
+});
 
 // export const createGameDataEpic = actionTransformEpicFactory(
 //   actions.createGame,

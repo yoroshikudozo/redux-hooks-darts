@@ -8,7 +8,7 @@ import {
   FetchDartParams,
 } from 'modules/darts/types';
 import { AppState } from 'modules/reducers';
-import { NormalizedDart, NormalizedDarts } from 'modules/darts/schemas';
+import { NormalizedDarts } from 'modules/darts/schemas';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
@@ -24,7 +24,7 @@ export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
 
 export const fetchDartAsync = dartsActionCreator.async<
   FetchDartParams,
-  NormalizedDart,
+  NormalizedDarts,
   Error
 >('FETCH');
 
@@ -34,7 +34,7 @@ export const fetchDartCancel = dartsActionCreator<FetchDartParams>(
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedDart,
+  NormalizedDarts,
   Error
 >('CREATE');
 

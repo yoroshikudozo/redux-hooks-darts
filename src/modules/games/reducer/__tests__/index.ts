@@ -24,7 +24,7 @@ describe('dartsReducer', () => {
 
   describe('allIds', () => {
     it('should return the initial state', async () => {
-      expect(allIds(undefined, { type: '' })).toEqual({ result: [] });
+      expect(allIds(undefined, { type: '' })).toEqual({ result: {} });
     });
 
     it('should handle fetchDartsAsync.done', async () => {
@@ -32,7 +32,9 @@ describe('dartsReducer', () => {
         params: { id: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
-      expect(allIds({ result: [] }, action)).toEqual({ result: ['1'] });
+      expect(allIds({ result: {} }, action)).toEqual({
+        result: { darts: ['1'] },
+      });
     });
   });
 });

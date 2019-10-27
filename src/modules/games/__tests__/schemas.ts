@@ -16,7 +16,7 @@ describe('gameSchema', () => {
         games: { '1': { ...game1, players: ['1'] } },
         players: { 1: user1 },
       },
-      result: '1',
+      result: { games: ['1'] },
     });
   });
 });
@@ -39,7 +39,7 @@ describe('gameListSchema', () => {
           3: user3,
         },
       },
-      result: ['1', '2', '3'],
+      result: { games: ['1', '2', '3'] },
     });
   });
 });
