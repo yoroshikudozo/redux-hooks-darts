@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import { TypedResponse } from 'modules/common/utils/request';
 import API from 'consts/endpoints';
 
+import { pipe } from 'fp-ts/lib/pipeable';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
@@ -15,54 +16,49 @@ export interface FetchDartsByIdParams {
   gameId: string;
 }
 
-type Errors = Error | RequestError | ResponseError | ParseError;
+type Errors = RequestError | ResponseError | ParseError;
 
 export const createfetchDartsByGameRequest = ({
   gameId,
 }: FetchDartsByIdParams) => `${API.DARTS}/games/${gameId}`;
 
-export const createRequestTE = (init: RequestInfo | string) =>
+const request = (init: RequestInfo | string) =>
   TE.tryCatch(
     () => fetch(init),
-    error => new RequestError(error as string),
+    reason => new RequestError(reason as string) as Errors,
   );
 
-export const toJsonTE = <T>(res: TypedResponse<T>) =>
-  TE.tryCatch<ParseError, T>(
+const toJson = <T>(res: TypedResponse<T>) =>
+  TE.tryCatch(
     () => res.json(),
-    reason => new ParseError(reason as Error),
+    reason => new ParseError(reason as Error) as Errors,
   );
 
-export const createRequest = async <T>(
-  requestTE: TE.TaskEither<RequestError, Response>,
+const checkResponse = <T>(response: Response) =>
+  TE.fromEither(
+    E.tryCatch(
+      () => {
+        if (response.ok) return response as TypedResponse<T>;
+        throw new ResponseError(response);
+      },
+      reason => reason as Errors,
+    ),
+  );
+
+export const http = async <T>(
+  init: RequestInfo | string,
   normalizer: (data: T | { [key: string]: T[] }) => NormalizedEntities<T>,
 ) => {
-  const typedResponse = TE.taskEither.chain<Errors, Response, TypedResponse<T>>(
-    requestTE,
-    checkResponseStatus,
+  const sequence = pipe(
+    request(init),
+    TE.chain<Errors, Response, TypedResponse<T>>(checkResponse),
+    TE.chain(toJson),
   );
-  const jsonResponse = TE.taskEither.chain(typedResponse, toJsonTE);
 
-  const result = await jsonResponse().then(createResponse(normalizer));
-
-  return result;
+  return sequence().then(
+    E.fold<Errors, T, string | NormalizedEntities<T>>(
+      R.prop('message'),
+      normalizer,
+    ),
+  );
 };
-
-export const checkResponseStatus = <T>(response: Response) => {
-  const checkedResponseE = E.tryCatch(
-    () => {
-      if (response.ok) return response as TypedResponse<T>;
-      throw new ResponseError(response);
-    },
-    reason => reason as ResponseError,
-  );
-  return TE.fromEither(checkedResponseE);
-};
-
-const createResponse = <T>(
-  normalizer: (data: T | { [key: string]: T[] }) => NormalizedEntities<T>,
-) =>
-  E.fold<RequestError, T, string | NormalizedEntities<T>>(
-    R.prop('message'),
-    normalizer,
-  );
