@@ -16,7 +16,7 @@ import ParseError from 'modules/common/errors/parseError';
 import { NormalizedEntities } from 'modules/common/schemas';
 import { identity } from 'fp-ts/lib/function';
 
-declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
+// declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
 
 export interface FetchDartsByIdParams {
   gameId: string;
@@ -43,9 +43,11 @@ export const fetchGreeting = TE.tryCatch<Error, { name: string }>(
 //   )
 //   .then(console.log);
 
-export const createRequestTE = <T>(init: RequestInit | string) =>
+type Errors = Error | RequestError | ResponseError | ParseError;
+
+export const createRequestTE = (init: RequestInfo | string) =>
   TE.tryCatch(
-    () => fetch<T>(init),
+    () => fetch(init),
     error => new RequestError(error as string),
   );
 
@@ -60,33 +62,40 @@ export const toJsonTE = <T>(res: TypedResponse<T>) =>
   );
 
 export const createRequest = async <T>(
-  requestTE: TE.TaskEither<RequestError, TypedResponse<T>>,
+  requestTE: TE.TaskEither<RequestError, Response>,
   normalizer: (data: T | { [key: string]: T[] }) => NormalizedEntities<T>,
 ) => {
-  const async2 = TE.taskEither.chain<Error, Response, TypedResponse<T>>(
+  const typedResponse = TE.taskEither.chain<Errors, Response, TypedResponse<T>>(
     requestTE,
     checkResponseStatus,
   );
+  const jsonResponse = TE.taskEither.chain(typedResponse, toJsonTE);
 
-  const async = await requestTE()
-    .then(checkResponseStatus)
-    .then(e => {
-      return E.flatten<Error, TypedResponse<T>>(e);
-    })
-    .then(async e => {
-      const json = await E.either.map(e, toJsonTE);
-      console.log(json);
-      return json;
-    });
-
-  console.log(async);
-
-  const async2 = TE.taskEither.chain(requestTE, toJsonTE);
-  const result2 = await async2().then(res => {
+  const result = await jsonResponse().then(res => {
     console.log(res);
     return createResponse(normalizer)(res);
   });
-  return result2;
+  return result;
+
+  // const async = await requestTE()
+  //   .then(checkResponseStatus)
+  //   .then(e => {
+  //     return E.flatten<Error, TypedResponse<T>>(e);
+  //   })
+  //   .then(async e => {
+  //     const json = await E.either.map(e, toJsonTE);
+  //     console.log(json);
+  //     return json;
+  //   });
+
+  // console.log(async);
+
+  // const async2 = TE.taskEither.chain(requestTE, toJsonTE);
+  // const result2 = await async2().then(res => {
+  //   console.log(res);
+  //   return createResponse(normalizer)(res);
+  // });
+  // return result2;
 
   // const async = TE.taskEither.chain(requestTE, toJsonTE);
   // const result = await async().then(res => {
@@ -96,21 +105,16 @@ export const createRequest = async <T>(
   // return result;
 };
 
-export const checkResponseStatus = <T>(
-  responseTE: TE.TaskEither<RequestError, TypedResponse<T>>,
-) =>
-  TE.flatten<Error, TypedResponse<T>>(
-    TE.fromEither(
-      E.tryCatch(
-        () =>
-          TE.taskEither.map(responseTE, response => {
-            if (response.ok) return response as TypedResponse<T>;
-            throw new ResponseError(response);
-          }),
-        reason => reason as ResponseError,
-      ),
-    ),
+export const checkResponseStatus = <T>(response: Response) => {
+  const checkedResponseE = E.tryCatch(
+    () => {
+      if (response.ok) return response as TypedResponse<T>;
+      throw new ResponseError(response);
+    },
+    reason => reason as ResponseError,
   );
+  return TE.fromEither(checkedResponseE);
+};
 
 const createResponse = <T>(
   normalizer: (data: T | { [key: string]: T[] }) => NormalizedEntities<T>,
