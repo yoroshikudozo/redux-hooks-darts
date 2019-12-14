@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-import { TypedResponse } from 'modules/common/utils/request';
+import { TypedResponse } from 'modules/common/utils/request-first';
 
 import ResponseError from 'modules/common/errors/responseError';
 import RequestError from 'modules/common/errors/requestError';

@@ -5,6 +5,7 @@ import { map, mergeMap, tap, ignoreElements, takeUntil } from 'rxjs/operators';
 import * as R from 'ramda';
 
 import { AppState } from 'modules/reducers';
+import http from 'modules/common/utils/request-first';
 
 export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
   action$.pipe(

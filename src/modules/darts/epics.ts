@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
 
 import API from 'consts/endpoints';
-import http from 'modules/common/utils/request';
+import http from 'modules/common/utils/request-first';
 import {
   FetchDartsParams,
   FetchDartsResponse,

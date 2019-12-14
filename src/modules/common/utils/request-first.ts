@@ -13,24 +13,23 @@ export interface TypedResponse<T = any> extends Response {
 
 declare function fetch<T>(...args: any): Promise<TypedResponse<T>>;
 
-const handleParseError = function(error: Error) {
+export function handleParseError(error: Error) {
   throw new ParseError(error);
-};
+}
 
-const handleResponseErrors = function(response: Response) {
-  if (!response.ok) {
-    throw new ResponseError(response);
-  }
+export function toJson<T>(response: TypedResponse<T>) {
+  return response.json().catch(handleParseError);
+}
 
-  return response;
-};
+export function handleResponse<T>(response: TypedResponse<T>) {
+  if (response.ok) return response;
+  throw new ResponseError(response);
+}
 
-const toJson = (response: Response) => response.json().catch(handleParseError);
-
-const http = <T = any>(input: RequestInfo, init?: RequestInit): Promise<T> => {
-  return fetch(input, init)
-    .then(handleResponseErrors)
-    .then(toJson);
-};
+function http<T>(input: RequestInfo, init?: RequestInit) {
+  return fetch<T>(input, init)
+    .then(handleResponse)
+    .catch(error => error);
+}
 
 export default http;
