@@ -58,3 +58,7 @@ export const http = (client: typeof fetch) => <T>(
 
   return sequence().then(createResponse());
 };
+
+const httpClient = http(fetch);
+
+export default httpClient;
