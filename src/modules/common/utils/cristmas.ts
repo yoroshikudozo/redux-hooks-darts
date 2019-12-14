@@ -47,10 +47,11 @@ const createResponse = <T>() =>
   E.fold<Errors, T, string | T>(R.prop('message'), identity);
 
 export const http = (client: typeof fetch) => <T>(
-  init: RequestInfo | string,
+  input: RequestInfo,
+  init?: RequestInit,
 ) => {
   const sequence = pipe(
-    request(client(init)),
+    request(client(input, init)),
     TE.chain<Errors, Response, TypedResponse<T>>(checkResponse),
     TE.chain(toJson),
   );
