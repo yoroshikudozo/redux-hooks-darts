@@ -1,7 +1,12 @@
 import { AsyncActionCreators, AnyAction, ActionCreator } from 'typescript-fsa';
-import { ofAction } from 'typescript-fsa-redux-observable';
 import { Epic } from 'redux-observable';
-import { map, mergeMap, tap, ignoreElements, takeUntil } from 'rxjs/operators';
+import {
+  mergeMap,
+  tap,
+  ignoreElements,
+  takeUntil,
+  filter,
+} from 'rxjs/operators';
 import * as R from 'ramda';
 
 import { AppState } from 'modules/reducers';
@@ -25,7 +30,7 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
   cancelAction: ActionCreator<Params>;
 }): Epic => action$ =>
   action$.pipe(
-    ofAction(asyncActions.started),
+    filter(action => asyncActions.started.match(action)),
     mergeMap(action =>
       request(action.payload)
         .then(operator)
@@ -42,15 +47,34 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
           }),
         ),
     ),
-    takeUntil(action$.pipe(ofAction(cancelAction))),
+    takeUntil(action$.pipe(filter(action => cancelAction.match(action)))),
   );
 
-export const actionTransformEpicFactory = <Params, Result>(
-  flagmentAction: ActionCreator<Params>,
-  resultAction: ActionCreator<Result>,
-  operator: (params: Params, state: AppState) => Result,
-): Epic<AnyAction, AnyAction, AppState> => (action$, state$) =>
+export const epicFactory2 = <Params, Result, Data = Result, ErrorType = Error>({
+  asyncActions,
+  cancelAction,
+}: {
+  asyncActions: AsyncActionCreators<Params, Data, ErrorType>;
+  request: (params: Params) => Promise<Result>;
+  cancelAction: ActionCreator<Params>;
+}): Epic => action$ =>
   action$.pipe(
-    ofAction(flagmentAction),
-    map(action => resultAction(operator(action.payload, state$.value))),
+    filter(action => asyncActions.started.match(action)),
+    mergeMap(action =>
+      http<Result>(action.payload)
+        .then(action.meta.operator as (result: Result) => Data)
+        .then(result =>
+          asyncActions.done({
+            result: result,
+            params: action.payload,
+          }),
+        )
+        .catch(error =>
+          asyncActions.failed({
+            params: action.payload,
+            error,
+          }),
+        ),
+    ),
+    takeUntil(action$.pipe(filter(action => cancelAction.match(action)))),
   );

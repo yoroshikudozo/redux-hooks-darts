@@ -19,7 +19,7 @@ export const fetchUserAsync = usersActionCreator.async<
 >('FETCH');
 
 export const fetchPlayersAsync = usersActionCreator.async<
-  undefined,
+  void,
   NormalizedUsers,
   Error
 >('PLAYERS/FETCH');
@@ -32,9 +32,7 @@ export const fetchUsersCancel = usersActionCreator<FetchUserParams>(
   'FETCH_LIST_CANCEL',
 );
 
-export const fetchPlayersCancel = usersActionCreator<undefined>(
-  'PLAYERS/FETCH_CANCEL',
-);
+export const fetchPlayersCancel = usersActionCreator('PLAYERS/FETCH_CANCEL');
 
 export const createUserAsync = usersActionCreator.async<
   CreateUserData,

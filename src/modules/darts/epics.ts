@@ -8,39 +8,27 @@ import {
   Dart,
   CreateDartData,
   FetchDartParams,
+  NormalizedDarts,
+  FetchDartsByIdParams,
 } from 'modules/darts/types';
 import { epicFactory } from 'modules/common/utils/rx';
 import actions, {
   fetchDartsCancel,
   createDartCancel,
 } from 'modules/darts/actions';
-import {
-  NormalizedDarts,
-  dartsNormalize,
-  dartNormalize,
-} from 'modules/darts/schemas';
+import { dartsNormalize } from 'modules/darts/schemas';
 
-const fetchDartsRequest = ({ id }: FetchDartsParams) =>
+export const fetchDartsRequest = ({ id }: FetchDartsParams) =>
   http<FetchDartsResponse>(`${API.DARTS}/games/${id}`);
 
-const fetchDartRequest = ({ id }: FetchDartParams) =>
+export const createfetchDartsByGameInit = ({ gameId }: FetchDartsByIdParams) =>
+  `${API.DARTS}/games/${gameId}`;
+
+export const fetchDartRequest = ({ id }: FetchDartParams) =>
   http<Dart>(`${API.DARTS}/${id}`);
 
-const createDartRequest = (data: CreateDartData) =>
+export const createDartRequest = (data: CreateDartData) =>
   http<Dart>(API.DARTS, { method: 'post', body: JSON.stringify(data) });
-
-// export const fetchDartsComplexEpic = complexEpicFactory<
-//   FetchDartsParams,
-//   FetchDartsResponse,
-//   NormalizedSchema<{ [key: string]: Dart }, string[]>
-// >({
-//   beforeAsync: actions.fetchDartsAsync,
-//   asyncActions: actions.fetchDartsAsync,
-//   request: fetchDartsRequest,
-//   afterAsync: actions.fetchDartsAsync,
-//   operator: dartsNormalize,
-//   cancelAction: fetchDartsCancel,
-// });
 
 export const fetchDartsEpic = epicFactory<
   FetchDartsParams,
@@ -60,7 +48,7 @@ export const fetchDartEpic = epicFactory<
 >({
   asyncActions: actions.fetchDartAsync,
   request: fetchDartRequest,
-  operator: dartNormalize,
+  operator: dartsNormalize,
   cancelAction: actions.fetchDartCancel,
 });
 
@@ -71,7 +59,7 @@ export const createDartEpic = epicFactory<
 >({
   asyncActions: actions.createDartAsync,
   request: createDartRequest,
-  operator: dartNormalize,
+  operator: dartsNormalize,
   cancelAction: createDartCancel,
 });
 

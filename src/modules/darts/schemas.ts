@@ -1,15 +1,16 @@
 import { schema, normalize } from 'normalizr';
 
-import { Dart, FetchDartsResponse } from 'modules/darts/types';
-import { NormalizedEntities } from 'modules/common/schemas';
+import { Dart, DartsList, NormalizedDarts } from 'modules/darts/types';
 
 export const dartSchema = new schema.Entity('darts');
 export const dartListSchema = [dartSchema];
 
-export type NormalizedDarts = NormalizedEntities<Dart>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isDartsList(data: any): data is DartsList {
+  return data.darts;
+}
 
-export const dartNormalize = (data: Dart): NormalizedDarts =>
-  normalize({ darts: [data] }, { darts: dartListSchema });
-
-export const dartsNormalize = (data: FetchDartsResponse): NormalizedDarts =>
-  normalize(data, { darts: dartListSchema });
+export const dartsNormalize = (data: Dart | DartsList): NormalizedDarts =>
+  isDartsList(data)
+    ? normalize(data, { darts: dartListSchema })
+    : normalize({ darts: [data] }, { darts: dartListSchema });

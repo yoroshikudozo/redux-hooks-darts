@@ -2,6 +2,10 @@ import { combineReducers, AnyAction } from 'redux';
 import * as R from 'ramda';
 import { Auth } from 'modules/auth/types';
 import { getQueryString as qs } from 'modules/common/utils/qs';
+import { Dart } from 'modules/darts/types';
+import { User } from 'modules/users/types';
+import { Game } from 'modules/games/types';
+import { Round } from 'modules/rounds/types';
 
 type Keys = 'darts' | 'rounds' | 'games' | 'users';
 
@@ -10,8 +14,13 @@ interface Rule {
 }
 
 export interface AppState {
-  entities: { [keyof in Keys]: any };
-  result: { [keyof in Keys]: any };
+  entities: {
+    darts?: { [key: string]: Dart };
+    rounds?: { [key: string]: Round };
+    games?: { [key: string]: Game };
+    users?: { [key: string]: User };
+  };
+  result: { [keyof in Keys]?: { [key: string]: string[] } };
   rules: Rule;
   auth: Auth;
 }

@@ -7,7 +7,7 @@ describe('schemas', () => {
   describe('dartSchema', () => {
     it('returns normalized entity', async () => {
       const data = dart1;
-      const normalizedData = schemas.dartNormalize(data);
+      const normalizedData = schemas.dartsNormalize(data);
 
       expect(normalizedData).toEqual({
         entities: { darts: { '1': dart1 } },

@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import API from 'consts/endpoints';
 import http from 'modules/common/utils/request-first';
 import {
@@ -13,7 +15,15 @@ import {
   usersNormalize,
   userNormalize,
 } from 'modules/users/schemas';
-import { combineEpics } from 'redux-observable';
+import { combineEpics, Epic } from 'redux-observable';
+import actionCreatorFactory from 'typescript-fsa';
+import { AppState } from 'modules/reducers';
+import { ofAction } from 'typescript-fsa-redux-observable';
+import { mergeMap, takeUntil, filter } from 'rxjs/operators';
+import { NormalizedEntities } from 'modules/common/schemas';
+import { dartsNormalize } from 'modules/darts/schemas';
+import { Dart, FetchDartParams } from 'modules/darts/types';
+import { createDartRequest } from 'modules/darts/epics';
 
 const fetchUsersRequest = ({ id }: FetchUserParams) =>
   http<FetchUsersResponse>(`${API.USERS}/${id}`);
@@ -27,7 +37,7 @@ const fetchPlayersRequest = async () => {
   return a;
 };
 
-const createUsersRequest = (data: CreateUserData) =>
+const createUserRequest = (data: CreateUserData) =>
   http<User>(API.USERS, { method: 'post', body: JSON.stringify(data) });
 
 export const fetchUserEpic = epicFactory<
@@ -42,7 +52,7 @@ export const fetchUserEpic = epicFactory<
 });
 
 export const fetchPlayersEpic = epicFactory<
-  undefined,
+  void,
   FetchUsersResponse,
   NormalizedUsers
 >({
@@ -58,7 +68,7 @@ export const createUserEpic = epicFactory<
   NormalizedUsers
 >({
   asyncActions: actions.createUserAsync,
-  request: createUsersRequest,
+  request: createUserRequest,
   operator: userNormalize,
   cancelAction: actions.createUserCancel,
 });
@@ -77,3 +87,66 @@ const usersEpic = combineEpics(
 );
 
 export default usersEpic;
+
+export const fetchDartRequest = ({ id }: FetchDartParams, state: AppState) =>
+  http<Dart>(`${API.DARTS}/${id}`);
+
+const createEndpoint = (domain: string) => <Entity>(
+  normalizer: (data: any) => NormalizedEntities<Entity>,
+) => (type: string) => <Params extends any>(
+  request: (params: Params, state: AppState) => Promise<Entity>,
+) => {
+  const actionCreator = actionCreatorFactory(R.toUpper(domain));
+
+  const asyncActions = actionCreator.async<
+    Params,
+    NormalizedEntities<Entity>,
+    Error
+  >(R.toUpper(type));
+
+  const cancelAction = actionCreator<Params>(`${R.toUpper(type)}_CANCEL`);
+
+  const epic: Epic = (action$, state$) =>
+    action$.pipe(
+      filter(action => asyncActions.started.match(action)),
+      mergeMap(action =>
+        request(action.payload, state$.value)
+          .then(normalizer)
+          .then(result =>
+            asyncActions.done({
+              result: result,
+              params: action.payload,
+            }),
+          )
+          .catch(error =>
+            asyncActions.failed({
+              params: action.payload,
+              error,
+            }),
+          ),
+      ),
+      takeUntil(action$.pipe(ofAction(cancelAction))),
+    );
+
+  return Object.assign(asyncActions.started, {
+    actions: {
+      started: asyncActions.started,
+      done: asyncActions.done,
+      failed: asyncActions.failed,
+      cancel: cancelAction,
+    },
+    epic,
+  });
+};
+
+const dartsEndpoint = createEndpoint('darts');
+const dartsDomain = dartsEndpoint(dartsNormalize);
+
+const fetchDartsType = dartsDomain('fetch');
+const createDartsType = dartsDomain('create');
+
+const fetchDarts = fetchDartsType(fetchDartRequest);
+const createDart = createDartsType(createDartRequest);
+
+const a = fetchDarts({ id: '1' });
+console.log(a);

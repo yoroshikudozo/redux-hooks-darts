@@ -1,3 +1,5 @@
+import { NormalizedEntities } from 'modules/common/schemas';
+
 export interface Entity {
   id: string;
   // loading: boolean;
@@ -13,7 +15,7 @@ export interface OutOption {
   isCompleted?: boolean;
 }
 
-export interface Dart {
+export interface Dart extends Entity {
   area: Area;
   dartType: DartType;
   date: string;
@@ -27,8 +29,6 @@ export interface Dart {
   scoreId: string;
   value: number;
 }
-
-export type DartEntity = Dart & Entity;
 
 export interface DartsResponse {
   darts: Dart[];
@@ -54,23 +54,17 @@ export interface FetchDartParams {
   id: string;
 }
 
-export interface FetchDartsResponse {
+export interface FetchDartsByIdParams {
+  gameId: string;
+}
+
+export interface DartsList {
   darts: Dart[];
 }
 
-export interface FetchDartsResult {
-  entities: {
-    [key: string]: Dart;
-  };
-  result: string[];
-}
+export type FetchDartsResponse = DartsList;
 
-export interface FetchDartResult {
-  entities: {
-    [key: string]: Dart;
-  };
-  result: string;
-}
+export type NormalizedDarts = NormalizedEntities<Dart>;
 
 export interface CreateDartsParams {
   value: number;

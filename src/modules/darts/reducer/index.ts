@@ -1,11 +1,11 @@
-import { DartEntity } from 'modules/darts/types';
+import { Dart } from 'modules/darts/types';
 import { combineReducers } from 'redux';
 import byId from 'modules/darts/reducer/byId';
 import allIds from 'modules/darts/reducer/allIds';
 
 export interface DartsState {
   entities: {
-    [key: string]: DartEntity;
+    [key: string]: Dart;
   };
   result: string[];
   isLoading: boolean;

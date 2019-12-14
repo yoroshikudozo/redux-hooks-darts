@@ -6,9 +6,9 @@ import {
   FetchDartsParams,
   CreateDartData,
   FetchDartParams,
+  NormalizedDarts,
 } from 'modules/darts/types';
 import { AppState } from 'modules/reducers';
-import { NormalizedDarts } from 'modules/darts/schemas';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
