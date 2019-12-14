@@ -1,12 +1,14 @@
 import fetchMock from 'fetch-mock';
+import CONSTS from 'consts';
 import { initDartsMock } from 'modules/darts/mock';
 
 import {
   createfetchDartsByGameRequest,
   http,
 } from 'modules/common/utils/cristmas';
+
 import { dartsNormalize } from 'modules/darts/schemas';
-import dart1 from '../mock/resources/dart1';
+import dart1 from 'modules/darts/mock/resources/dart1';
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
 
@@ -17,21 +19,25 @@ describe('cristmas', () => {
     it('returns ParseError', async () => {
       const init = createfetchDartsByGameRequest({ gameId: '3' });
       const response = await http(init, dartsNormalize);
-      expect(response).toEqual('不正なJSONです。');
+      expect(response).toEqual(CONSTS.ERRORS.PARSE);
     });
 
     it('returns RequestError', async () => {
-      const message =
-        'ネットワークエラーです。しばらくしてから再度お試しください。';
       const init = createfetchDartsByGameRequest({ gameId: '4' });
       const response = await http(init, dartsNormalize);
-      expect(response).toEqual(message);
+      expect(response).toEqual(CONSTS.ERRORS.NETWORK);
     });
 
     it('returns Not Found', async () => {
       const init = createfetchDartsByGameRequest({ gameId: '2' });
       const response = await http(init, dartsNormalize);
-      expect(response).toEqual('データが見つかりませんでした。');
+      expect(response).toEqual(CONSTS.ERRORS['404']);
+    });
+
+    it('returns Forbidden Error', async () => {
+      const init = createfetchDartsByGameRequest({ gameId: '5' });
+      const response = await http(init, dartsNormalize);
+      expect(response).toEqual(CONSTS.ERRORS['403']);
     });
 
     it('returns Normalized Entities', async () => {
