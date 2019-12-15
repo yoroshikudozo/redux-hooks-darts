@@ -9,7 +9,7 @@ import dart2 from './resources/dart2';
 import dart3 from './resources/dart3';
 import { sleep } from 'modules/common/testHelpers';
 
-const endpoint = API.DARTS;
+const endpoint = `${API.ROOT}${API.DARTS}`;
 
 console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss zz'));
 

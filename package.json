@@ -46,7 +46,6 @@
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",
     "normalizr": "^3.4.0",
-    "npm": "^6.12.0",
     "prettier": "^1.17.1",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
@@ -65,7 +64,8 @@
     "typescript": "3.4.5",
     "typescript-fsa": "^3.0.0-beta-2",
     "typescript-fsa-reducers": "^1.2.1",
-    "typescript-fsa-redux-observable": "https://github.com/m0a/typescript-fsa-redux-observable"
+    "typescript-fsa-redux-observable": "https://github.com/m0a/typescript-fsa-redux-observable",
+    "wretch": "^1.6.0"
   },
   "browserslist": {
     "production": [

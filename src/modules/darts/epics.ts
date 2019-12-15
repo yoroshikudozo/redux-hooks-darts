@@ -22,7 +22,7 @@ export const fetchDartsRequest = ({ id }: FetchDartsParams) =>
   http<FetchDartsResponse>(`${API.DARTS}/games/${id}`);
 
 export const createfetchDartsByGameInit = ({ gameId }: FetchDartsByIdParams) =>
-  `${API.DARTS}/games/${gameId}`;
+  `${API.ROOT}${API.DARTS}/games/${gameId}`;
 
 export const fetchDartRequest = ({ id }: FetchDartParams) =>
   http<Dart>(`${API.DARTS}/${id}`);

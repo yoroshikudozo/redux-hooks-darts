@@ -58,6 +58,10 @@ export interface FetchDartsByIdParams {
   gameId: string;
 }
 
+export interface FetchDartsByGameIdParams {
+  gameId: string;
+}
+
 export interface DartsList {
   darts: Dart[];
 }
