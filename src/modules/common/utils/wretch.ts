@@ -1,9 +1,8 @@
 import * as wretch from 'wretch';
 
 import CONSTS from 'consts';
-import { FetchDartsByIdParams } from 'modules/darts/types';
 
-export function http(url?: string, opts?: wretch.WretcherOptions) {
+function http(url?: string, opts?: wretch.WretcherOptions) {
   return wretch
     .default(url ? `${CONSTS.API.ROOT}${url}` : CONSTS.API.ROOT)
     .errorType('json')
@@ -25,19 +24,14 @@ export function http(url?: string, opts?: wretch.WretcherOptions) {
 
 function createDefaultErrorResponse({ response }: wretch.WretcherError) {
   console.log(response);
-  return `${response.status} ${response.statusText}`;
+  throw new Error(`${response.status} ${response.statusText}`);
 }
 
 function createErrorResponse({ response }: wretch.WretcherError) {
   console.log(response);
-  return CONSTS.ERRORS[String(response.status) as keyof typeof CONSTS.ERRORS];
+  throw new Error(
+    CONSTS.ERRORS[String(response.status) as keyof typeof CONSTS.ERRORS],
+  );
 }
 
-export const dartsRequest = ({ gameId }: FetchDartsByIdParams) =>
-  http(`${CONSTS.API.DARTS}/games/${gameId}`)
-    .get()
-    .json()
-    .catch(error => {
-      console.log(error.message);
-      return CONSTS.ERRORS.PARSE;
-    });
+export default http;

@@ -1,53 +1,70 @@
 import { combineEpics } from 'redux-observable';
 
+import CONSTS from 'consts';
 import API from 'consts/endpoints';
-import http from 'modules/common/utils/request-first';
+import http from 'modules/common/utils/wretch';
 import {
-  FetchDartsParams,
+  FetchDartParams,
   FetchDartsResponse,
   Dart,
   CreateDartData,
-  FetchDartParams,
-  NormalizedDarts,
-  FetchDartsByIdParams,
+  DartsList,
+  FetchDartsByGameParams,
 } from 'modules/darts/types';
 import { epicFactory } from 'modules/common/utils/rx';
-import actions, {
-  fetchDartsCancel,
-  createDartCancel,
-} from 'modules/darts/actions';
+import actions from 'modules/darts/actions';
 import { dartsNormalize } from 'modules/darts/schemas';
+import { NormalizedEntities } from 'modules/common/schemas';
 
-export const fetchDartsRequest = ({ id }: FetchDartsParams) =>
-  http<FetchDartsResponse>(`${API.DARTS}/games/${id}`);
+const endpoint = `${API.DARTS}`;
 
-export const createfetchDartsByGameInit = ({ gameId }: FetchDartsByIdParams) =>
-  `${API.ROOT}${API.DARTS}/games/${gameId}`;
+export const fetchDartsByGame = ({ gameId }: FetchDartsByGameParams) =>
+  http(`${endpoint}/games/${gameId}`)
+    .get()
+    .json<DartsList>()
+    .catch(error => {
+      console.log(error.message);
+      throw new Error(CONSTS.ERRORS.PARSE);
+    });
 
-export const fetchDartRequest = ({ id }: FetchDartParams) =>
-  http<Dart>(`${API.DARTS}/${id}`);
+export const fetchDart = ({ id }: FetchDartParams) =>
+  http(`${endpoint}/${id}`)
+    .get()
+    .json<Dart>()
+    .catch(error => {
+      console.log(error.message);
+      throw new Error(CONSTS.ERRORS.PARSE);
+    });
 
-export const createDartRequest = (data: CreateDartData) =>
-  http<Dart>(API.DARTS, { method: 'post', body: JSON.stringify(data) });
+export const createDart = (data: CreateDartData) =>
+  http(`${endpoint}`, {
+    body: JSON.stringify(data),
+  })
+    .post()
+    .json<Dart>()
+    .catch(error => {
+      console.log(error.message);
+      throw new Error(CONSTS.ERRORS.PARSE);
+    });
 
-export const fetchDartsEpic = epicFactory<
-  FetchDartsParams,
+export const fetchDartsByGameEpic = epicFactory<
+  FetchDartsByGameParams,
   FetchDartsResponse,
-  NormalizedDarts
+  NormalizedEntities<Dart>
 >({
-  asyncActions: actions.fetchDartsAsync,
-  request: fetchDartsRequest,
+  asyncActions: actions.fetchDartsByGameAsync,
+  request: fetchDartsByGame,
   operator: dartsNormalize,
-  cancelAction: fetchDartsCancel,
+  cancelAction: actions.fetchDartsByGameCancel,
 });
 
 export const fetchDartEpic = epicFactory<
   FetchDartParams,
   Dart,
-  NormalizedDarts
+  NormalizedEntities<Dart>
 >({
   asyncActions: actions.fetchDartAsync,
-  request: fetchDartRequest,
+  request: fetchDart,
   operator: dartsNormalize,
   cancelAction: actions.fetchDartCancel,
 });
@@ -55,12 +72,12 @@ export const fetchDartEpic = epicFactory<
 export const createDartEpic = epicFactory<
   CreateDartData,
   Dart,
-  NormalizedDarts
+  NormalizedEntities<Dart>
 >({
   asyncActions: actions.createDartAsync,
-  request: createDartRequest,
+  request: createDart,
   operator: dartsNormalize,
-  cancelAction: createDartCancel,
+  cancelAction: actions.createDartCancel,
 });
 
 // export const createDartDataEpic = actionTransformEpicFactory(
@@ -71,7 +88,7 @@ export const createDartEpic = epicFactory<
 
 const dartsEpic = combineEpics(
   fetchDartEpic,
-  fetchDartsEpic,
+  fetchDartsByGameEpic,
   createDartEpic,
   // createDartDataEpic,
 );

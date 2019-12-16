@@ -5,7 +5,7 @@ import actions from 'modules/darts/actions';
 const initialState: any = { result: {} };
 
 const allIds = reducerWithInitialState(initialState).case(
-  actions.fetchDartsAsync.done,
+  actions.fetchDartsByGameAsync.done,
   (state, action) => ({
     result: {
       ...state.result,

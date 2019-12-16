@@ -14,6 +14,8 @@ import dartsEpic from 'modules/darts/epics';
 import { loggingEpic } from 'modules/common/utils/rx';
 import ParseError from 'modules/common/errors/parseError';
 import ResponseError from 'modules/common/errors/responseError';
+import dart2 from 'modules/darts/mock/resources/dart2';
+import dart3 from 'modules/darts/mock/resources/dart3';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
@@ -22,32 +24,32 @@ const rootEpic = combineEpics(dartsEpic, loggingEpic);
 initDartsMock(fetchMock);
 
 describe('darts epics', () => {
-  describe('fetchDarts epic', () => {
+  describe('fetchDartsByGame epic', () => {
     it('fetches darts correctly', async () => {
       const store = mockStore({});
       epicMiddleware.run(rootEpic);
       const expectedActions = [
         {
           type: 'DARTS/LIST/FETCH_STARTED',
-          payload: { id: '1' },
+          payload: { gameId: '1' },
         },
         {
           type: 'DARTS/LIST/FETCH_DONE',
           payload: {
-            params: { id: '1' },
+            params: { gameId: '1' },
             result: {
               entities: {
-                darts: { 1: dart1 },
+                darts: { 1: dart1, 2: dart2, 3: dart3 },
               },
               result: {
-                darts: ['1'],
+                darts: ['1', '2', '3'],
               },
             },
           },
         },
       ];
 
-      store.dispatch(actions.fetchDartsAsync.started({ id: '1' }));
+      store.dispatch(actions.fetchDartsByGameAsync.started({ gameId: '1' }));
 
       await sleep(100).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -60,16 +62,16 @@ describe('darts epics', () => {
       const expectedActions = [
         {
           type: 'DARTS/LIST/FETCH_STARTED',
-          payload: { id: '1' },
+          payload: { gameId: '1' },
         },
         {
           type: 'DARTS/LIST/FETCH_CANCEL',
-          payload: { id: '1' },
+          payload: { gameId: '1' },
         },
       ];
 
-      store.dispatch(actions.fetchDartsAsync.started({ id: '1' }));
-      store.dispatch(actions.fetchDartsCancel({ id: '1' }));
+      store.dispatch(actions.fetchDartsByGameAsync.started({ gameId: '1' }));
+      store.dispatch(actions.fetchDartsByGameCancel({ gameId: '1' }));
 
       await sleep(100).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -84,7 +86,7 @@ describe('darts epics', () => {
         {
           type: 'DARTS/LIST/FETCH_STARTED',
           payload: {
-            id: '2',
+            gameId: '2',
           },
         },
         {
@@ -92,7 +94,7 @@ describe('darts epics', () => {
           error: true,
           payload: {
             params: {
-              id: '2',
+              gameId: '2',
             },
             error: new ResponseError(({
               url: 'asdf',
@@ -103,7 +105,9 @@ describe('darts epics', () => {
         },
       ];
 
-      store.dispatch<any>(actions.fetchDartsAsync.started({ id: '2' }));
+      store.dispatch<any>(
+        actions.fetchDartsByGameAsync.started({ gameId: '2' }),
+      );
 
       await sleep(100).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
@@ -118,7 +122,7 @@ describe('darts epics', () => {
         {
           type: 'DARTS/LIST/FETCH_STARTED',
           payload: {
-            id: '3',
+            gameId: '3',
           },
         },
         {
@@ -126,14 +130,16 @@ describe('darts epics', () => {
           error: true,
           payload: {
             params: {
-              id: '3',
+              gameId: '3',
             },
             error: new ParseError(new Error()),
           },
         },
       ];
 
-      store.dispatch<any>(actions.fetchDartsAsync.started({ id: '3' }));
+      store.dispatch<any>(
+        actions.fetchDartsByGameAsync.started({ gameId: '3' }),
+      );
 
       await sleep(100).then(() => {
         expect(store.getActions()).toEqual(expectedActions);

@@ -6,25 +6,27 @@ import {
   FetchDartsParams,
   CreateDartData,
   FetchDartParams,
-  NormalizedDarts,
+  Dart,
+  FetchDartsByGameParams,
 } from 'modules/darts/types';
 import { AppState } from 'modules/reducers';
+import { NormalizedEntities } from 'modules/common/schemas';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 
-export const fetchDartsAsync = dartsActionCreator.async<
-  FetchDartsParams,
-  NormalizedDarts,
+export const fetchDartsByGameAsync = dartsActionCreator.async<
+  FetchDartsByGameParams,
+  NormalizedEntities<Dart>,
   Error
 >('LIST/FETCH');
 
-export const fetchDartsCancel = dartsActionCreator<FetchDartsParams>(
-  'LIST/FETCH_CANCEL',
-);
+export const fetchDartsByGameCancel = dartsActionCreator<
+  FetchDartsByGameParams
+>('LIST/FETCH_CANCEL');
 
 export const fetchDartAsync = dartsActionCreator.async<
   FetchDartParams,
-  NormalizedDarts,
+  NormalizedEntities<Dart>,
   Error
 >('FETCH');
 
@@ -34,7 +36,7 @@ export const fetchDartCancel = dartsActionCreator<FetchDartParams>(
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedDarts,
+  NormalizedEntities<Dart>,
   Error
 >('CREATE');
 
@@ -62,9 +64,9 @@ export const fetchDart = (
 };
 
 export const fetchDarts = (
-  id: string,
+  gameId: string,
 ): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
-  dispatch(fetchDartsAsync.started({ id }));
+  dispatch(fetchDartsByGameAsync.started({ gameId }));
 };
 
 export const createDart = (
@@ -80,8 +82,8 @@ export const createDart = (
 
 const actions = {
   fetchDarts,
-  fetchDartsAsync,
-  fetchDartsCancel,
+  fetchDartsByGameAsync,
+  fetchDartsByGameCancel,
   fetchDart,
   fetchDartAsync,
   fetchDartCancel,

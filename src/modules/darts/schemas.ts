@@ -1,6 +1,7 @@
 import { schema, normalize } from 'normalizr';
 
-import { Dart, DartsList, NormalizedDarts } from 'modules/darts/types';
+import { Dart, DartsList } from 'modules/darts/types';
+import { NormalizedEntities } from 'modules/common/schemas';
 
 export const dartSchema = new schema.Entity('darts');
 export const dartListSchema = [dartSchema];
@@ -10,7 +11,9 @@ function isDartsList(data: any): data is DartsList {
   return data.darts;
 }
 
-export const dartsNormalize = (data: Dart | DartsList): NormalizedDarts =>
+export const dartsNormalize = (
+  data: Dart | DartsList,
+): NormalizedEntities<Dart> =>
   isDartsList(data)
     ? normalize(data, { darts: dartListSchema })
     : normalize({ darts: [data] }, { darts: dartListSchema });

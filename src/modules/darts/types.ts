@@ -54,11 +54,7 @@ export interface FetchDartParams {
   id: string;
 }
 
-export interface FetchDartsByIdParams {
-  gameId: string;
-}
-
-export interface FetchDartsByGameIdParams {
+export interface FetchDartsByGameParams {
   gameId: string;
 }
 
@@ -67,8 +63,6 @@ export interface DartsList {
 }
 
 export type FetchDartsResponse = DartsList;
-
-export type NormalizedDarts = NormalizedEntities<Dart>;
 
 export interface CreateDartsParams {
   value: number;

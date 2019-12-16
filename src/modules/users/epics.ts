@@ -23,7 +23,6 @@ import { mergeMap, takeUntil, filter } from 'rxjs/operators';
 import { NormalizedEntities } from 'modules/common/schemas';
 import { dartsNormalize } from 'modules/darts/schemas';
 import { Dart, FetchDartParams } from 'modules/darts/types';
-import { createDartRequest } from 'modules/darts/epics';
 
 const fetchUsersRequest = ({ id }: FetchUserParams) =>
   http<FetchUsersResponse>(`${API.USERS}/${id}`);
@@ -111,7 +110,9 @@ const createEndpoint = (domain: string) => <Entity>(
       filter(action => asyncActions.started.match(action)),
       mergeMap(action =>
         request(action.payload, state$.value)
-          .then(normalizer)
+          .then(data =>
+            R.isEmpty(data) ? { entities: {}, result: [] } : normalizer(data),
+          )
           .then(result =>
             asyncActions.done({
               result: result,
@@ -146,7 +147,6 @@ const fetchDartsType = dartsDomain('fetch');
 const createDartsType = dartsDomain('create');
 
 const fetchDarts = fetchDartsType(fetchDartRequest);
-const createDart = createDartsType(createDartRequest);
 
 const a = fetchDarts({ id: '1' });
 console.log(a);

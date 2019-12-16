@@ -6,14 +6,10 @@ export const getUserEntities = createSelector(
   entities => entities.users || {},
 );
 
-export const getUserIds = createSelector(
-  [getResult],
-  result => result.users,
-);
+export const getUserIds = createSelector([getResult], result => result.users);
 
-export const getAllUserIds = createSelector(
-  [getUserIds],
-  users => (users ? users.players : []),
+export const getAllUserIds = createSelector([getUserIds], users =>
+  users ? users.players : [],
 );
 
 export const getPlayers = createSelector(

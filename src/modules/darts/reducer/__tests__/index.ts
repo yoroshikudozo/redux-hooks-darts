@@ -1,6 +1,6 @@
 import byId from 'modules/darts/reducer/byId';
 import allIds from 'modules/darts/reducer/allIds';
-import { fetchDartsAsync } from 'modules/darts/actions';
+import { fetchDartsByGameAsync } from 'modules/darts/actions';
 import { dartsNormalize } from 'modules/darts/schemas';
 
 import dart1 from 'modules/darts/mock/resources/dart1';
@@ -12,8 +12,8 @@ describe('dartsReducer', () => {
     });
 
     it('should handle fetchDartsAsync.done', async () => {
-      const action = fetchDartsAsync.done({
-        params: { id: '1' },
+      const action = fetchDartsByGameAsync.done({
+        params: { gameId: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
       expect(byId({ entities: {} }, action)).toEqual({
@@ -28,8 +28,8 @@ describe('dartsReducer', () => {
     });
 
     it('should handle fetchDartsAsync.done', async () => {
-      const action = fetchDartsAsync.done({
-        params: { id: '1' },
+      const action = fetchDartsByGameAsync.done({
+        params: { gameId: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
       expect(allIds({ result: {} }, action)).toEqual({
