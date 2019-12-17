@@ -19,7 +19,7 @@ import { combineEpics, Epic } from 'redux-observable';
 import actionCreatorFactory from 'typescript-fsa';
 import { AppState } from 'modules/reducers';
 import { ofAction } from 'typescript-fsa-redux-observable';
-import { mergeMap, takeUntil, filter } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { NormalizedEntities } from 'modules/common/schemas';
 import { dartsNormalize } from 'modules/darts/schemas';
 import { Dart, FetchDartParams } from 'modules/darts/types';

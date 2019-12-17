@@ -1,5 +1,3 @@
-import { NormalizedEntities } from 'modules/common/schemas';
-
 export interface Entity {
   id: string;
   // loading: boolean;
