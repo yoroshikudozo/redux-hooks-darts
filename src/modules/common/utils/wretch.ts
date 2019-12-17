@@ -1,6 +1,8 @@
 import * as wretch from 'wretch';
-
 import CONSTS from 'consts';
+import RequestError from 'modules/common/errors/requestError';
+import ResponseError from 'modules/common/errors/responseError';
+import ParseError from 'modules/common/errors/parseError';
 
 function http(url?: string, opts?: wretch.WretcherOptions) {
   return wretch
@@ -11,27 +13,25 @@ function http(url?: string, opts?: wretch.WretcherOptions) {
     .options(opts ? opts : {})
     .catcher('__fromFetch', err => {
       console.log('fetch error');
-      return err.message;
+      return new RequestError(err.message);
     })
-    .catcher(400, createDefaultErrorResponse)
-    .catcher(401, createDefaultErrorResponse)
-    .catcher(402, createDefaultErrorResponse)
+    .catcher(400, createErrorResponse)
+    .catcher(401, createErrorResponse)
+    .catcher(402, createErrorResponse)
     .catcher(403, createErrorResponse)
     .catcher(404, createErrorResponse)
-    .catcher(408, createDefaultErrorResponse)
+    .catcher(408, createErrorResponse)
     .catcher(500, createErrorResponse);
-}
-
-function createDefaultErrorResponse({ response }: wretch.WretcherError) {
-  console.log(response);
-  throw new Error(`${response.status} ${response.statusText}`);
 }
 
 function createErrorResponse({ response }: wretch.WretcherError) {
   console.log(response);
-  throw new Error(
-    CONSTS.ERRORS[String(response.status) as keyof typeof CONSTS.ERRORS],
-  );
+  throw new ResponseError(response);
 }
+
+export const handleErrors = (error: wretch.WretcherError) => {
+  if (error instanceof ResponseError) throw error;
+  throw new ParseError(error);
+};
 
 export default http;

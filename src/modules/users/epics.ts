@@ -46,7 +46,7 @@ export const fetchUserEpic = epicFactory<
 >({
   asyncActions: actions.fetchUserAsync,
   request: fetchUserRequest,
-  operator: userNormalize,
+  normalizer: userNormalize,
   cancelAction: actions.fetchUserCancel,
 });
 
@@ -57,7 +57,7 @@ export const fetchPlayersEpic = epicFactory<
 >({
   asyncActions: actions.fetchPlayersAsync,
   request: fetchPlayersRequest,
-  operator: usersNormalize,
+  normalizer: usersNormalize,
   cancelAction: actions.fetchPlayersCancel,
 });
 
@@ -68,7 +68,7 @@ export const createUserEpic = epicFactory<
 >({
   asyncActions: actions.createUserAsync,
   request: createUserRequest,
-  operator: userNormalize,
+  normalizer: userNormalize,
   cancelAction: actions.createUserCancel,
 });
 
@@ -107,7 +107,7 @@ const createEndpoint = (domain: string) => <Entity>(
 
   const epic: Epic = (action$, state$) =>
     action$.pipe(
-      filter(action => asyncActions.started.match(action)),
+      ofAction(asyncActions.started),
       mergeMap(action =>
         request(action.payload, state$.value)
           .then(data =>
@@ -147,6 +147,3 @@ const fetchDartsType = dartsDomain('fetch');
 const createDartsType = dartsDomain('create');
 
 const fetchDarts = fetchDartsType(fetchDartRequest);
-
-const a = fetchDarts({ id: '1' });
-console.log(a);

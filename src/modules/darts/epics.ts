@@ -1,8 +1,7 @@
 import { combineEpics } from 'redux-observable';
 
-import CONSTS from 'consts';
 import API from 'consts/endpoints';
-import http from 'modules/common/utils/wretch';
+import http, { handleErrors } from 'modules/common/utils/wretch';
 import {
   FetchDartParams,
   FetchDartsResponse,
@@ -22,19 +21,13 @@ export const fetchDartsByGame = ({ gameId }: FetchDartsByGameParams) =>
   http(`${endpoint}/games/${gameId}`)
     .get()
     .json<DartsList>()
-    .catch(error => {
-      console.log(error.message);
-      throw new Error(CONSTS.ERRORS.PARSE);
-    });
+    .catch(handleErrors);
 
 export const fetchDart = ({ id }: FetchDartParams) =>
   http(`${endpoint}/${id}`)
     .get()
     .json<Dart>()
-    .catch(error => {
-      console.log(error.message);
-      throw new Error(CONSTS.ERRORS.PARSE);
-    });
+    .catch(handleErrors);
 
 export const createDart = (data: CreateDartData) =>
   http(`${endpoint}`, {
@@ -42,10 +35,7 @@ export const createDart = (data: CreateDartData) =>
   })
     .post()
     .json<Dart>()
-    .catch(error => {
-      console.log(error.message);
-      throw new Error(CONSTS.ERRORS.PARSE);
-    });
+    .catch(handleErrors);
 
 export const fetchDartsByGameEpic = epicFactory<
   FetchDartsByGameParams,
@@ -54,7 +44,7 @@ export const fetchDartsByGameEpic = epicFactory<
 >({
   asyncActions: actions.fetchDartsByGameAsync,
   request: fetchDartsByGame,
-  operator: dartsNormalize,
+  normalizer: dartsNormalize,
   cancelAction: actions.fetchDartsByGameCancel,
 });
 
@@ -65,7 +55,7 @@ export const fetchDartEpic = epicFactory<
 >({
   asyncActions: actions.fetchDartAsync,
   request: fetchDart,
-  operator: dartsNormalize,
+  normalizer: dartsNormalize,
   cancelAction: actions.fetchDartCancel,
 });
 
@@ -76,7 +66,7 @@ export const createDartEpic = epicFactory<
 >({
   asyncActions: actions.createDartAsync,
   request: createDart,
-  operator: dartsNormalize,
+  normalizer: dartsNormalize,
   cancelAction: actions.createDartCancel,
 });
 

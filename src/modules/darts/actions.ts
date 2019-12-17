@@ -3,7 +3,6 @@ import cuid from 'cuid';
 import { ThunkAction } from 'redux-thunk';
 
 import {
-  FetchDartsParams,
   CreateDartData,
   FetchDartParams,
   Dart,
