@@ -30,11 +30,11 @@ describe('darts epics', () => {
       epicMiddleware.run(rootEpic);
       const expectedActions = [
         {
-          type: 'DARTS/LIST/FETCH_STARTED',
+          type: 'DARTS/BY_GAME/FETCH_STARTED',
           payload: { gameId: '1' },
         },
         {
-          type: 'DARTS/LIST/FETCH_DONE',
+          type: 'DARTS/BY_GAME/FETCH_DONE',
           payload: {
             params: { gameId: '1' },
             result: {
@@ -61,11 +61,11 @@ describe('darts epics', () => {
       epicMiddleware.run(rootEpic);
       const expectedActions = [
         {
-          type: 'DARTS/LIST/FETCH_STARTED',
+          type: 'DARTS/BY_GAME/FETCH_STARTED',
           payload: { gameId: '1' },
         },
         {
-          type: 'DARTS/LIST/FETCH_CANCEL',
+          type: 'DARTS/BY_GAME/FETCH_CANCEL',
           payload: { gameId: '1' },
         },
       ];
@@ -84,13 +84,13 @@ describe('darts epics', () => {
 
       const expectedActions = [
         {
-          type: 'DARTS/LIST/FETCH_STARTED',
+          type: 'DARTS/BY_GAME/FETCH_STARTED',
           payload: {
             gameId: '2',
           },
         },
         {
-          type: 'DARTS/LIST/FETCH_FAILED',
+          type: 'DARTS/BY_GAME/FETCH_FAILED',
           error: true,
           payload: {
             params: {
@@ -120,13 +120,13 @@ describe('darts epics', () => {
 
       const expectedActions = [
         {
-          type: 'DARTS/LIST/FETCH_STARTED',
+          type: 'DARTS/BY_GAME/FETCH_STARTED',
           payload: {
             gameId: '3',
           },
         },
         {
-          type: 'DARTS/LIST/FETCH_FAILED',
+          type: 'DARTS/BY_GAME/FETCH_FAILED',
           error: true,
           payload: {
             params: {

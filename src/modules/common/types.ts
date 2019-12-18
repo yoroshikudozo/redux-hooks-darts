@@ -4,7 +4,7 @@ export interface Entity {
 }
 
 export interface ById<T> {
-  entities: { [key: string]: T };
+  [key: string]: T;
 }
 
 export interface AllIds {

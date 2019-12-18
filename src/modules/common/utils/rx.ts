@@ -21,7 +21,7 @@ export const loggingEpic: Epic<AnyAction, AnyAction, AppState> = action$ =>
 export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
   asyncActions,
   request,
-  normalizer: normalizer = R.identity as (result: Result) => Data,
+  normalizer = R.identity as (result: Result) => Data,
   cancelAction,
 }: {
   asyncActions: AsyncActionCreators<Params, Data, ErrorType>;
@@ -33,17 +33,19 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
     ofAction(asyncActions.started),
     mergeMap(action =>
       request(action.payload)
-        .then(data =>
-          R.isEmpty(data)
+        .then(data => {
+          console.log(data);
+          return R.isEmpty(data)
             ? (({ entities: {}, result: [] } as unknown) as Data)
-            : normalizer(data),
-        )
-        .then(result =>
-          asyncActions.done({
+            : normalizer(data);
+        })
+        .then(result => {
+          console.log(result);
+          return asyncActions.done({
             result: result,
             params: action.payload,
-          }),
-        )
+          });
+        })
         .catch(error => {
           console.log(error);
           return asyncActions.failed({

@@ -6,22 +6,23 @@ import {
   FetchGamesParams,
   CreateGameData,
   GameType,
+  Game,
 } from 'modules/games/types';
 import { AppState } from 'modules/reducers';
 import { ThunkAction } from 'redux-thunk';
-import { NormalizedGames } from 'modules/games/schemas';
+import { NormalizedEntities } from 'modules/common/schemas';
 
 const gamesActionCreator = actionCreatorFactory('GAMES');
 
 export const fetchGameAsync = gamesActionCreator.async<
   FetchGameParams,
-  NormalizedGames,
+  NormalizedEntities<Game, { games: string[] }>,
   Error
 >('FETCH');
 
 export const fetchGamesAsync = gamesActionCreator.async<
   FetchGamesParams,
-  NormalizedGames,
+  NormalizedEntities<Game, { games: string[] }>,
   Error
 >('FETCH_LIST');
 
@@ -35,7 +36,7 @@ export const fetchGamesCancel = gamesActionCreator<FetchGamesParams>(
 
 export const createGameAsync = gamesActionCreator.async<
   CreateGameData,
-  NormalizedGames,
+  NormalizedEntities<Game, { games: string[] }>,
   Error
 >('CREATE');
 

@@ -10,10 +10,12 @@ export const gameSchema = new schema.Entity('games', {
 
 export const gameListSchema = new schema.Array(gameSchema);
 
-export type NormalizedGames = NormalizedEntities<Game>;
-
-export const gameNormalize = (game: Game): NormalizedGames =>
+export const gameNormalize = (
+  game: Game,
+): NormalizedEntities<Game, { games: string[] }> =>
   normalize({ games: [game] }, { games: gameListSchema });
 
-export const gamesNormalize = (data: FetchGamesResponse): NormalizedGames =>
+export const gamesNormalize = (
+  data: FetchGamesResponse,
+): NormalizedEntities<Game, { games: string[] }> =>
   normalize(data, { games: gameListSchema });

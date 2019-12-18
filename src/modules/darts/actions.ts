@@ -15,17 +15,17 @@ const dartsActionCreator = actionCreatorFactory('DARTS');
 
 export const fetchDartsByGameAsync = dartsActionCreator.async<
   FetchDartsByGameParams,
-  NormalizedEntities<Dart>,
+  NormalizedEntities<Dart, { darts: string[] }>,
   Error
->('LIST/FETCH');
+>('BY_GAME/FETCH');
 
 export const fetchDartsByGameCancel = dartsActionCreator<
   FetchDartsByGameParams
->('LIST/FETCH_CANCEL');
+>('BY_GAME/FETCH_CANCEL');
 
 export const fetchDartAsync = dartsActionCreator.async<
   FetchDartParams,
-  NormalizedEntities<Dart>,
+  NormalizedEntities<Dart, { darts: string[] }>,
   Error
 >('FETCH');
 
@@ -35,7 +35,7 @@ export const fetchDartCancel = dartsActionCreator<FetchDartParams>(
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedEntities<Dart>,
+  NormalizedEntities<Dart, { darts: string[] }>,
   Error
 >('CREATE');
 

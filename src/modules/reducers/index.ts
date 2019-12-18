@@ -6,6 +6,7 @@ import { Dart } from 'modules/darts/types';
 import { User } from 'modules/users/types';
 import { Game } from 'modules/games/types';
 import { Round } from 'modules/rounds/types';
+import { dartsReducer } from 'modules/darts/reducer';
 
 type Keys = 'darts' | 'rounds' | 'games' | 'users';
 
@@ -29,29 +30,9 @@ const initialState = {};
 
 const getEntity = R.path(['payload', 'result', 'entities']);
 
-// Updates an entity cache in response to any action with result.entities.
-const entitiesReducer = (state = initialState, action: AnyAction) => {
-  const entities = getEntity(action);
-  return !!entities ? R.mergeDeepRight(state, entities) : state;
-};
-
-const getResult = R.path<string[] | string>(['payload', 'result', 'result']);
-const getParams = R.path<string[] | string>(['payload', 'params']);
-
-const resultReducer = (state = initialState, action: AnyAction) => {
-  const result = getResult(action);
-  if (result === undefined) return state;
-
-  const params = getParams(action);
-  if (!params) return state;
-
-  return R.mergeDeepRight(state, { [qs(params)]: result });
-};
-
 const rootReducer = combineReducers({
-  entities: entitiesReducer,
-  result: resultReducer,
   auth: (state = { isAuthenticated: false }, action) => state,
+  darts: dartsReducer,
 });
 
 export default rootReducer;

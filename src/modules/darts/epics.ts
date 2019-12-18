@@ -40,7 +40,7 @@ export const createDart = (data: CreateDartData) =>
 export const fetchDartsByGameEpic = epicFactory<
   FetchDartsByGameParams,
   FetchDartsResponse,
-  NormalizedEntities<Dart>
+  NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartsByGameAsync,
   request: fetchDartsByGame,
@@ -51,7 +51,7 @@ export const fetchDartsByGameEpic = epicFactory<
 export const fetchDartEpic = epicFactory<
   FetchDartParams,
   Dart,
-  NormalizedEntities<Dart>
+  NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartAsync,
   request: fetchDart,
@@ -62,7 +62,7 @@ export const fetchDartEpic = epicFactory<
 export const createDartEpic = epicFactory<
   CreateDartData,
   Dart,
-  NormalizedEntities<Dart>
+  NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.createDartAsync,
   request: createDart,

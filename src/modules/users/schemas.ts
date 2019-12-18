@@ -8,10 +8,12 @@ export const userListSchema = [userSchema];
 export const playerSchema = new schema.Entity('players');
 export const playerListSchema = [playerSchema];
 
-export type NormalizedUsers = NormalizedEntities<User>;
-
-export const userNormalize = (user: User): NormalizedUsers =>
+export const userNormalize = (
+  user: User,
+): NormalizedEntities<User, { users: string[] }> =>
   normalize({ users: [user] }, { users: userListSchema });
 
-export const usersNormalize = (data: FetchUsersResponse): NormalizedUsers =>
+export const usersNormalize = (
+  data: FetchUsersResponse,
+): NormalizedEntities<User, { users: string[] }> =>
   normalize(data, { users: userListSchema });

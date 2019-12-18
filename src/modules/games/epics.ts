@@ -13,12 +13,9 @@ import actions, {
   createGameCancel,
   fetchGameCancel,
 } from 'modules/games/actions';
-import {
-  NormalizedGames,
-  gamesNormalize,
-  gameNormalize,
-} from 'modules/games/schemas';
+import { gamesNormalize, gameNormalize } from 'modules/games/schemas';
 import { combineEpics } from 'redux-observable';
+import { NormalizedEntities } from 'modules/common/schemas';
 
 const fetchGamesRequest = ({ playerId }: FetchGamesParams) =>
   http<FetchGamesResponse>(`${API.GAMES}/${playerId}`);
@@ -32,33 +29,33 @@ const createGamesRequest = (data: CreateGameData) =>
 export const fetchGameEpic = epicFactory<
   FetchGameParams,
   Game,
-  NormalizedGames
+  NormalizedEntities<Game, { games: string[] }>
 >({
   asyncActions: actions.fetchGameAsync,
   request: fetchGameRequest,
-  operator: gameNormalize,
+  normalizer: gameNormalize,
   cancelAction: fetchGameCancel,
 });
 
 export const fetchGamesEpic = epicFactory<
   FetchGamesParams,
   FetchGamesResponse,
-  NormalizedGames
+  NormalizedEntities<Game, { games: string[] }>
 >({
   asyncActions: actions.fetchGamesAsync,
   request: fetchGamesRequest,
-  operator: gamesNormalize,
+  normalizer: gamesNormalize,
   cancelAction: fetchGamesCancel,
 });
 
 export const createGameEpic = epicFactory<
   CreateGameData,
   Game,
-  NormalizedGames
+  NormalizedEntities<Game, { games: string[] }>
 >({
   asyncActions: actions.createGameAsync,
   request: createGamesRequest,
-  operator: gameNormalize,
+  normalizer: gameNormalize,
   cancelAction: createGameCancel,
 });
 

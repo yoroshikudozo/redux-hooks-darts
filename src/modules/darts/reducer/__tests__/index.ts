@@ -1,40 +1,39 @@
-import byId from 'modules/darts/reducer/byId';
-import allIds from 'modules/darts/reducer/allIds';
+import entities from 'modules/darts/reducer/entities';
+import games from 'modules/darts/reducer/games';
 import { fetchDartsByGameAsync } from 'modules/darts/actions';
 import { dartsNormalize } from 'modules/darts/schemas';
 
 import dart1 from 'modules/darts/mock/resources/dart1';
 
 describe('dartsReducer', () => {
-  describe('byId', () => {
+  describe('entities', () => {
     it('should return the initial state', async () => {
-      expect(byId(undefined, { type: '' })).toEqual({ entities: {} });
+      expect(entities(undefined, { type: '' })).toEqual({});
     });
 
     it('should handle fetchDartsAsync.done', async () => {
       const action = fetchDartsByGameAsync.done({
         params: { gameId: '1' },
-        result: dartsNormalize({ darts: [dart1] }),
+        result: dartsNormalize(dart1),
       });
-      expect(byId({ entities: {} }, action)).toEqual({
+      expect(entities({}, action)).toEqual({
         entities: { darts: { 1: dart1 } },
       });
     });
   });
 
-  describe('allIds', () => {
+  describe('result', () => {
     it('should return the initial state', async () => {
-      expect(allIds(undefined, { type: '' })).toEqual({ result: {} });
+      expect(games(undefined, { type: '' })).toEqual([]);
     });
 
     it('should handle fetchDartsAsync.done', async () => {
+      console.log(dartsNormalize({ darts: [dart1] }));
       const action = fetchDartsByGameAsync.done({
         params: { gameId: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
-      expect(allIds({ result: {} }, action)).toEqual({
-        result: { darts: ['1'] },
-      });
+      expect(games([], action)).toEqual(['1']);
     });
   });
 });

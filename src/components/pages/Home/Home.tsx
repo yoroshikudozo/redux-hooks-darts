@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Dartsboard } from 'components/atoms/DartsBoard';
-import { fetchDartsCancel, fetchDart } from 'modules/darts/actions';
+import { fetchDartsByGameCancel, fetchDart } from 'modules/darts/actions';
 import Players from 'components/molecules/Players';
 
 function Home() {
@@ -16,7 +16,7 @@ function Home() {
   useEffect(() => {
     dispatch(fetchDart('1'));
     return () => {
-      dispatch(fetchDartsCancel({ id: '2' }));
+      dispatch(fetchDartsByGameCancel({ gameId: '2' }));
     };
   }, [dispatch]);
 
@@ -24,7 +24,6 @@ function Home() {
     <div>
       <div>Home</div>
       <Dartsboard onBoardClick={handleClick} isFinished={false} />
-      <Players />
     </div>
   );
 }

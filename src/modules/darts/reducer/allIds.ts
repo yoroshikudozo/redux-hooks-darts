@@ -1,17 +1,13 @@
+import * as R from 'ramda';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import actions from 'modules/darts/actions';
 
-const initialState: any = { result: {} };
+const initialState: string[] = [];
 
 const allIds = reducerWithInitialState(initialState).case(
-  actions.fetchDartsByGameAsync.done,
-  (state, action) => ({
-    result: {
-      ...state.result,
-      ...action.result.result,
-    },
-  }),
+  actions.createDartAsync.done,
+  (state, action) => R.union(state, action.result.result.darts),
 );
 
 export default allIds;

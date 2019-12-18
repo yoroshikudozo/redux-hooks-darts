@@ -6,21 +6,22 @@ import {
   FetchUserParams,
   CreateUserData,
   CreateUserFormData,
+  User,
 } from 'modules/users/types';
 import { AppState } from 'modules/reducers';
-import { NormalizedUsers } from 'modules/users/schemas';
+import { NormalizedEntities } from 'modules/common/schemas';
 
 const usersActionCreator = actionCreatorFactory('USERS');
 
 export const fetchUserAsync = usersActionCreator.async<
   FetchUserParams,
-  NormalizedUsers,
+  NormalizedEntities<User, { users: string[] }>,
   Error
 >('FETCH');
 
 export const fetchPlayersAsync = usersActionCreator.async<
   void,
-  NormalizedUsers,
+  NormalizedEntities<User, { users: string[] }>,
   Error
 >('PLAYERS/FETCH');
 
@@ -36,7 +37,7 @@ export const fetchPlayersCancel = usersActionCreator('PLAYERS/FETCH_CANCEL');
 
 export const createUserAsync = usersActionCreator.async<
   CreateUserData,
-  NormalizedUsers,
+  NormalizedEntities<User, { users: string[] }>,
   Error
 >('CREATE');
 
