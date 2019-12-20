@@ -17,7 +17,7 @@ export default function Players() {
   return (
     players && (
       <>
-        {players.map(player => (
+        {players.map((player: any) => (
           <>{player.name}</>
         ))}
       </>

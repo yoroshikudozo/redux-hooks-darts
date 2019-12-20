@@ -5,16 +5,12 @@ import { ById } from 'modules/common/types';
 
 const initialState: ById<Dart> = {};
 
-export const entities = reducerWithInitialState(initialState).case(
+const byId = reducerWithInitialState(initialState).case(
   actions.fetchDartsByGameAsync.done,
-  (state, action) => {
-    return {
-      entities: {
-        ...action.result.entities,
-        ...state.entities,
-      },
-    };
-  },
+  (state, action) => ({
+    ...state,
+    ...action.result.entities.darts,
+  }),
 );
 
-export default entities;
+export default byId;

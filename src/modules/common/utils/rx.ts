@@ -33,26 +33,23 @@ export const epicFactory = <Params, Result, Data = Result, ErrorType = Error>({
     ofAction(asyncActions.started),
     mergeMap(action =>
       request(action.payload)
-        .then(data => {
-          console.log(data);
-          return R.isEmpty(data)
+        .then(data =>
+          R.isEmpty(data)
             ? (({ entities: {}, result: [] } as unknown) as Data)
-            : normalizer(data);
-        })
-        .then(result => {
-          console.log(result);
-          return asyncActions.done({
+            : normalizer(data),
+        )
+        .then(result =>
+          asyncActions.done({
             result: result,
             params: action.payload,
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          return asyncActions.failed({
+          }),
+        )
+        .catch(error =>
+          asyncActions.failed({
             params: action.payload,
             error,
-          });
-        }),
+          }),
+        ),
     ),
     takeUntil(action$.pipe(filter(action => cancelAction.match(action)))),
   );

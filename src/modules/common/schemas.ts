@@ -1,6 +1,6 @@
 import { NormalizedSchema } from 'normalizr';
 
 export type NormalizedEntities<T, R> = NormalizedSchema<
-  { [key: string]: T },
+  { [key: string]: { [key: string]: T } },
   R
 >;

@@ -1,9 +1,10 @@
-import entities from 'modules/darts/reducer/entities';
+import entities from 'modules/darts/reducer/byId';
 import games from 'modules/darts/reducer/games';
 import { fetchDartsByGameAsync } from 'modules/darts/actions';
 import { dartsNormalize } from 'modules/darts/schemas';
 
 import dart1 from 'modules/darts/mock/resources/dart1';
+import allIds from 'modules/darts/reducer/allIds';
 
 describe('dartsReducer', () => {
   describe('entities', () => {
@@ -14,26 +15,38 @@ describe('dartsReducer', () => {
     it('should handle fetchDartsAsync.done', async () => {
       const action = fetchDartsByGameAsync.done({
         params: { gameId: '1' },
-        result: dartsNormalize(dart1),
+        result: dartsNormalize({ darts: [dart1] }),
       });
-      expect(entities({}, action)).toEqual({
-        entities: { darts: { 1: dart1 } },
-      });
+      expect(entities({}, action)).toEqual({ 1: dart1 });
     });
   });
 
-  describe('result', () => {
+  describe('allIds', () => {
     it('should return the initial state', async () => {
-      expect(games(undefined, { type: '' })).toEqual([]);
+      expect(allIds(undefined, { type: '' })).toEqual([]);
     });
 
     it('should handle fetchDartsAsync.done', async () => {
-      console.log(dartsNormalize({ darts: [dart1] }));
+      console.log(dartsNormalize({ darts: [dart1] }).result);
       const action = fetchDartsByGameAsync.done({
         params: { gameId: '1' },
         result: dartsNormalize({ darts: [dart1] }),
       });
-      expect(games([], action)).toEqual(['1']);
+      expect(allIds([], action)).toEqual(['1']);
+    });
+  });
+
+  describe('byGame', () => {
+    it('should return the initial state', async () => {
+      expect(games(undefined, { type: '' })).toEqual({});
+    });
+
+    it('should handle fetchDartsAsync.done', async () => {
+      const action = fetchDartsByGameAsync.done({
+        params: { gameId: '1' },
+        result: dartsNormalize({ darts: [dart1] }),
+      });
+      expect(games({}, action)).toEqual({ 1: ['1'] });
     });
   });
 });
