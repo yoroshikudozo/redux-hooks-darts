@@ -1,14 +1,6 @@
-import { ThunkAction } from 'redux-thunk';
-import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
-import cuid from 'cuid';
+import actionCreatorFactory from 'typescript-fsa';
 
-import {
-  FetchUserParams,
-  CreateUserData,
-  CreateUserFormData,
-  User,
-} from 'modules/users/types';
-import { AppState } from 'modules/reducers';
+import { FetchUserParams, CreateUserData, User } from 'modules/users/types';
 import { NormalizedEntities } from 'modules/common/schemas';
 
 const usersActionCreator = actionCreatorFactory('USERS');
@@ -46,49 +38,11 @@ export const createUserCancel = usersActionCreator<CreateUserData>(
   'CREATE_CANCEL',
 );
 
-export const initCreateUserRequestData = (
-  { name, nickname }: CreateUserFormData,
-  id: string,
-  state: AppState,
-): CreateUserData => ({
-  id,
-  name,
-  nickname: nickname || '',
-  flight: 0,
-});
-
-export const fetchUser = (
-  id: string,
-): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
-  dispatch(fetchUserAsync.started({ id }));
-};
-
-export const fetchPlayers = (): ThunkAction<
-  void,
-  AppState,
-  undefined,
-  AnyAction
-> => dispatch => {
-  dispatch(fetchPlayersAsync.started());
-};
-
-export const createUser = (
-  data: CreateUserFormData,
-): ThunkAction<void, AppState, undefined, AnyAction> => (
-  dispatch,
-  getState,
-) => {
-  const id = cuid();
-  const createUserData = initCreateUserRequestData(data, id, getState());
-  dispatch(createUserAsync.started(createUserData));
-};
-
 const actions = {
   fetchUserAsync,
   fetchUserCancel,
   fetchPlayersAsync,
   fetchPlayersCancel,
-  createUser,
   createUserAsync,
   createUserCancel,
 };

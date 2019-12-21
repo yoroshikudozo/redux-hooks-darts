@@ -1,18 +1,19 @@
 import { createSelector } from 'reselect';
 import { getEntities } from 'modules/common/selectors';
 
-export const getUserEntities = createSelector(
+export const getUsers = createSelector(
   [getEntities],
   entities => entities.users || {},
 );
 
-export const getUserIds = createSelector([getResult], result => result.users);
-
-export const getAllUserIds = createSelector([getUserIds], users =>
-  users ? users.players : [],
+export const getUserEntities = createSelector(
+  [getUsers],
+  entities => entities.byId || {},
 );
 
+export const getUserIds = createSelector(getUsers, result => result.allIds);
+
 export const getPlayers = createSelector(
-  [getUserEntities, getAllUserIds],
+  [getUserEntities, getUserIds],
   (users, ids) => ids.map(id => users[id]),
 );

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchPlayers, fetchPlayersCancel } from 'modules/users/actions';
+import { fetchPlayers } from 'modules/users/asyncActions';
+import { fetchPlayersCancel } from 'modules/users/actions';
 import { getPlayers } from 'modules/users/selectors';
 
 export default function Players() {

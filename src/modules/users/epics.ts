@@ -13,9 +13,6 @@ import actions from 'modules/users/actions';
 import { usersNormalize, userNormalize } from 'modules/users/schemas';
 import { NormalizedEntities } from 'modules/common/schemas';
 
-const fetchUsersRequest = ({ id }: FetchUserParams) =>
-  http<FetchUsersResponse>(`${API.USERS}/${id}`);
-
 const fetchUserRequest = ({ id }: FetchUserParams) =>
   http<User>(`${API.USERS}/${id}`);
 
