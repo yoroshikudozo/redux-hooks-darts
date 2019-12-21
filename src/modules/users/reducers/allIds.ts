@@ -9,6 +9,9 @@ const allIds = reducerWithInitialState(initialState)
   .case(actions.fetchUserAsync.done, (state, action) =>
     R.union(state, action.result.result.users),
   )
+  .case(actions.fetchPlayersAsync.done, (state, action) =>
+    R.union(state, action.result.result.users),
+  )
   .case(actions.createUserAsync.done, (state, action) =>
     R.union(state, action.result.result.users),
   );

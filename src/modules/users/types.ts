@@ -11,7 +11,7 @@ export interface FetchUserParams {
   id: string;
 }
 
-export interface FetchUsersResponse {
+export interface UserList {
   users: User[];
 }
 

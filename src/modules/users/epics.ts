@@ -1,29 +1,21 @@
 import { combineEpics } from 'redux-observable';
 
-import API from 'consts/endpoints';
-import http from 'modules/common/utils/request-first';
-import {
-  FetchUserParams,
-  FetchUsersResponse,
-  User,
-  CreateUserData,
-} from 'modules/users/types';
 import { epicFactory } from 'modules/common/utils/rx';
-import actions from 'modules/users/actions';
-import { usersNormalize, userNormalize } from 'modules/users/schemas';
 import { NormalizedEntities } from 'modules/common/schemas';
 
-const fetchUserRequest = ({ id }: FetchUserParams) =>
-  http<User>(`${API.USERS}/${id}`);
-
-const fetchPlayersRequest = async () => {
-  const a = await http<FetchUsersResponse>(`${API.USERS}`);
-  console.log(a);
-  return a;
-};
-
-const createUserRequest = (data: CreateUserData) =>
-  http<User>(API.USERS, { method: 'post', body: JSON.stringify(data) });
+import {
+  FetchUserParams,
+  User,
+  CreateUserData,
+  UserList,
+} from 'modules/users/types';
+import actions from 'modules/users/actions';
+import { usersNormalize } from 'modules/users/schemas';
+import {
+  fetchUserRequest,
+  fetchPlayersRequest,
+  createUserRequest,
+} from 'modules/users/api';
 
 export const fetchUserEpic = epicFactory<
   FetchUserParams,
@@ -32,13 +24,13 @@ export const fetchUserEpic = epicFactory<
 >({
   asyncActions: actions.fetchUserAsync,
   request: fetchUserRequest,
-  normalizer: userNormalize,
+  normalizer: usersNormalize,
   cancelAction: actions.fetchUserCancel,
 });
 
 export const fetchPlayersEpic = epicFactory<
   void,
-  FetchUsersResponse,
+  UserList,
   NormalizedEntities<User, { users: string[] }>
 >({
   asyncActions: actions.fetchPlayersAsync,
@@ -54,15 +46,9 @@ export const createUserEpic = epicFactory<
 >({
   asyncActions: actions.createUserAsync,
   request: createUserRequest,
-  normalizer: userNormalize,
+  normalizer: usersNormalize,
   cancelAction: actions.createUserCancel,
 });
-
-// export const createUserDataEpic = actionTransformEpicFactory(
-//   actions.createUser,
-//   actions.createUserAsync.started,
-//   initCreateUserRequestData,
-// );
 
 const usersEpic = combineEpics(
   fetchUserEpic,

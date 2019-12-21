@@ -9,7 +9,7 @@ import user3 from './resources/user3';
 const endpoint = `${API.ROOT}${API.USERS}`;
 
 export function initUsersMock(mock: FetchMockStatic): void {
-  mock.get(`${endpoint}/1`, { users: [user1] });
+  mock.get(`${endpoint}/1`, user1);
   mock.get(endpoint, { users: [user1, user2, user3] });
   mock.get((url, opts) => url === `${endpoint}/2`, { status: 404 });
   mock.get(

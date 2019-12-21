@@ -19,11 +19,11 @@ export default function Players() {
 
   return (
     players && (
-      <>
-        {players.map((player: User) => (
-          <>{player.name}</>
+      <ul>
+        {players.map((player: User, index: number) => (
+          <li key={index}>{player.name}</li>
         ))}
-      </>
+      </ul>
     )
   );
 }
