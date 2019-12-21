@@ -27,7 +27,7 @@ export interface CricketRule {
   rounds: number;
 }
 
-export interface RulesList {
+export interface RuleList {
   rules: Rule[];
 }
 
