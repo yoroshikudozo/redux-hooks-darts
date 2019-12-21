@@ -56,11 +56,11 @@ export interface FetchDartsByGameParams {
   gameId: string;
 }
 
-export interface DartsList {
+export interface DartList {
   darts: Dart[];
 }
 
-export type FetchDartsResponse = DartsList;
+export type FetchDartsResponse = DartList;
 
 export interface CreateDartsParams {
   value: number;

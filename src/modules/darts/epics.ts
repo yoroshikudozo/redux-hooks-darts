@@ -1,41 +1,22 @@
 import { combineEpics } from 'redux-observable';
 
-import API from 'consts/endpoints';
-import http, { handleErrors } from 'modules/common/utils/wretch';
+import { NormalizedEntities } from 'modules/common/schemas';
+import { epicFactory } from 'modules/common/utils/rx';
+
 import {
   FetchDartParams,
   FetchDartsResponse,
   Dart,
   CreateDartData,
-  DartsList,
   FetchDartsByGameParams,
 } from 'modules/darts/types';
-import { epicFactory } from 'modules/common/utils/rx';
 import actions from 'modules/darts/actions';
 import { dartsNormalize } from 'modules/darts/schemas';
-import { NormalizedEntities } from 'modules/common/schemas';
-
-const endpoint = `${API.DARTS}`;
-
-export const fetchDartsByGame = ({ gameId }: FetchDartsByGameParams) =>
-  http(`${endpoint}/games/${gameId}`)
-    .get()
-    .json<DartsList>()
-    .catch(handleErrors);
-
-export const fetchDart = ({ id }: FetchDartParams) =>
-  http(`${endpoint}/${id}`)
-    .get()
-    .json<Dart>()
-    .catch(handleErrors);
-
-export const createDart = (data: CreateDartData) =>
-  http(`${endpoint}`, {
-    body: JSON.stringify(data),
-  })
-    .post()
-    .json<Dart>()
-    .catch(handleErrors);
+import {
+  fetchDartsByGameRequest,
+  fetchDartRequest,
+  createDartRequest,
+} from 'modules/darts/api';
 
 export const fetchDartsByGameEpic = epicFactory<
   FetchDartsByGameParams,
@@ -43,7 +24,7 @@ export const fetchDartsByGameEpic = epicFactory<
   NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartsByGameAsync,
-  request: fetchDartsByGame,
+  request: fetchDartsByGameRequest,
   normalizer: dartsNormalize,
   cancelAction: actions.fetchDartsByGameCancel,
 });
@@ -54,7 +35,7 @@ export const fetchDartEpic = epicFactory<
   NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartAsync,
-  request: fetchDart,
+  request: fetchDartRequest,
   normalizer: dartsNormalize,
   cancelAction: actions.fetchDartCancel,
 });
@@ -65,22 +46,15 @@ export const createDartEpic = epicFactory<
   NormalizedEntities<Dart, { darts: string[] }>
 >({
   asyncActions: actions.createDartAsync,
-  request: createDart,
+  request: createDartRequest,
   normalizer: dartsNormalize,
   cancelAction: actions.createDartCancel,
 });
-
-// export const createDartDataEpic = actionTransformEpicFactory(
-//   actions.createDart,
-//   actions.createDartAsync.started,
-//   initCreateDartRequestData,
-// );
 
 const dartsEpic = combineEpics(
   fetchDartEpic,
   fetchDartsByGameEpic,
   createDartEpic,
-  // createDartDataEpic,
 );
 
 export default dartsEpic;
