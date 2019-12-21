@@ -9,9 +9,7 @@ import rule1 from './resources/rule1';
 const endpoint = `${API.ROOT}${API.RULES}`;
 
 export function initRulesMock(mock: MockAdapter): void {
-  mock.onGet(`${endpoint}/1`).reply(200, {
-    rules: [rule1],
-  });
+  mock.onGet(`${endpoint}/1`).reply(200, rule1);
 
   mock.onPut(`${endpoint}`, { id: '1', point: 20 }).reply(200, {
     rules: rule1,
