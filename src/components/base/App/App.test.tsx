@@ -9,7 +9,10 @@ import App from './App';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = createMockStore(middlewares);
-const store = mockStore({ auth: { isAuthenticated: true } });
+const store = mockStore({
+  auth: { isAuthenticated: true },
+  entities: { users: { byId: {}, allIds: [] } },
+});
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

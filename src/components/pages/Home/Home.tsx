@@ -6,6 +6,7 @@ import {
   fetchDartsByGameCancel,
   fetchDartsByGameAsync,
 } from 'modules/darts/actions';
+import Players from 'components/molecules/Players';
 // import Players from 'components/molecules/Players';
 
 function Home() {
@@ -27,6 +28,7 @@ function Home() {
     <div>
       <div>Home</div>
       <Dartsboard onBoardClick={handleClick} isFinished={false} />
+      <Players />
     </div>
   );
 }

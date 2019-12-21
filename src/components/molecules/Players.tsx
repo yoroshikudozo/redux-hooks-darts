@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPlayers } from 'modules/users/asyncActions';
 import { fetchPlayersCancel } from 'modules/users/actions';
 import { getPlayers } from 'modules/users/selectors';
+import { User } from 'modules/users/types';
 
 export default function Players() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ export default function Players() {
   return (
     players && (
       <>
-        {players.map((player: any) => (
+        {players.map((player: User) => (
           <>{player.name}</>
         ))}
       </>

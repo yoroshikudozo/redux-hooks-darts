@@ -10,7 +10,9 @@ import Home from './Home';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
-const store = mockStore({});
+const store = mockStore({
+  entities: { users: { byId: {}, allIds: [] } },
+});
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
