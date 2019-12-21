@@ -2,7 +2,7 @@ import { AppState } from 'modules/reducers';
 
 // import { createSelector } from 'reselect';
 
-export const getRules = (state: AppState) => state.rules;
+export const getRules = (state: AppState) => state.entities.rules;
 
 // const getUserRule = createSelector(
 //   [getSelect, getRules],

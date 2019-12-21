@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getEntities, getResult } from 'modules/common/selectors';
+import { getEntities } from 'modules/common/selectors';
 
 export const getUserEntities = createSelector(
   [getEntities],

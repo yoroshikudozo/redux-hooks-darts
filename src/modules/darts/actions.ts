@@ -36,7 +36,6 @@ export const createDartAsync = dartsActionCreator.async<
   Error
 >('CREATE');
 
-export const createDartAction = dartsActionCreator<number>('CREATE');
 export const createDartCancel = dartsActionCreator<CreateDartData>(
   'CREATE_CANCEL',
 );

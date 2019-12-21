@@ -27,6 +27,20 @@ export interface CricketRule {
   rounds: number;
 }
 
-export interface RulesResponse {
-  rules: Rule;
+export interface RulesList {
+  rules: Rule[];
+}
+
+export interface FetchRuleParams {
+  id: string;
+}
+
+export interface CreateRuleData {
+  id: string;
+  bullSeparate: boolean;
+  handicap: boolean;
+  start: number;
+  rounds: number;
+  inOption: string;
+  outOption: string;
 }
