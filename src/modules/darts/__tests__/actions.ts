@@ -16,6 +16,7 @@ import ParseError from 'modules/common/errors/parseError';
 import ResponseError from 'modules/common/errors/responseError';
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
+import { createDart } from 'modules/darts/asyncActions';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
@@ -185,7 +186,7 @@ describe('darts epics', () => {
         },
       ];
 
-      store.dispatch<any>(actions.createDart(20));
+      store.dispatch<any>(createDart(20));
 
       await sleep(100).then(() => {
         const actions = store.getActions();

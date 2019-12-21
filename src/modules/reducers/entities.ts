@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { dartsReducer } from 'modules/darts/reducer';
+import { dartsReducer } from 'modules/darts/reducers';
 
 const entitiesReducer = combineReducers({ darts: dartsReducer });
 

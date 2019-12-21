@@ -1,8 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer, { AppState } from 'modules/reducers';
+import rootReducer from 'modules/reducers';
 import { createEpicMiddleware } from 'redux-observable';
-import { AnyAction } from 'typescript-fsa';
 import { rootEpic } from 'modules/common/epics';
 
 const preloadedState = { auth: { isAuthenticated: true } };
@@ -13,11 +12,7 @@ declare global {
   }
 }
 
-export const epicMiddleware = createEpicMiddleware<
-  AnyAction,
-  AnyAction,
-  AppState
->();
+export const epicMiddleware = createEpicMiddleware();
 
 function configureStore() {
   const composeEnhancers =

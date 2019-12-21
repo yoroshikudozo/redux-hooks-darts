@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
+
+import authReducer from 'modules/auth/reducer';
 import entitiesReducer from 'modules/reducers/entities';
 
+export type AppState = ReturnType<typeof rootReducer>;
+
 const rootReducer = combineReducers({
-  auth: (state = { isAuthenticated: false }, action) => state,
+  auth: authReducer,
   entities: entitiesReducer,
 });
-
-export type AppState = any; //ReturnType<typeof rootReducer>;
 
 export default rootReducer;
