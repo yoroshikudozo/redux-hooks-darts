@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Dartsboard } from 'components/atoms/DartsBoard';
 import {
   fetchDartsByGameCancel,
   fetchDartsByGameAsync,
 } from 'modules/darts/actions';
-import Players from 'components/molecules/Players';
-// import Players from 'components/molecules/Players';
+
+import { Dartsboard } from 'components/atoms/DartsBoard';
 
 function Home() {
   const handleClick = ({ currentTarget }: React.MouseEvent<SVGElement>) => {
@@ -28,7 +27,6 @@ function Home() {
     <div>
       <div>Home</div>
       <Dartsboard onBoardClick={handleClick} isFinished={false} />
-      <Players />
     </div>
   );
 }

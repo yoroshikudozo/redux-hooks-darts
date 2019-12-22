@@ -9,10 +9,11 @@ import {
   CreateUserData,
   UserList,
 } from 'modules/users/types';
-import actions from 'modules/users/actions';
+import * as actions from 'modules/users/actions';
 import { usersNormalize } from 'modules/users/schemas';
 import {
   fetchUserRequest,
+  fetchUsersRequest,
   fetchPlayersRequest,
   createUserRequest,
 } from 'modules/users/api';
@@ -28,15 +29,15 @@ export const fetchUserEpic = epicFactory<
   cancelAction: actions.fetchUserCancel,
 });
 
-export const fetchPlayersEpic = epicFactory<
+export const fetchUsersEpic = epicFactory<
   void,
   UserList,
   NormalizedEntities<User, { users: string[] }>
 >({
-  asyncActions: actions.fetchPlayersAsync,
-  request: fetchPlayersRequest,
+  asyncActions: actions.fetchUsersAsync,
+  request: fetchUsersRequest,
   normalizer: usersNormalize,
-  cancelAction: actions.fetchPlayersCancel,
+  cancelAction: actions.fetchUsersCancel,
 });
 
 export const createUserEpic = epicFactory<
@@ -50,8 +51,20 @@ export const createUserEpic = epicFactory<
   cancelAction: actions.createUserCancel,
 });
 
+export const fetchPlayersEpic = epicFactory<
+  void,
+  UserList,
+  NormalizedEntities<User, { users: string[] }>
+>({
+  asyncActions: actions.fetchPlayersAsync,
+  request: fetchPlayersRequest,
+  normalizer: usersNormalize,
+  cancelAction: actions.fetchPlayersCancel,
+});
+
 const usersEpic = combineEpics(
   fetchUserEpic,
+  fetchUsersEpic,
   fetchPlayersEpic,
   createUserEpic,
   // createUserDataEpic,

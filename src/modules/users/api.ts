@@ -17,6 +17,12 @@ export const fetchUserRequest = ({ id }: FetchUserParams) =>
     .json<User>()
     .catch(handleErrors);
 
+export const fetchUsersRequest = () =>
+  http(`${endpoint}`)
+    .get()
+    .json<UserList>()
+    .catch(handleErrors);
+
 export const fetchPlayersRequest = () =>
   http(`${endpoint}`)
     .get()

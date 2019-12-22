@@ -5,7 +5,7 @@ import cuid from 'cuid';
 import { AppState } from 'modules/reducers';
 
 import { CreateUserData, CreateUserFormData } from 'modules/users/types';
-import actions from 'modules/users/actions';
+import * as actions from 'modules/users/actions';
 
 export const initCreateUserRequestData = (
   { name, nickname }: CreateUserFormData,
@@ -22,6 +22,15 @@ export const fetchUser = (
   id: string,
 ): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
   dispatch(actions.fetchUserAsync.started({ id }));
+};
+
+export const fetchUsers = (): ThunkAction<
+  void,
+  AppState,
+  undefined,
+  AnyAction
+> => dispatch => {
+  dispatch(actions.fetchUsersAsync.started());
 };
 
 export const fetchPlayers = (): ThunkAction<

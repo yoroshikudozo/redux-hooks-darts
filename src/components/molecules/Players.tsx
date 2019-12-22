@@ -1,27 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { fetchPlayers } from 'modules/users/asyncActions';
-import { fetchPlayersCancel } from 'modules/users/actions';
-import { getPlayers } from 'modules/users/selectors';
+import React from 'react';
 import { User } from 'modules/users/types';
 
-export default function Players() {
-  const dispatch = useDispatch();
-  const players = useSelector(getPlayers);
+interface Props {
+  players: User[];
+}
 
-  useEffect(() => {
-    dispatch(fetchPlayers());
-    return () => {
-      dispatch(fetchPlayersCancel());
-    };
-  }, [dispatch]);
-
+export default function Players({ players }: Props) {
   return (
     players && (
       <ul>
         {players.map((player: User, index: number) => (
-          <li key={index}>{player.name}</li>
+          <li key={index}>
+            {Object.keys(player).map((key, index2: number) => (
+              <dl key={`${index}-${index2}`}>
+                <dt>{key} :</dt>
+                <dd>{player[key as keyof typeof player]}</dd>
+              </dl>
+            ))}
+          </li>
         ))}
       </ul>
     )

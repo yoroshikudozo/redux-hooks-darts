@@ -10,21 +10,22 @@ export const fetchUserAsync = usersActionCreator.async<
   NormalizedEntities<User, { users: string[] }>,
   Error
 >('FETCH');
+export const fetchUserCancel = usersActionCreator<FetchUserParams>(
+  'FETCH_CANCEL',
+);
+
+export const fetchUsersAsync = usersActionCreator.async<
+  void,
+  NormalizedEntities<User, { users: string[] }>,
+  Error
+>('FETCH_LIST');
+export const fetchUsersCancel = usersActionCreator<void>('FETCH_LIST_CANCEL');
 
 export const fetchPlayersAsync = usersActionCreator.async<
   void,
   NormalizedEntities<User, { users: string[] }>,
   Error
 >('PLAYERS/FETCH');
-
-export const fetchUserCancel = usersActionCreator<FetchUserParams>(
-  'FETCH_CANCEL',
-);
-
-export const fetchUsersCancel = usersActionCreator<FetchUserParams>(
-  'FETCH_LIST_CANCEL',
-);
-
 export const fetchPlayersCancel = usersActionCreator('PLAYERS/FETCH_CANCEL');
 
 export const createUserAsync = usersActionCreator.async<
@@ -37,14 +38,3 @@ export const createUserAction = usersActionCreator<number>('CREATE');
 export const createUserCancel = usersActionCreator<CreateUserData>(
   'CREATE_CANCEL',
 );
-
-const actions = {
-  fetchUserAsync,
-  fetchUserCancel,
-  fetchPlayersAsync,
-  fetchPlayersCancel,
-  createUserAsync,
-  createUserCancel,
-};
-
-export default actions;
