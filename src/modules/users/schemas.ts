@@ -15,9 +15,7 @@ function isUserList(data: any): data is UserList {
 
 export const usersNormalize = <R>(
   data: User | UserList,
-): NormalizedEntities<User, R> => {
-  console.log(data);
-  return isUserList(data)
+): NormalizedEntities<User, R> =>
+  isUserList(data)
     ? normalize(data, { users: userListSchema })
     : normalize({ users: [data] }, { users: userListSchema });
-};
