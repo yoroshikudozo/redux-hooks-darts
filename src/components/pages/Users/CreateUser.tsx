@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import CONSTS from 'consts';
 
-import { useFetchDart } from 'components/hooks/useFetchDart';
-import { useSelector } from 'react-redux';
 import { AppState } from 'modules/reducers';
+import { useFetchDart } from 'components/hooks/useFetchDart';
 
-export default function Users({ id }: { id: string }) {
+interface Props {
+  id: string;
+}
+
+export default function Users({ id }: Props) {
   const dart = useSelector((state: AppState) => state.entities.darts.byId[id]);
-  const { loading, getDart } = useFetchDart({ id });
-
-  useEffect(() => {
-    getDart();
-  }, []);
+  const { loading } = useFetchDart({ id });
 
   return (
     <div>

@@ -10,6 +10,7 @@ import {
   FetchDartsByGameParams,
 } from 'modules/darts/types';
 import { WretcherOptions } from 'wretch';
+import { dartsNormalize } from 'modules/darts/schemas';
 
 const endpoint = `${API.DARTS}`;
 
@@ -24,6 +25,17 @@ export const fetchDartRequest = ({ id }: FetchDartParams) =>
     .get()
     .json<Dart>()
     .catch(handleErrors);
+
+export const fetchDartRequest2 = (
+  { id }: FetchDartParams,
+  controller: AbortController,
+) =>
+  http(`${endpoint}/${id}`)
+    .signal(controller)
+    .get()
+    .json<Dart>()
+    .catch(handleErrors)
+    .then(data => dartsNormalize<{ darts: string[] }>(data));
 
 export const createDartRequest = (data: CreateDartData) =>
   http(`${endpoint}`, {
