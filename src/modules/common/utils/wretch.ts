@@ -13,11 +13,11 @@ function http(url?: string, opts?: wretch.WretcherOptions) {
     .options(opts ? opts : {})
     .catcher('AbortError', err => {
       console.log('abort error');
-      return new RequestError(err.message);
+      throw new RequestError(err.message);
     })
     .catcher('__fromFetch', err => {
       console.log('fetch error');
-      return new RequestError(err.message);
+      throw new RequestError(err.message);
     })
     .catcher(400, createErrorResponse)
     .catcher(401, createErrorResponse)
@@ -34,6 +34,7 @@ function createErrorResponse({ response }: wretch.WretcherError) {
 }
 
 export const handleErrors = (error: wretch.WretcherError) => {
+  console.log(error);
   if (error instanceof ResponseError) throw error;
   throw new ParseError(error);
 };
