@@ -52,7 +52,7 @@ export const createDartEpic = epicFactory<
 });
 
 const dartsEpic = combineEpics(
-  fetchDartEpic,
+  // fetchDartEpic,
   fetchDartsByGameEpic,
   createDartEpic,
 );

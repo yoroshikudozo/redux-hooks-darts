@@ -6,6 +6,8 @@ import { fetchUsers } from 'modules/users/asyncActions';
 import { getPlayers } from 'modules/users/selectors';
 
 import Players from 'components/molecules/Players';
+import { Link } from 'react-router-dom';
+import CONSTS from 'consts';
 
 export default function Users() {
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ export default function Users() {
   return (
     <div>
       <h1>Users</h1>
+      <Link to={CONSTS.ROUTES.USERS.CREATE}>New</Link>
       <Players players={players} />
     </div>
   );

@@ -6,6 +6,9 @@ import actions from 'modules/darts/actions';
 const initialState: string[] = [];
 
 const allIds = reducerWithInitialState(initialState)
+  .case(actions.fetchDartAsync.done, (state, action) =>
+    R.union(state, action.result.result.darts),
+  )
   .case(actions.fetchDartsByGameAsync.done, (state, action) =>
     R.union(state, action.result.result.darts),
   )

@@ -9,6 +9,7 @@ import {
   DartList,
   FetchDartsByGameParams,
 } from 'modules/darts/types';
+import { WretcherOptions } from 'wretch';
 
 const endpoint = `${API.DARTS}`;
 
@@ -31,3 +32,26 @@ export const createDartRequest = (data: CreateDartData) =>
     .post()
     .json<Dart>()
     .catch(handleErrors);
+
+export const createRequest = <T>(path: string, options: WretcherOptions) => ({
+  get: () =>
+    http(path, options)
+      .get()
+      .json<T>()
+      .catch(handleErrors),
+  post: () =>
+    http(path, options)
+      .post()
+      .json<T>()
+      .catch(handleErrors),
+  put: () =>
+    http(path, options)
+      .post()
+      .json<T>()
+      .catch(handleErrors),
+  delete: () =>
+    http(path, options)
+      .post()
+      .json<T>()
+      .catch(handleErrors),
+});

@@ -11,6 +11,10 @@ function http(url?: string, opts?: wretch.WretcherOptions) {
     .accept('application/json')
     .content('utf-8')
     .options(opts ? opts : {})
+    .catcher('AbortError', err => {
+      console.log('abort error');
+      return new RequestError(err.message);
+    })
     .catcher('__fromFetch', err => {
       console.log('fetch error');
       return new RequestError(err.message);
