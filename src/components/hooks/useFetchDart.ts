@@ -9,7 +9,6 @@ export const useFetchDart = (params: FetchDartParams) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const controller = new AbortController();
-  console.log('useFetchDart');
 
   useEffect(() => {
     (async () => {

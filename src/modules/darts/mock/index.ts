@@ -19,31 +19,31 @@ export function initDartsMock(mock: FetchMockStatic): void {
   mock.get(endpoint, { darts: [dart1, dart2, dart3] });
   mock.get(
     (url, opts) => url === `${endpoint}/1`,
-    sleep(3000).then(() => dart1),
+    sleep(100).then(() => dart1),
   );
   mock.get(
     (url, opts) => url === `${endpoint}/games/2`,
-    sleep(3000).then(() => ({
+    sleep(100).then(() => ({
       status: 404,
       body: {},
     })),
   );
   mock.get(
     (url, opts) => url === `${endpoint}/games/3`,
-    sleep(3000).then(
+    sleep(100).then(
       () =>
         '<!doctype html><head><title>500</title></head><body>internal server error 500</body></html>',
     ),
   );
   mock.get(
     (url, opts) => url === `${endpoint}/games/4`,
-    sleep(3000).then(() => ({
+    sleep(100).then(() => ({
       throws: new Error('network error'),
     })),
   );
   mock.get(
     (url, opts) => url === `${endpoint}/games/5`,
-    sleep(3000).then(() => ({
+    sleep(100).then(() => ({
       status: 403,
       body: {},
     })),
