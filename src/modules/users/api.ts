@@ -8,6 +8,7 @@ import {
   CreateUserData,
   UserList,
 } from 'modules/users/types';
+import { usersNormalize } from 'modules/users/schemas';
 
 const endpoint = `${API.USERS}`;
 
@@ -28,6 +29,14 @@ export const fetchPlayersRequest = () =>
     .get()
     .json<UserList>()
     .catch(handleErrors);
+
+export const fetchPlayersRequest2 = (controller: AbortController) =>
+  http(`${endpoint}`)
+    .signal(controller)
+    .get()
+    .json<UserList>()
+    .catch(handleErrors)
+    .then(data => usersNormalize<{ users: string[] }>(data));
 
 export const createUserRequest = (data: CreateUserData) =>
   http(`${endpoint}`, {

@@ -11,7 +11,7 @@ interface Props {
   id: string;
 }
 
-export default function Users({ id }: Props) {
+export default function CreateUser({ id }: Props) {
   const dart = useSelector((state: AppState) => state.entities.darts.byId[id]);
   const { loading } = useFetchDart({ id });
 
