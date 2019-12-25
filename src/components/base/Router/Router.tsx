@@ -18,7 +18,7 @@ function Router() {
         <Route path={ROUTES.LOGIN} component={LoginPage} />
         <Auth>
           <Switch>
-            <Route path="/" exact={true} component={HomePage} />
+            <Route path={ROUTES.HOME} exact={true} component={HomePage} />
             <Route
               path={ROUTES.USERS.ROOT}
               exact={true}

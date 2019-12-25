@@ -7,6 +7,8 @@ import {
 } from 'modules/darts/actions';
 
 import { Dartsboard } from 'components/atoms/DartsBoard';
+import CONSTS from 'consts';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const handleClick = ({ currentTarget }: React.MouseEvent<SVGElement>) => {
@@ -26,6 +28,8 @@ function Home() {
   return (
     <div>
       <div>Home</div>
+      <Link to={CONSTS.ROUTES.USERS.ROOT}>Users</Link>
+      <Link to={CONSTS.ROUTES.GAMES.ROOT}>Games</Link>
       <Dartsboard onBoardClick={handleClick} isFinished={false} />
     </div>
   );

@@ -16,8 +16,9 @@ export default function Users() {
   return (
     <div>
       <h1>Users</h1>
+      <Link to={CONSTS.ROUTES.HOME}>Home</Link>
       <Link to={CONSTS.ROUTES.USERS.CREATE}>New</Link>
-      <Players players={players} />
+      {loading || <Players players={players} />}
     </div>
   );
 }
