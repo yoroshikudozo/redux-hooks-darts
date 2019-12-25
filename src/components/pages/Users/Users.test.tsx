@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -16,13 +17,15 @@ const store = mockStore({
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <Route component={Users} />
-      </BrowserRouter>
-    </Provider>,
-    div,
-  );
+  act(() => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Route component={Users} />
+        </BrowserRouter>
+      </Provider>,
+      div,
+    );
+  });
   ReactDOM.unmountComponentAtNode(div);
 });
