@@ -20,6 +20,17 @@ export const fetchDartsByGameRequest = ({ gameId }: FetchDartsByGameParams) =>
     .json<DartList>()
     .catch(handleErrors);
 
+export const fetchDartsByGameRequest2 = (
+  { gameId }: FetchDartsByGameParams,
+  controller: AbortController,
+) =>
+  http(`${endpoint}/games/${gameId}`)
+    .signal(controller)
+    .get()
+    .json<DartList>()
+    .catch(handleErrors)
+    .then(data => dartsNormalize<{ darts: string[] }>(data));
+
 export const fetchDartRequest = ({ id }: FetchDartParams) =>
   http(`${endpoint}/${id}`)
     .get()

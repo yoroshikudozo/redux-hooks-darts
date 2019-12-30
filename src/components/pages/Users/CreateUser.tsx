@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
 
 import CONSTS from 'consts';
 
 import { AppState } from 'modules/reducers';
 import { useFetchDart } from 'components/hooks/useFetchDart';
+import { createUser } from 'modules/users/asyncActions';
+import { CreateUserFormData } from 'modules/users/types';
 
 interface Props {
   id: string;
@@ -13,14 +16,45 @@ interface Props {
 
 export default function CreateUser({ id }: Props) {
   const dart = useSelector((state: AppState) => state.entities.darts.byId[id]);
+  const dispatch = useDispatch();
   const { loading } = useFetchDart({ id });
+  const formik = useFormik<CreateUserFormData>({
+    initialValues: {
+      name: '',
+      nickname: '',
+    },
+    onSubmit: value => (dispatch(createUser(value)) as unknown) as void,
+  });
 
   return (
     <div>
       <h1>Create User</h1>
       {loading && <p>Loading...</p>}
       {dart && <p>{dart.point}</p>}
-      <Link to={CONSTS.ROUTES.USERS.ROOT}>Back</Link>
+      <Link to={CONSTS.ROUTES.USERS.ROOT}>Back</Link>5
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+          />
+        </div>
+        <div>
+          <label htmlFor="nickname">nickName</label>
+          <input
+            id="nickname"
+            name="nickname"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.nickname}
+          />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
