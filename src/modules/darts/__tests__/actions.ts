@@ -52,7 +52,7 @@ describe('darts epics', () => {
 
       store.dispatch(actions.fetchDartsByGameAsync.started({ gameId: '1' }));
 
-      await sleep(100).then(() => {
+      await sleep(1000).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -74,7 +74,7 @@ describe('darts epics', () => {
       store.dispatch(actions.fetchDartsByGameAsync.started({ gameId: '1' }));
       store.dispatch(actions.fetchDartsByGameCancel({ gameId: '1' }));
 
-      await sleep(100).then(() => {
+      await sleep(1000).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -110,7 +110,7 @@ describe('darts epics', () => {
         actions.fetchDartsByGameAsync.started({ gameId: '2' }),
       );
 
-      await sleep(100).then(() => {
+      await sleep(1000).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -142,7 +142,7 @@ describe('darts epics', () => {
         actions.fetchDartsByGameAsync.started({ gameId: '3' }),
       );
 
-      await sleep(100).then(() => {
+      await sleep(1000).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -188,7 +188,7 @@ describe('darts epics', () => {
 
       store.dispatch<any>(createDart(20));
 
-      await sleep(100).then(() => {
+      await sleep(1000).then(() => {
         const actions = store.getActions();
         expect(actions[0].payload.value).toEqual(
           expectedActions[0].payload.value,
