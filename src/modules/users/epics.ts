@@ -65,7 +65,7 @@ export const fetchPlayersEpic = epicFactory<
 const usersEpic = combineEpics(
   fetchUserEpic,
   fetchUsersEpic,
-  fetchPlayersEpic,
+  // fetchPlayersEpic,
   createUserEpic,
   // createUserDataEpic,
 );
