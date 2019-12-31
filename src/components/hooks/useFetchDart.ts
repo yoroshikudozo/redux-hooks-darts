@@ -9,9 +9,9 @@ import { FetchDartParams } from 'modules/darts/types';
 export const useFetchDart = (params: FetchDartParams) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const controller = new AbortController();
 
   useEffect(() => {
+    const controller = new AbortController();
     (async () => {
       setLoading(true);
       dispatch(fetchDartAsync.started(params));

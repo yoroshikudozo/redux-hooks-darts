@@ -8,9 +8,9 @@ import { fetchPlayersRequest2 } from 'modules/users/api';
 export const useFetchPlayers = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const controller = new AbortController();
 
   useEffect(() => {
+    const controller = new AbortController();
     (async () => {
       setLoading(true);
       dispatch(fetchPlayersAsync.started());

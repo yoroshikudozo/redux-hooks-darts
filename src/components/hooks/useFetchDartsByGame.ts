@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -9,9 +9,9 @@ import { FetchDartsByGameParams } from 'modules/darts/types';
 export const useFetchDartsByGame = (params: FetchDartsByGameParams) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const controller = new AbortController();
 
-  useEffect(() => {
+  useCallback(() => {
+    const controller = new AbortController();
     (async () => {
       setLoading(true);
       dispatch(fetchDartsByGameAsync.started(params));
@@ -27,7 +27,7 @@ export const useFetchDartsByGame = (params: FetchDartsByGameParams) => {
     return () => {
       controller.abort();
     };
-  }, [dispatch]);
+  }, [dispatch, params]);
 
   return { loading };
 };
