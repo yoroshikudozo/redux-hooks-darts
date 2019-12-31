@@ -11,21 +11,18 @@ function http(url?: string, opts?: wretch.WretcherOptions) {
     .accept('application/json')
     .content('utf-8')
     .options(opts ? opts : {})
-    .catcher('AbortError', err => {
-      console.log('abort error');
-      throw new RequestError(err.message);
-    })
-    .catcher('__fromFetch', err => {
-      console.log('fetch error');
-      throw new RequestError(err.message);
-    })
     .catcher(400, createErrorResponse)
     .catcher(401, createErrorResponse)
     .catcher(402, createErrorResponse)
     .catcher(403, createErrorResponse)
     .catcher(404, createErrorResponse)
     .catcher(408, createErrorResponse)
-    .catcher(500, createErrorResponse);
+    .catcher(500, createErrorResponse)
+    .catcher('__fromFetch', error => {
+      console.log(JSON.stringify(error));
+      if (error.name === 'AbortError') throw error;
+      throw new RequestError(error.message);
+    });
 }
 
 function createErrorResponse({ response }: wretch.WretcherError) {
@@ -35,6 +32,7 @@ function createErrorResponse({ response }: wretch.WretcherError) {
 
 export const handleErrors = (error: wretch.WretcherError) => {
   console.log(error);
+  if (error.name === 'AbortError') throw error;
   if (error instanceof ResponseError) throw error;
   throw new ParseError(error);
 };
