@@ -27,7 +27,9 @@ export default function CreateUser({ id }: Props) {
       name: '',
       nickname: '',
     },
-    onSubmit: value => (dispatch(createUser(value)) as unknown) as void,
+    onSubmit: value => {
+      dispatch(createUser(value));
+    },
   });
 
   return (
