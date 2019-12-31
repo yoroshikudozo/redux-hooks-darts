@@ -1,9 +1,10 @@
+import { AppState } from 'modules/reducers';
+
 import * as selectors from 'modules/darts/selectors';
 
 import dart1 from '../mock/resources/dart1';
 import dart2 from '../mock/resources/dart2';
 import dart3 from '../mock/resources/dart3';
-import { AppState } from 'modules/reducers';
 
 describe('darts selectors', () => {
   const state = {

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
-import {
-  fetchDartsByGameCancel,
-  fetchDartsByGameAsync,
-} from 'modules/darts/actions';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import CONSTS from 'consts';
 
 import { Dartsboard } from 'components/atoms/DartsBoard';
-import CONSTS from 'consts';
-import { Link } from 'react-router-dom';
+import {
+  fetchDartsByGameAsync,
+  fetchDartsByGameCancel,
+} from 'modules/darts/actions';
 
 function Home() {
   const handleClick = ({ currentTarget }: React.MouseEvent<SVGElement>) => {

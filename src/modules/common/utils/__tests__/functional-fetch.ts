@@ -1,11 +1,15 @@
 import fetchMock from 'fetch-mock';
+
 import CONSTS from 'consts';
-import { http } from 'modules/common/utils/functional-fetch';
+
 import { initDartsMock } from 'modules/darts/mock';
+import { FetchDartsByGameParams } from 'modules/darts/types';
+
+import { http } from 'modules/common/utils/functional-fetch';
+
 import dart1 from 'modules/darts/mock/resources/dart1';
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
-import { FetchDartsByGameParams } from 'modules/darts/types';
 
 initDartsMock(fetchMock);
 

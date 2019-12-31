@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import API from 'consts/endpoints';
 
 import round1 from './resources/round1.json';
+
 // import round2 from './resources/round2.json';
 // import round3 from './resources/round3.json';
 // import round4 from './resources/round4.json';

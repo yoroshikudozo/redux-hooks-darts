@@ -1,22 +1,22 @@
 import { combineEpics } from 'redux-observable';
 
-import { epicFactory } from 'modules/common/utils/rx';
 import { NormalizedEntities } from 'modules/common/schemas';
-
-import {
-  FetchUserParams,
-  User,
-  CreateUserData,
-  UserList,
-} from 'modules/users/types';
 import * as actions from 'modules/users/actions';
-import { usersNormalize } from 'modules/users/schemas';
 import {
+  createUserRequest,
+  fetchPlayersRequest,
   fetchUserRequest,
   fetchUsersRequest,
-  fetchPlayersRequest,
-  createUserRequest,
 } from 'modules/users/api';
+import { usersNormalize } from 'modules/users/schemas';
+import {
+  CreateUserData,
+  FetchUserParams,
+  User,
+  UserList,
+} from 'modules/users/types';
+
+import { epicFactory } from 'modules/common/utils/rx';
 
 export const fetchUserEpic = epicFactory<
   FetchUserParams,

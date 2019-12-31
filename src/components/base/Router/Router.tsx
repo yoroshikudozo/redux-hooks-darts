@@ -1,15 +1,15 @@
 import React from 'react';
+
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 
 import ROUTES from 'consts/routes';
 
 import Auth from 'components/base/Auth/Auth';
-
 import HomePage from 'components/pages/Home/Home';
 import LoginPage from 'components/pages/Login/Login';
-import UsersPage from 'components/pages/Users/Users';
 import CreateUserPage from 'components/pages/Users/CreateUser';
+import UsersPage from 'components/pages/Users/Users';
 
 function Router() {
   return (

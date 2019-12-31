@@ -1,12 +1,13 @@
-import format from 'date-fns/format';
 import { FetchMockStatic } from 'fetch-mock';
 
 import API from 'consts/endpoints';
+import format from 'date-fns/format';
+
+import { sleep } from 'modules/common/testHelpers';
 
 import dart1 from './resources/dart1';
 import dart2 from './resources/dart2';
 import dart3 from './resources/dart3';
-import { sleep } from 'modules/common/testHelpers';
 
 const endpoint = `${API.ROOT}${API.DARTS}`;
 

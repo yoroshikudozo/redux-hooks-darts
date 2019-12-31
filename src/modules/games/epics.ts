@@ -1,21 +1,24 @@
+import { combineEpics } from 'redux-observable';
+
 import API from 'consts/endpoints';
-import http from 'modules/common/utils/request-first';
+
+import { NormalizedEntities } from 'modules/common/schemas';
+import actions, {
+  createGameCancel,
+  fetchGameCancel,
+  fetchGamesCancel,
+} from 'modules/games/actions';
+import { gameNormalize, gamesNormalize } from 'modules/games/schemas';
 import {
+  CreateGameData,
+  FetchGameParams,
   FetchGamesParams,
   FetchGamesResponse,
   Game,
-  CreateGameData,
-  FetchGameParams,
 } from 'modules/games/types';
+
+import http from 'modules/common/utils/request-first';
 import { epicFactory } from 'modules/common/utils/rx';
-import actions, {
-  fetchGamesCancel,
-  createGameCancel,
-  fetchGameCancel,
-} from 'modules/games/actions';
-import { gamesNormalize, gameNormalize } from 'modules/games/schemas';
-import { combineEpics } from 'redux-observable';
-import { NormalizedEntities } from 'modules/common/schemas';
 
 const fetchGamesRequest = ({ playerId }: FetchGamesParams) =>
   http<FetchGamesResponse>(`${API.GAMES}/${playerId}`);

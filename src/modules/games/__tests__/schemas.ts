@@ -1,10 +1,11 @@
-import * as schemas from '../schemas';
-import game1 from '../mock/resources/game1';
-import game2 from '../mock/resources/game2';
-import game3 from '../mock/resources/game3';
 import user1 from 'modules/users/mock/resources/user1';
 import user2 from 'modules/users/mock/resources/user2';
 import user3 from 'modules/users/mock/resources/user3';
+
+import game1 from '../mock/resources/game1';
+import game2 from '../mock/resources/game2';
+import game3 from '../mock/resources/game3';
+import * as schemas from '../schemas';
 
 describe('gameSchema', () => {
   it('returns normalized entity', async () => {

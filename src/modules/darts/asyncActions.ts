@@ -1,10 +1,12 @@
-import { AnyAction } from 'typescript-fsa';
-import cuid from 'cuid';
 import { ThunkAction } from 'redux-thunk';
+
+import cuid from 'cuid';
+import { AnyAction } from 'typescript-fsa';
+
+import { AppState } from 'modules/reducers';
 
 import actions from 'modules/darts/actions';
 import { CreateDartData } from 'modules/darts/types';
-import { AppState } from 'modules/reducers';
 
 export const initCreateDartRequestData = (
   id: string,

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { getEntities } from 'modules/common/selectors';
 
 export const getUsers = createSelector(

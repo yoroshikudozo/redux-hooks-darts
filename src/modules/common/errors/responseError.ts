@@ -1,4 +1,5 @@
 import CONSTS from 'consts';
+
 import { Errors } from 'consts/errors';
 
 export default class ResponseError extends Error {

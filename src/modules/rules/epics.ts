@@ -1,12 +1,12 @@
 import { combineEpics } from 'redux-observable';
 
 import { NormalizedEntities } from 'modules/common/schemas';
-import { epicFactory } from 'modules/common/utils/rx';
-
-import { FetchRuleParams, Rule, CreateRuleData } from 'modules/rules/types';
 import actions from 'modules/rules/actions';
+import { createRuleRequest, fetchRuleRequest } from 'modules/rules/api';
 import { rulesNormalize } from 'modules/rules/schemas';
-import { fetchRuleRequest, createRuleRequest } from 'modules/rules/api';
+import { CreateRuleData, FetchRuleParams, Rule } from 'modules/rules/types';
+
+import { epicFactory } from 'modules/common/utils/rx';
 
 export const fetchRuleEpic = epicFactory<
   FetchRuleParams,

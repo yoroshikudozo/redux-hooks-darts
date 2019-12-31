@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 
-import { FetchDartsByGameParams } from 'modules/darts/types';
 import { fetchDartsByGameAsync } from 'modules/darts/actions';
 import { fetchDartsByGameRequest2 } from 'modules/darts/api';
+import { FetchDartsByGameParams } from 'modules/darts/types';
 
 export const useFetchDartsByGame = (params: FetchDartsByGameParams) => {
   const [loading, setLoading] = useState(false);

@@ -1,7 +1,7 @@
-import { schema, normalize } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 
-import { Dart, DartList } from 'modules/darts/types';
 import { NormalizedEntities } from 'modules/common/schemas';
+import { Dart, DartList } from 'modules/darts/types';
 
 export const dartSchema = new schema.Entity<Dart>('darts');
 export const dartListSchema = [dartSchema];

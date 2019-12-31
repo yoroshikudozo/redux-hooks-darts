@@ -1,8 +1,9 @@
-import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
+import { createSelector } from 'reselect';
+
+import { AppState } from 'modules/reducers';
 
 import { getEntities } from 'modules/common/selectors';
-import { AppState } from 'modules/reducers';
 
 export const getGameIdFromDarts = (_state_: AppState, gameId: string) => gameId;
 

@@ -1,7 +1,7 @@
-import * as schemas from '../schemas';
 import dart1 from '../mock/resources/dart1';
 import dart2 from '../mock/resources/dart2';
 import dart3 from '../mock/resources/dart3';
+import * as schemas from '../schemas';
 
 describe('schemas', () => {
   describe('dartSchema', () => {

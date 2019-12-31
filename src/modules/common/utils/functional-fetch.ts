@@ -1,15 +1,14 @@
 import * as R from 'ramda';
 
+import * as E from 'fp-ts/lib/Either';
 import { identity } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
-import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
 
-import { TypedResponse } from 'modules/common/utils/request-first';
-
-import ResponseError from 'modules/common/errors/responseError';
-import RequestError from 'modules/common/errors/requestError';
 import ParseError from 'modules/common/errors/parseError';
+import RequestError from 'modules/common/errors/requestError';
+import ResponseError from 'modules/common/errors/responseError';
+import { TypedResponse } from 'modules/common/utils/request-first';
 
 type Errors = RequestError | ResponseError | ParseError;
 

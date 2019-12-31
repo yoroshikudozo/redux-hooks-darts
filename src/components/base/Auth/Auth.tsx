@@ -1,6 +1,8 @@
 import React from 'react';
-import { Redirect, Route, RouteComponentProps } from 'react-router';
+
 import { useSelector } from 'react-redux';
+import { Redirect, Route, RouteComponentProps } from 'react-router';
+
 import { getIsAuthenticated } from 'modules/auth/selector';
 
 function Auth(props: { children: JSX.Element }) {

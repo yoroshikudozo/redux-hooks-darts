@@ -1,5 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import fetchMock from 'fetch-mock';
 
 import format from 'date-fns/format';
 
@@ -8,8 +9,6 @@ import { initDartsMock } from 'modules/darts/mock';
 // import { initRulesMock } from 'modules/rules/mock';
 import { initGamesMock } from 'modules/games/mock';
 import { initUsersMock } from 'modules/users/mock';
-
-import fetchMock from 'fetch-mock';
 
 export function init() {
   initDartsMock(fetchMock);

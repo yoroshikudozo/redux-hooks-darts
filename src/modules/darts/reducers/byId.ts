@@ -1,7 +1,8 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
+
+import { ById } from 'modules/common/types';
 import actions from 'modules/darts/actions';
 import { Dart } from 'modules/darts/types';
-import { ById } from 'modules/common/types';
 
 const initialState: ById<Dart> = {};
 

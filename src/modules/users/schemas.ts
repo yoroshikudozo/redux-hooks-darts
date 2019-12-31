@@ -1,6 +1,7 @@
-import { schema, normalize } from 'normalizr';
-import { User, UserList } from 'modules/users/types';
+import { normalize, schema } from 'normalizr';
+
 import { NormalizedEntities } from 'modules/common/schemas';
+import { User, UserList } from 'modules/users/types';
 
 export const userSchema = new schema.Entity('users');
 export const userListSchema = [userSchema];

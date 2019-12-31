@@ -1,7 +1,8 @@
-import format from 'date-fns/format';
 import { FetchMockStatic } from 'fetch-mock';
 
 import API from 'consts/endpoints';
+import format from 'date-fns/format';
+
 import { sleep } from 'modules/common/testHelpers';
 
 import game1 from './resources/game1';

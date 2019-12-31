@@ -1,7 +1,9 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from 'modules/reducers';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import thunk from 'redux-thunk';
+
+import rootReducer from 'modules/reducers';
+
 import { rootEpic } from 'modules/common/epics';
 
 const preloadedState = { auth: { isAuthenticated: true } };

@@ -1,4 +1,4 @@
-import { schema, normalize } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 
 import { NormalizedEntities } from 'modules/common/schemas';
 import * as Types from 'modules/rules/types';

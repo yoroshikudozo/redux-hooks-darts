@@ -1,8 +1,8 @@
-import { schema, normalize } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 
-import { Game, FetchGamesResponse } from 'modules/games/types';
-import { playerListSchema } from 'modules/users/schemas';
 import { NormalizedEntities } from 'modules/common/schemas';
+import { FetchGamesResponse, Game } from 'modules/games/types';
+import { playerListSchema } from 'modules/users/schemas';
 
 export const gameSchema = new schema.Entity('games', {
   players: playerListSchema,

@@ -1,8 +1,8 @@
 import API from 'consts/endpoints';
 
-import http, { handleErrors } from 'modules/common/utils/wretch';
+import { CreateRuleData, FetchRuleParams, Rule } from 'modules/rules/types';
 
-import { FetchRuleParams, Rule, CreateRuleData } from 'modules/rules/types';
+import http, { handleErrors } from 'modules/common/utils/wretch';
 
 const endpoint = `${API.RULES}`;
 

@@ -1,6 +1,7 @@
 import { FetchMockStatic } from 'fetch-mock';
 
 import API from 'consts/endpoints';
+
 import { sleep } from 'modules/common/testHelpers';
 
 import user1 from './resources/user1';

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { AppState } from 'modules/reducers';
 
 export const getAuth = (state: AppState) => state.auth;

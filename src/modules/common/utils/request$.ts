@@ -1,6 +1,7 @@
 import { Observable, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+
 import { fromFetch } from 'rxjs/fetch';
+import { catchError, switchMap } from 'rxjs/operators';
 
 export const wrap$ = <T, E>(task: Observable<Response>): Observable<T | E> => {
   return task.pipe(

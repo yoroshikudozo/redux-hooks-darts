@@ -1,22 +1,22 @@
 import { combineEpics } from 'redux-observable';
 
 import { NormalizedEntities } from 'modules/common/schemas';
-import { epicFactory } from 'modules/common/utils/rx';
-
-import {
-  FetchDartParams,
-  FetchDartsResponse,
-  Dart,
-  CreateDartData,
-  FetchDartsByGameParams,
-} from 'modules/darts/types';
 import actions from 'modules/darts/actions';
+import {
+  createDartRequest,
+  fetchDartRequest,
+  fetchDartsByGameRequest,
+} from 'modules/darts/api';
 import { dartsNormalize } from 'modules/darts/schemas';
 import {
-  fetchDartsByGameRequest,
-  fetchDartRequest,
-  createDartRequest,
-} from 'modules/darts/api';
+  CreateDartData,
+  Dart,
+  FetchDartParams,
+  FetchDartsByGameParams,
+  FetchDartsResponse,
+} from 'modules/darts/types';
+
+import { epicFactory } from 'modules/common/utils/rx';
 
 export const fetchDartsByGameEpic = epicFactory<
   FetchDartsByGameParams,

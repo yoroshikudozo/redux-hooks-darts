@@ -1,8 +1,10 @@
 import * as wretch from 'wretch';
+
 import CONSTS from 'consts';
+
+import ParseError from 'modules/common/errors/parseError';
 import RequestError from 'modules/common/errors/requestError';
 import ResponseError from 'modules/common/errors/responseError';
-import ParseError from 'modules/common/errors/parseError';
 
 function http(url?: string, opts?: wretch.WretcherOptions) {
   return wretch

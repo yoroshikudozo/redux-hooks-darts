@@ -1,10 +1,11 @@
-import entities from 'modules/rules/reducers/byId';
-import users from 'modules/rules/reducers/users';
 import { fetchRuleAsync } from 'modules/rules/actions';
 import { rulesNormalize } from 'modules/rules/schemas';
 
-import rule1 from 'modules/rules/mock/resources/rule1';
 import allIds from 'modules/rules/reducers/allIds';
+import entities from 'modules/rules/reducers/byId';
+import users from 'modules/rules/reducers/users';
+
+import rule1 from 'modules/rules/mock/resources/rule1';
 
 describe('rulesReducer', () => {
   describe('entities', () => {

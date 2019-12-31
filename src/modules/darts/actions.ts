@@ -1,12 +1,12 @@
 import actionCreatorFactory from 'typescript-fsa';
 
+import { NormalizedEntities } from 'modules/common/schemas';
 import {
   CreateDartData,
-  FetchDartParams,
   Dart,
+  FetchDartParams,
   FetchDartsByGameParams,
 } from 'modules/darts/types';
-import { NormalizedEntities } from 'modules/common/schemas';
 
 const dartsActionCreator = actionCreatorFactory('DARTS');
 

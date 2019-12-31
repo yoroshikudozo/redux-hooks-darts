@@ -1,7 +1,6 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { ById } from 'modules/common/types';
-
 import actions from 'modules/rules/actions';
 import { Rule } from 'modules/rules/types';
 

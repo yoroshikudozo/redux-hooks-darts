@@ -1,7 +1,6 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { ById } from 'modules/common/types';
-
 import * as actions from 'modules/users/actions';
 import { User } from 'modules/users/types';
 

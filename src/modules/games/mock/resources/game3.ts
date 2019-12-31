@@ -1,4 +1,5 @@
 import { Game } from 'modules/games/types';
+
 import user3 from 'modules/users/mock/resources/user3';
 
 export const game3: Game = {

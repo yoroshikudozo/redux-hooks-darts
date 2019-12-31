@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import actions from 'modules/rules/actions';

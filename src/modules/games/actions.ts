@@ -1,16 +1,18 @@
-import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
-import cuid from 'cuid';
+import { ThunkAction } from 'redux-thunk';
 
+import cuid from 'cuid';
+import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
+
+import { AppState } from 'modules/reducers';
+
+import { NormalizedEntities } from 'modules/common/schemas';
 import {
+  CreateGameData,
   FetchGameParams,
   FetchGamesParams,
-  CreateGameData,
-  GameType,
   Game,
+  GameType,
 } from 'modules/games/types';
-import { AppState } from 'modules/reducers';
-import { ThunkAction } from 'redux-thunk';
-import { NormalizedEntities } from 'modules/common/schemas';
 
 const gamesActionCreator = actionCreatorFactory('GAMES');
 

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 
-import { FetchDartParams } from 'modules/darts/types';
 import { fetchDartAsync } from 'modules/darts/actions';
 import { fetchDartRequest2 } from 'modules/darts/api';
+import { FetchDartParams } from 'modules/darts/types';
 
 export const useFetchDart = (params: FetchDartParams) => {
   const [loading, setLoading] = useState(false);

@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import { Provider } from 'react-redux';
-import createMockStore from 'redux-mock-store';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import { epicMiddleware } from 'modules/store/configureStore';
 
-import Auth from './Auth';
 import Home from 'components/pages/Home/Home';
+
+import Auth from './Auth';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = createMockStore(middlewares);

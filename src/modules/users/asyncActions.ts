@@ -1,11 +1,12 @@
 import { ThunkAction } from 'redux-thunk';
-import { AnyAction } from 'typescript-fsa';
+
 import cuid from 'cuid';
+import { AnyAction } from 'typescript-fsa';
 
 import { AppState } from 'modules/reducers';
 
-import { CreateUserData, CreateUserFormData } from 'modules/users/types';
 import * as actions from 'modules/users/actions';
+import { CreateUserData, CreateUserFormData } from 'modules/users/types';
 
 export const initCreateUserRequestData = (
   { name, nickname }: CreateUserFormData,

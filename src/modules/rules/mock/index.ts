@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import API from 'consts/endpoints';
 
 import rule1 from './resources/rule1';
+
 // import rule2 from './resources/rule2.json';
 // import rule3 from './resources/rule3.json';
 

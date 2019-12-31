@@ -1,22 +1,24 @@
 import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { combineEpics } from 'redux-observable';
+import thunk from 'redux-thunk';
 
 import fetchMock from 'fetch-mock';
 
-import { initDartsMock } from 'modules/darts/mock';
 import { sleep } from 'modules/common/testHelpers';
-
-import dart1 from '../mock/resources/dart1';
-import actions from '../actions';
-import { epicMiddleware } from 'modules/store/configureStore';
+import { createDart } from 'modules/darts/asyncActions';
 import dartsEpic from 'modules/darts/epics';
-import { loggingEpic } from 'modules/common/utils/rx';
+import { initDartsMock } from 'modules/darts/mock';
+import { epicMiddleware } from 'modules/store/configureStore';
+
 import ParseError from 'modules/common/errors/parseError';
 import ResponseError from 'modules/common/errors/responseError';
+import { loggingEpic } from 'modules/common/utils/rx';
+
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
-import { createDart } from 'modules/darts/asyncActions';
+
+import actions from '../actions';
+import dart1 from '../mock/resources/dart1';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
