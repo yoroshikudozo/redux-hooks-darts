@@ -10,6 +10,7 @@ import CONSTS from 'consts';
 import { AppState } from 'modules/reducers';
 
 import { useFetchDart } from 'components/hooks/useFetchDart';
+import { getDartById } from 'modules/darts/selectors';
 import { createUser } from 'modules/users/asyncActions';
 import { CreateUserFormData } from 'modules/users/types';
 
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function CreateUser({ id }: Props) {
-  const dart = useSelector((state: AppState) => state.entities.darts.byId[id]);
+  const dart = useSelector((state: AppState) => getDartById(state, id));
   const dispatch = useDispatch();
   const { loading } = useFetchDart({ id });
   const formik = useFormik<CreateUserFormData>({
@@ -34,7 +35,7 @@ export default function CreateUser({ id }: Props) {
       <h1>Create User</h1>
       {loading && <p>Loading...</p>}
       {dart && <p>{dart.point}</p>}
-      <Link to={CONSTS.ROUTES.USERS.ROOT}>Back</Link>5
+      <Link to={CONSTS.ROUTES.USERS.ROOT}>Back</Link>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>
