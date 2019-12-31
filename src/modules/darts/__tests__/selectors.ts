@@ -43,6 +43,12 @@ describe('darts selectors', () => {
     );
   });
 
+  it('getDartById has same refference', async () => {
+    const data = selectors.getDartById((state as unknown) as AppState, '1');
+    const data2 = selectors.getDartById((state as unknown) as AppState, '1');
+    expect(data).toBe(data2);
+  });
+
   it('getDartIdsFromGameId selects collectly', async () => {
     expect(
       selectors.getDartIdsFromGameId((state as unknown) as AppState, '1'),
