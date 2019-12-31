@@ -18,6 +18,21 @@ export const fetchUserRequest = ({ id }: FetchUserParams) =>
     .json<User>()
     .catch(handleErrors);
 
+export const fetchUserRequest2 = (
+  { id }: FetchUserParams,
+  controller: AbortController,
+) =>
+  http(`${endpoint}/${id}`)
+    .signal(controller)
+    .get()
+    .onAbort(err => {
+      console.log('Aborted !');
+      throw err;
+    })
+    .json<User>()
+    .catch(handleErrors)
+    .then(data => usersNormalize<{ users: string[] }>(data));
+
 export const fetchUsersRequest = () =>
   http(`${endpoint}`)
     .get()

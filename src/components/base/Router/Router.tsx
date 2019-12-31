@@ -9,6 +9,7 @@ import Auth from 'components/base/Auth/Auth';
 import HomePage from 'components/pages/Home/Home';
 import LoginPage from 'components/pages/Login/Login';
 import CreateUserPage from 'components/pages/Users/CreateUser';
+import UserDetailPage from 'components/pages/Users/UserDetail';
 import UsersPage from 'components/pages/Users/Users';
 
 function Router() {
@@ -25,9 +26,13 @@ function Router() {
               component={UsersPage}
             />
             <Route
+              path={`${ROUTES.USERS.ROOT}/detail/:id`}
+              component={UserDetailPage}
+            />
+            <Route
               path={ROUTES.USERS.CREATE}
               exact={true}
-              component={() => <CreateUserPage id={'1'} />}
+              component={CreateUserPage}
             />
           </Switch>
         </Auth>

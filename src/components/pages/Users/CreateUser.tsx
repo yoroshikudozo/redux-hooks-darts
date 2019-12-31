@@ -1,27 +1,17 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 
 import CONSTS from 'consts';
 
-import { AppState } from 'modules/reducers';
-
-import { useFetchDart } from 'components/hooks/useFetchDart';
-import { getDartById } from 'modules/darts/selectors';
 import { createUser } from 'modules/users/asyncActions';
 import { CreateUserFormData } from 'modules/users/types';
 
-interface Props {
-  id: string;
-}
-
-export default function CreateUser({ id }: Props) {
-  const dart = useSelector((state: AppState) => getDartById(state, id));
+export default function CreateUser() {
   const dispatch = useDispatch();
-  const { loading } = useFetchDart({ id });
   const formik = useFormik<CreateUserFormData>({
     initialValues: {
       name: '',
@@ -35,8 +25,6 @@ export default function CreateUser({ id }: Props) {
   return (
     <div>
       <h1>Create User</h1>
-      {loading && <p>Loading...</p>}
-      {dart && <p>{dart.point}</p>}
       <Link to={CONSTS.ROUTES.USERS.ROOT}>Back</Link>
       <form onSubmit={formik.handleSubmit}>
         <div>

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 
 import { epicMiddleware } from 'modules/store/configureStore';
 
-import CreateUser from './CreateUser';
+import UserDetail from './UserDetail';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
@@ -23,7 +23,7 @@ it('renders without crashing', () => {
     ReactDOM.render(
       <Provider store={store}>
         <BrowserRouter>
-          <Route component={CreateUser} />
+          <Route component={UserDetail} />
         </BrowserRouter>
       </Provider>,
       div,
