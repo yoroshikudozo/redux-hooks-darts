@@ -1,3 +1,5 @@
 {
-  "eslint.enable": true
+  "eslint.enable": true,
+  "importSorter.generalConfiguration.configurationFilePath": ".vscode/import-sorter.json"
+  // "typescript.extension.sortImports.sortMethod": "path"
 }
