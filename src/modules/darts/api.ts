@@ -1,22 +1,27 @@
+import { WretcherOptions } from 'wretch';
+
 import API from 'consts/endpoints';
 
-import http, { handleErrors } from 'modules/common/utils/wretch';
-
+import { dartsNormalize } from 'modules/darts/schemas';
 import {
-  FetchDartParams,
-  Dart,
   CreateDartData,
+  Dart,
   DartList,
+  FetchDartParams,
   FetchDartsByGameParams,
 } from 'modules/darts/types';
-import { WretcherOptions } from 'wretch';
-import { dartsNormalize } from 'modules/darts/schemas';
+
+import http, { handleErrors } from 'modules/common/utils/wretch';
 
 const endpoint = `${API.DARTS}`;
 
 export const fetchDartsByGameRequest = ({ gameId }: FetchDartsByGameParams) =>
   http(`${endpoint}/games/${gameId}`)
     .get()
+    .onAbort(err => {
+      console.log('Aborted !');
+      throw err;
+    })
     .json<DartList>()
     .catch(handleErrors);
 

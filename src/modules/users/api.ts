@@ -1,14 +1,14 @@
 import API from 'consts/endpoints';
 
-import http, { handleErrors } from 'modules/common/utils/wretch';
-
+import { usersNormalize } from 'modules/users/schemas';
 import {
+  CreateUserData,
   FetchUserParams,
   User,
-  CreateUserData,
   UserList,
 } from 'modules/users/types';
-import { usersNormalize } from 'modules/users/schemas';
+
+import http, { handleErrors } from 'modules/common/utils/wretch';
 
 const endpoint = `${API.USERS}`;
 
@@ -27,6 +27,10 @@ export const fetchUsersRequest = () =>
 export const fetchPlayersRequest = () =>
   http(`${endpoint}`)
     .get()
+    .onAbort(err => {
+      console.log('Aborted !');
+      throw err;
+    })
     .json<UserList>()
     .catch(handleErrors);
 
@@ -34,6 +38,10 @@ export const fetchPlayersRequest2 = (controller: AbortController) =>
   http(`${endpoint}`)
     .signal(controller)
     .get()
+    .onAbort(err => {
+      console.log('Aborted !');
+      throw err;
+    })
     .json<UserList>()
     .catch(handleErrors)
     .then(data => usersNormalize<{ users: string[] }>(data));
