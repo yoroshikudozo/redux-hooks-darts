@@ -27,12 +27,12 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <div>
-      <div>Home</div>
+    <>
+      <h1>Home</h1>
       <Link to={CONSTS.ROUTES.USERS.ROOT}>Users</Link>
       <Link to={CONSTS.ROUTES.GAMES.ROOT}>Games</Link>
       <Dartsboard onBoardClick={handleClick} isFinished={false} />
-    </div>
+    </>
   );
 }
 

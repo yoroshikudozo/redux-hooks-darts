@@ -15,14 +15,16 @@ import './App.css';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Helmet
-        titleTemplate={`%s | ${CONSTS.APP_NAME}`}
-        defaultTitle={CONSTS.APP_NAME}
-      />
-      <Router />
-    </ThemeProvider>
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Helmet
+          titleTemplate={`%s | ${CONSTS.APP_NAME}`}
+          defaultTitle={CONSTS.APP_NAME}
+        />
+        <Router />
+      </ThemeProvider>
+    </div>
   );
 }
 
