@@ -35,7 +35,7 @@
       "orderLevel": 32
     },
     {
-      "regex": "^consts$",
+      "regex": "^consts$|^config$",
       "orderLevel": 40
     },
     {

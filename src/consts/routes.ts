@@ -2,6 +2,7 @@ const HOME = `/`;
 const LOGIN = '/login';
 const USERS = '/users';
 const USERS_CREATE = `${USERS}/create`;
+const USERS_DETAIL = `${USERS}/detail`;
 const GAMES = '/games';
 const COUNT_UP = `${GAMES}/countup`;
 
@@ -11,6 +12,7 @@ const ROUTES = {
   USERS: {
     ROOT: USERS,
     CREATE: USERS_CREATE,
+    DETAIL: USERS_DETAIL,
   },
   GAMES: {
     ROOT: GAMES,
