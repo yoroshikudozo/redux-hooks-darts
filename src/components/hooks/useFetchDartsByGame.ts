@@ -16,12 +16,12 @@ export const useFetchDartsByGame = (params: FetchDartsByGameParams) => {
       setLoading(true);
       dispatch(fetchDartsByGameAsync.started(params));
       try {
-        setLoading(false);
         const result = await fetchDartsByGameRequest2(params, controller);
         dispatch(fetchDartsByGameAsync.done({ params, result }));
       } catch (error) {
-        setLoading(false);
         dispatch(fetchDartsByGameAsync.failed({ params, error }));
+      } finally {
+        setLoading(false);
       }
     })();
     return () => {

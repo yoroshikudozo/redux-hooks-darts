@@ -16,12 +16,12 @@ export const useFetchDart = (params: FetchDartParams) => {
       setLoading(true);
       dispatch(fetchDartAsync.started(params));
       try {
-        setLoading(false);
         const result = await fetchDartRequest2(params, controller);
         dispatch(fetchDartAsync.done({ params, result }));
       } catch (error) {
-        setLoading(false);
         dispatch(fetchDartAsync.failed({ params, error }));
+      } finally {
+        setLoading(false);
       }
     })();
     return () => {

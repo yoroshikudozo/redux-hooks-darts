@@ -15,12 +15,12 @@ export const useFetchPlayers = () => {
       setLoading(true);
       dispatch(fetchPlayersAsync.started());
       try {
-        setLoading(false);
         const result = await fetchPlayersRequest2(controller);
         dispatch(fetchPlayersAsync.done({ result }));
       } catch (error) {
-        setLoading(false);
         dispatch(fetchPlayersAsync.failed({ error }));
+      } finally {
+        setLoading(false);
       }
     })();
     return () => {

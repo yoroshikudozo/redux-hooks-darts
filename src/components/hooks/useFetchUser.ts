@@ -16,12 +16,12 @@ export const useFetchUser = (params: FetchUserParams) => {
       setLoading(true);
       dispatch(fetchUserAsync.started(params));
       try {
-        setLoading(false);
         const result = await fetchUserRequest2(params, controller);
         dispatch(fetchUserAsync.done({ params, result }));
       } catch (error) {
-        setLoading(false);
         dispatch(fetchUserAsync.failed({ params, error }));
+      } finally {
+        setLoading(false);
       }
     })();
     return () => {
