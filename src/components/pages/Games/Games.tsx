@@ -10,7 +10,7 @@ import CONSTS from 'consts';
 
 import Button from '@material-ui/core/Button';
 
-import { createGame } from 'modules/games/actions';
+import { createGame } from 'modules/games/operations';
 
 export default function Games() {
   const history = useHistory();

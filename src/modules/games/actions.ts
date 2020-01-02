@@ -1,12 +1,4 @@
-import { ThunkAction } from 'redux-thunk';
-
-import cuid from 'cuid';
-import { initCreateGameData } from 'logics';
-import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
-
-import { GameIdentifier } from 'config';
-
-import { AppState } from 'modules/reducers';
+import actionCreatorFactory from 'typescript-fsa';
 
 import { NormalizedEntities } from 'modules/common/schemas';
 import {
@@ -49,33 +41,10 @@ export const createGameCancel = gamesActionCreator<CreateGameData>(
   'CREATE_CANCEL',
 );
 
-export const fetchGame = (
-  id: string,
-): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
-  dispatch(fetchGameAsync.started({ id }));
-};
-
-export const createGame = (
-  slug: string,
-  game: GameIdentifier,
-): ThunkAction<void, AppState, undefined, AnyAction> => (
-  dispatch,
-  getState,
-) => {
-  const createGameData = initCreateGameData({
-    id: cuid(),
-    game,
-    slug,
-    state: getState(),
-  });
-  dispatch(createGameAsync.started(createGameData));
-};
-
 const actions = {
   fetchGameAsync,
   fetchGamesAsync,
   fetchGameCancel,
-  createGame,
   createGameAsync,
   createGameCancel,
 };
