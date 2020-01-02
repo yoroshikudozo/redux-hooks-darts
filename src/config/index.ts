@@ -1,18 +1,23 @@
 import CONSTS from 'consts';
 
-interface GameType {
+export interface GameConfig {
+  identifier: GameIdentifier;
   name: string;
   key: GameKeys;
 }
 
 type GameKeys = keyof typeof CONSTS.ROUTES.GAMES;
+export type GameIdentifier = 'zeroOne' | 'countUp' | 'cricket';
 
-const games: GameType[] = [
-  {
-    name: 'Count Up',
-    key: 'COUNT_UP',
-  },
-];
+const countUp: GameConfig = {
+  identifier: 'countUp',
+  name: 'Count Up',
+  key: 'COUNT_UP',
+};
+
+const games = {
+  countUp,
+};
 
 const config = {
   games,

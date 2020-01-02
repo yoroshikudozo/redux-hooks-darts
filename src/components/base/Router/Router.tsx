@@ -6,12 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 import ROUTES from 'consts/routes';
 
 import Auth from 'components/base/Auth/Auth';
+import CountUpPage from 'components/pages/Games/CountUp';
+import GamesPage from 'components/pages/Games/Games';
 import HomePage from 'components/pages/Home/Home';
 import LoginPage from 'components/pages/Login/Login';
 import CreateUserPage from 'components/pages/Users/CreateUser';
 import UserDetailPage from 'components/pages/Users/UserDetail';
 import UsersPage from 'components/pages/Users/Users';
-import GamesPage from 'components/pages/Games/Games';
 
 function Router() {
   return (
@@ -34,8 +35,11 @@ function Router() {
               <CreateUserPage />
             </Route>
             {/* Games */}
-            <Route path={ROUTES.GAMES.ROOT}>
+            <Route path={ROUTES.GAMES.ROOT} exact={true}>
               <GamesPage />
+            </Route>
+            <Route path={`${ROUTES.GAMES.COUNT_UP}/:hash`}>
+              <CountUpPage />
             </Route>
           </Switch>
         </Auth>

@@ -1,8 +1,9 @@
+import { GameIdentifier } from 'config';
+
 import { Dart } from 'modules/darts/types';
 import { User } from 'modules/users/types';
 
 type Status = 'end' | 'playing' | 'aborted';
-export type GameType = 'zeroOne' | 'countUp' | 'cricket';
 
 interface Round {
   id: string;
@@ -17,7 +18,7 @@ interface Score {
 }
 
 export interface GameEntity {
-  gameType: GameType;
+  gameType: GameIdentifier;
   date: string;
   id: string;
   status: Status;
@@ -26,7 +27,7 @@ export interface GameEntity {
 }
 
 export interface Game {
-  gameType: GameType;
+  gameType: GameIdentifier;
   date: string;
   id: string;
   status: Status;
@@ -48,7 +49,8 @@ export interface FetchGamesParams {
 
 export interface CreateGameData {
   id: string;
-  gameType: GameType;
+  gameType: GameIdentifier;
+  url: string;
   status: Status;
   players: string[];
 }

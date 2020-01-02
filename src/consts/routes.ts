@@ -4,7 +4,7 @@ const USERS = '/users';
 const USERS_CREATE = `${USERS}/create`;
 const USERS_DETAIL = `${USERS}/detail`;
 const GAMES = '/games';
-const COUNT_UP = `${GAMES}/countup`;
+const COUNT_UP = `${GAMES}/count-up`;
 
 const ROUTES = {
   HOME,

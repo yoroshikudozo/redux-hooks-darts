@@ -1,7 +1,10 @@
 import { ThunkAction } from 'redux-thunk';
 
 import cuid from 'cuid';
+import { initCreateGameData } from 'logics';
 import actionCreatorFactory, { AnyAction } from 'typescript-fsa';
+
+import { GameIdentifier } from 'config';
 
 import { AppState } from 'modules/reducers';
 
@@ -11,7 +14,6 @@ import {
   FetchGameParams,
   FetchGamesParams,
   Game,
-  GameType,
 } from 'modules/games/types';
 
 const gamesActionCreator = actionCreatorFactory('GAMES');
@@ -47,17 +49,6 @@ export const createGameCancel = gamesActionCreator<CreateGameData>(
   'CREATE_CANCEL',
 );
 
-export const initCreateGameRequestData = (
-  id: string,
-  gameType: GameType,
-  state: AppState,
-): CreateGameData => ({
-  gameType: 'countUp',
-  id,
-  status: 'playing',
-  players: ['1'],
-});
-
 export const fetchGame = (
   id: string,
 ): ThunkAction<void, AppState, undefined, AnyAction> => dispatch => {
@@ -65,13 +56,18 @@ export const fetchGame = (
 };
 
 export const createGame = (
-  gameType: GameType,
+  slug: string,
+  game: GameIdentifier,
 ): ThunkAction<void, AppState, undefined, AnyAction> => (
   dispatch,
   getState,
 ) => {
-  const id = cuid();
-  const createGameData = initCreateGameRequestData(id, gameType, getState());
+  const createGameData = initCreateGameData({
+    id: cuid(),
+    game,
+    slug,
+    state: getState(),
+  });
   dispatch(createGameAsync.started(createGameData));
 };
 

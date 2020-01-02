@@ -12,7 +12,7 @@ import { useFetchUser } from 'components/hooks/useFetchUser';
 import { getUserById } from 'modules/users/selectors';
 
 export default function UserDetail() {
-  const { id }: any = useParams();
+  const { id } = useParams<{ id: string }>();
   const user = useSelector((state: AppState) => getUserById(state, id));
   const { loading } = useFetchUser({ id });
 
