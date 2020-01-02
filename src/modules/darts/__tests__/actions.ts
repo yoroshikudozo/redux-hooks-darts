@@ -5,9 +5,9 @@ import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock';
 
 import { sleep } from 'modules/common/testHelpers';
-import { createDart } from 'modules/darts/asyncActions';
 import dartsEpic from 'modules/darts/epics';
 import { initDartsMock } from 'modules/darts/mock';
+import { createDart } from 'modules/darts/operations';
 import { epicMiddleware } from 'modules/store/configureStore';
 
 import ParseError from 'modules/common/errors/parseError';
