@@ -1,6 +1,6 @@
 {
   "importSorter.generalConfiguration.exclude": [],
-  "importSorter.generalConfiguration.sortOnBeforeSave": false,
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.hasSemicolon": true,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
