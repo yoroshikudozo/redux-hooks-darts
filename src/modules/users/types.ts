@@ -7,12 +7,12 @@ export interface User {
   flight: Flight;
 }
 
-export interface FetchUserParams {
-  id: string;
-}
-
 export interface UserList {
   users: User[];
+}
+
+export interface FetchUserParams {
+  id: string;
 }
 
 export interface CreateUserData {
