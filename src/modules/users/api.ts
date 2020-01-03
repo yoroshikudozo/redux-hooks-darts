@@ -1,4 +1,4 @@
-import API from 'consts/endpoints';
+import CONSTS from 'consts';
 
 import { usersNormalize } from 'modules/users/schemas';
 import {
@@ -10,7 +10,7 @@ import {
 
 import http, { handleErrors } from 'modules/common/utils/wretch';
 
-const endpoint = `${API.USERS}`;
+const endpoint = `${CONSTS.API.ROOT}${CONSTS.API.USERS}`;
 
 export const fetchUserRequest = ({ id }: FetchUserParams) =>
   http(`${endpoint}/${id}`)

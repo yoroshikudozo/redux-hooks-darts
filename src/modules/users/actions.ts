@@ -1,7 +1,7 @@
 import actionCreatorFactory from 'typescript-fsa';
 
 import { NormalizedUsers } from 'modules/users/schemas';
-import { CreateUserData, FetchUserParams, User } from 'modules/users/types';
+import { CreateUserData, FetchUserParams } from 'modules/users/types';
 
 const usersActionCreator = actionCreatorFactory('USERS');
 
