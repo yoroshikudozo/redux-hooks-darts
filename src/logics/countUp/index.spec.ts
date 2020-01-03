@@ -3,10 +3,16 @@ import { AppState } from 'modules/reducers';
 
 import { CreateGameData } from 'modules/games/types';
 
-import score1 from 'modules/scores/mock/resources/score1';
-import score2 from 'modules/scores/mock/resources/score2';
 import user1 from 'modules/users/mock/resources/user1';
 import user2 from 'modules/users/mock/resources/user2';
+
+jest.mock('cuid', () => {
+  const counter = 0;
+  function id() {
+    return counter + 1;
+  }
+  return id;
+});
 
 describe('makeCountUpGame', () => {
   it('returns data correctly', () => {
@@ -27,6 +33,7 @@ describe('makeCountUpGame', () => {
     });
 
     const result: CreateGameData = {
+      date: Date.now().toString(),
       id: '1',
       status: 'playing',
       gameType: 'countUp',

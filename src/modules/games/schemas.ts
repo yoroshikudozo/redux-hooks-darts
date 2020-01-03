@@ -1,11 +1,17 @@
 import { normalize, schema } from 'normalizr';
 
 import { NormalizedEntities } from 'modules/common/schemas';
-import { Game, GameList } from 'modules/games/types';
+import { CreateGameData, Game, GameList } from 'modules/games/types';
+import { scoreListSchema } from 'modules/scores/schemas';
 import { playerListSchema } from 'modules/users/schemas';
 
 export const gameSchema = new schema.Entity('games', {
   players: playerListSchema,
+  scores: scoreListSchema,
+});
+
+const createGameDataSchema = new schema.Entity('games', {
+  scores: scoreListSchema,
 });
 
 export const gameListSchema = new schema.Array(gameSchema);
@@ -21,3 +27,8 @@ export const gamesNormalize = <R>(
   isGamesList(data)
     ? normalize(data, { games: gameListSchema })
     : normalize({ games: [data] }, { games: gameListSchema });
+
+export const createGameDataNormalize = <R>(
+  data: CreateGameData,
+): NormalizedEntities<Game, R> =>
+  normalize({ games: [data] }, { games: [createGameDataSchema] });

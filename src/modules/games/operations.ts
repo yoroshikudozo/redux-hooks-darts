@@ -9,11 +9,7 @@ import { GameIdentifier } from 'config';
 import { AppState } from 'modules/reducers';
 
 import actions from 'modules/games/actions';
-import { gamesNormalize } from 'modules/games/schemas';
-import { Game } from 'modules/games/types';
-
-import user1 from 'modules/users/mock/resources/user1';
-import user2 from 'modules/users/mock/resources/user2';
+import { createGameDataNormalize } from 'modules/games/schemas';
 
 export const fetchGame = (
   id: string,
@@ -35,15 +31,9 @@ export const createGame = (
     state: getState(),
   });
   dispatch(actions.createGameAsync.started(createGameData));
-  const game: Game = {
-    ...createGameData,
-    date: Date.now().toString(),
-    players: ['2', '1'],
-    scores: [],
-  };
   dispatch(
     actions.createGameAsync.done({
-      result: gamesNormalize(game),
+      result: createGameDataNormalize(createGameData),
       params: createGameData,
     }),
   );
