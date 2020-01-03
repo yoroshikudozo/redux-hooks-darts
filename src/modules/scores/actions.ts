@@ -31,14 +31,12 @@ export const fetchScoreCancel = scoresActionCreator<FetchScoreParams>(
 );
 
 export const createScoreAsync = scoresActionCreator.async<
-  CreateScoreData,
+  Score,
   NormalizedEntities<Score, { scores: string[] }>,
   Error
 >('CREATE');
 
-export const createScoreCancel = scoresActionCreator<CreateScoreData>(
-  'CREATE_CANCEL',
-);
+export const createScoreCancel = scoresActionCreator<Score>('CREATE_CANCEL');
 
 const actions = {
   fetchScoresByGameAsync,

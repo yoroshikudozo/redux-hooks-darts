@@ -1,22 +1,11 @@
 import { ThunkAction } from 'redux-thunk';
 
-import cuid from 'cuid';
 import { AnyAction } from 'typescript-fsa';
 
+import { makeScore } from 'logics/countUp';
 import { AppState } from 'modules/reducers';
 
 import actions from 'modules/scores/actions';
-import { CreateScoreData } from 'modules/scores/types';
-import { getPlayers } from 'modules/users/selectors';
-
-export const initCreateScoreRequestData = (
-  id: string,
-  value: number,
-  state: AppState,
-): CreateScoreData => {
-  const players = getPlayers(state);
-  return { players };
-};
 
 export const fetchScore = (
   id: string,
@@ -31,12 +20,12 @@ export const fetchScores = (
 };
 
 export const createScore = (
-  value: number,
+  gameId: string,
+  playerId: string,
 ): ThunkAction<void, AppState, undefined, AnyAction> => (
   dispatch,
   getState,
 ) => {
-  const id = cuid();
-  const createScoreData = initCreateScoreRequestData(id, value, getState());
-  dispatch(actions.createScoreAsync.started(createScoreData));
+  const score = makeScore(gameId, playerId);
+  dispatch(actions.createScoreAsync.started(score));
 };

@@ -1,11 +1,14 @@
 import { GameIdentifier } from 'config';
 
-import { initCountUpGame } from 'logics/countUp';
+import { makeCountUpGame } from 'logics/countUp';
 import { AppState } from 'modules/reducers';
 
 import { CreateGameData } from 'modules/games/types';
 
-export const initCreateGameData = ({
+import score1 from 'modules/scores/mock/resources/score1';
+import score2 from 'modules/scores/mock/resources/score2';
+
+export const makeCreateGameData = ({
   id,
   game,
   slug,
@@ -18,7 +21,7 @@ export const initCreateGameData = ({
 }): CreateGameData => {
   switch (game) {
     case 'countUp': {
-      return initCountUpGame({
+      return makeCountUpGame({
         id,
         game,
         slug,
@@ -27,6 +30,7 @@ export const initCreateGameData = ({
     }
     default: {
       return {
+        date: Date.now().toString(),
         gameType: game,
         id,
         url: slug,
@@ -37,21 +41,8 @@ export const initCreateGameData = ({
         rule: {
           bullSeparate: false,
         },
+        scores: [score1, score2],
       };
     }
   }
-};
-
-const createScoreData = ({
-  id,
-  game,
-  slug,
-  state,
-}: {
-  id: string;
-  game: GameIdentifier;
-  slug: string;
-  state: AppState;
-}) => {
-  console.log('createScoreData');
 };

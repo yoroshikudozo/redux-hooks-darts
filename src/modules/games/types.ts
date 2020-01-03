@@ -2,9 +2,10 @@ import { GameIdentifier } from 'config';
 
 import { Dart } from 'modules/darts/types';
 import { CountUpRule } from 'modules/rules/types';
+import { Score } from 'modules/scores/types';
 import { User } from 'modules/users/types';
 
-type Status = 'end' | 'playing' | 'aborted';
+type Status = 'finished' | 'playing' | 'aborted';
 
 interface Round {
   id: string;
@@ -12,29 +13,30 @@ interface Round {
   scoreId: string;
 }
 
-interface Score {
+interface GameBase {
+  date: string;
+  gameType: GameIdentifier;
   id: string;
-  rounds: Round[];
-  gameId: string;
+  player: string;
+  round: number;
+  rule: CountUpRule;
+  status: Status;
+  url: string;
 }
 
-export interface GameEntity {
-  gameType: GameIdentifier;
-  date: string;
-  id: string;
-  status: Status;
+export interface Game extends GameBase {
   players: string[];
-  scoures: string[];
+  scores: string[];
 }
 
-export interface Game {
-  gameType: GameIdentifier;
-  date: string;
-  id: string;
-  status: Status;
+export interface GameEntity extends GameBase {
   players: User[];
   scores: Score[];
-  url: string;
+}
+
+export interface CreateGameData extends GameBase {
+  players: string[];
+  scores: Score[];
 }
 
 export interface GameList {
@@ -47,17 +49,6 @@ export interface FetchGameParams {
 
 export interface FetchGamesParams {
   playerId: string;
-}
-
-export interface CreateGameData {
-  id: string;
-  gameType: GameIdentifier;
-  url: string;
-  status: Status;
-  players: string[];
-  round: number;
-  player: string;
-  rule: CountUpRule;
 }
 
 export interface FetchGamesResult {

@@ -3,10 +3,10 @@ import { Round } from 'modules/rounds/types';
 import { User } from 'modules/users/types';
 
 export interface Score extends Entity {
-  gameId: string;
   id: string;
-  players: User[];
+  gameId: string;
   rounds: Round[];
+  playerId: string;
   summary: number;
 }
 

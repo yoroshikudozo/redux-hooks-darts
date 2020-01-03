@@ -1,10 +1,13 @@
+import cuid from 'cuid';
+
 import { GameIdentifier } from 'config';
 
 import { AppState } from 'modules/reducers';
 
 import { CreateGameData } from 'modules/games/types';
+import { Score } from 'modules/scores/types';
 
-export function initCountUpGame({
+export function makeCountUpGame({
   id,
   game,
   slug,
@@ -17,6 +20,7 @@ export function initCountUpGame({
 }): CreateGameData {
   console.log('initCountUpGame');
   return {
+    date: Date.now().toString(),
     gameType: game,
     id,
     url: slug,
@@ -27,5 +31,14 @@ export function initCountUpGame({
     rule: {
       bullSeparate: false,
     },
+    scores: ['2', '1'].map(playerId => makeScore(id, playerId)),
   };
 }
+
+export const makeScore = (gameId: string, playerId: string): Score => ({
+  id: cuid(),
+  gameId,
+  playerId,
+  rounds: [],
+  summary: 0,
+});

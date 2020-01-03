@@ -1,13 +1,18 @@
-import { Game } from 'modules/games/types';
+import { GameEntity } from 'modules/games/types';
 
 import user3 from 'modules/users/mock/resources/user3';
 
-export const game3: Game = {
+export const game3: GameEntity = {
   gameType: 'zeroOne',
-  date: '2019/03/21 22:47:29 GMT+09:00',
+  date: '1578049015808',
   id: '3',
   status: 'playing',
+  player: '3',
   players: [user3],
+  round: 1,
+  rule: {
+    bullSeparate: false,
+  },
   scores: [],
   url: 'asdfasdf3',
 };
