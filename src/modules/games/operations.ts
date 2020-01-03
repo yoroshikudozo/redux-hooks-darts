@@ -9,6 +9,10 @@ import { GameIdentifier } from 'config';
 import { AppState } from 'modules/reducers';
 
 import actions from 'modules/games/actions';
+import { Game } from 'modules/games/types';
+
+import user1 from 'modules/users/mock/resources/user1';
+import user2 from 'modules/users/mock/resources/user2';
 
 export const fetchGame = (
   id: string,
@@ -18,16 +22,22 @@ export const fetchGame = (
 
 export const createGame = (
   slug: string,
-  game: GameIdentifier,
+  type: GameIdentifier,
 ): ThunkAction<void, AppState, undefined, AnyAction> => (
   dispatch,
   getState,
 ) => {
   const createGameData = initCreateGameData({
     id: cuid(),
-    game,
+    game: type,
     slug,
     state: getState(),
   });
   dispatch(actions.createGameAsync.started(createGameData));
+  const game: Game = {
+    ...createGameData,
+    date: Date.now().toString(),
+    players: [user1, user2],
+    scores: [],
+  };
 };

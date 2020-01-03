@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDispatch } from 'react-redux';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import cuid from 'cuid';
 
@@ -14,12 +14,11 @@ import { createGame } from 'modules/games/operations';
 
 export default function Games() {
   const history = useHistory();
-  const params = useParams<{ slug: string }>();
   const dispatch = useDispatch();
   const handleGameLinkClick = (game: GameConfig) => {
-    dispatch(createGame(params.slug, game.identifier));
     console.log('handleGameLinkClick');
     const slug = cuid.slug();
+    dispatch(createGame(slug, game.identifier));
     history.push(`${CONSTS.ROUTES.GAMES[game.key]}/${slug}`);
   };
 

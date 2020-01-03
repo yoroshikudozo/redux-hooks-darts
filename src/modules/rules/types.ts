@@ -8,7 +8,6 @@ export interface Rule {
 
 export interface CountUpRule {
   bullSeparate: boolean;
-  handicap: boolean;
 }
 
 export interface ZeroOneRule {

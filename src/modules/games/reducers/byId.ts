@@ -7,6 +7,10 @@ import { Game } from 'modules/games/types';
 const initialState: ById<Game> = {};
 
 const byId = reducerWithInitialState(initialState)
+  .case(actions.createGameTemp, (state, payload) => ({
+    ...state,
+    [payload.id]: payload,
+  }))
   .case(actions.createGameAsync.done, (state, action) => ({
     ...state,
     ...action.result.entities.games,

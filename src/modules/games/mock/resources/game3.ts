@@ -9,6 +9,7 @@ export const game3: Game = {
   status: 'playing',
   players: [user3],
   scores: [],
+  url: 'asdfasdf3',
 };
 
 export default game3;

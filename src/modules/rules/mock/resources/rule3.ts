@@ -5,7 +5,6 @@ export const rule3: Rule = {
   userId: '3',
   countUp: {
     bullSeparate: false,
-    handicap: true,
   },
 };
 

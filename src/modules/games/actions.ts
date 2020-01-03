@@ -41,12 +41,15 @@ export const createGameCancel = gamesActionCreator<CreateGameData>(
   'CREATE_CANCEL',
 );
 
+export const createGameTemp = gamesActionCreator<Game>('CREATE_TEMP');
+
 const actions = {
   fetchGameAsync,
   fetchGamesAsync,
   fetchGameCancel,
   createGameAsync,
   createGameCancel,
+  createGameTemp,
 };
 
 export default actions;

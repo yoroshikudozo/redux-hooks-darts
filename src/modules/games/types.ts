@@ -1,6 +1,7 @@
 import { GameIdentifier } from 'config';
 
 import { Dart } from 'modules/darts/types';
+import { CountUpRule } from 'modules/rules/types';
 import { User } from 'modules/users/types';
 
 type Status = 'end' | 'playing' | 'aborted';
@@ -33,6 +34,7 @@ export interface Game {
   status: Status;
   players: User[];
   scores: Score[];
+  url: string;
 }
 
 export interface FetchGamesResponse {
@@ -53,6 +55,9 @@ export interface CreateGameData {
   url: string;
   status: Status;
   players: string[];
+  round: number;
+  player: string;
+  rule: CountUpRule;
 }
 
 export interface FetchGamesResult {
