@@ -1,13 +1,13 @@
 import actionCreatorFactory from 'typescript-fsa';
 
-import { NormalizedEntities } from 'modules/common/schemas';
+import { NormalizedRules } from 'modules/rules/schemas';
 import * as Types from 'modules/rules/types';
 
 const rulesActionCreator = actionCreatorFactory('RULES');
 
 export const fetchRuleAsync = rulesActionCreator.async<
   Types.FetchRuleParams,
-  NormalizedEntities<Types.Rule, { rules: string[] }>,
+  NormalizedRules,
   Error
 >('FETCH');
 
@@ -17,7 +17,7 @@ export const fetchRuleCancel = rulesActionCreator<Types.FetchRuleParams>(
 
 export const createRuleAsync = rulesActionCreator.async<
   Types.CreateRuleData,
-  NormalizedEntities<Types.Rule, { rules: string[] }>,
+  NormalizedRules,
   Error
 >('CREATE');
 

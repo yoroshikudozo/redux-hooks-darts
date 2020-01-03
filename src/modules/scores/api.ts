@@ -22,7 +22,7 @@ export const fetchScoresByGameRequest = (
     .get()
     .json<ScoreList>()
     .catch(handleErrors)
-    .then(data => scoresNormalize<{ scores: string[] }>(data));
+    .then(data => scoresNormalize(data));
 
 export const fetchScoreRequest = (
   { id }: FetchScoreParams,
@@ -33,7 +33,7 @@ export const fetchScoreRequest = (
     .get()
     .json<Score>()
     .catch(handleErrors)
-    .then(data => scoresNormalize<{ scores: string[] }>(data));
+    .then(data => scoresNormalize(data));
 
 export const createScoreRequest = (data: CreateScoreData) =>
   http(`${endpoint}`, {

@@ -1,6 +1,5 @@
 import { combineEpics } from 'redux-observable';
 
-import { NormalizedEntities } from 'modules/common/schemas';
 import * as actions from 'modules/users/actions';
 import {
   createUserRequest,
@@ -8,7 +7,7 @@ import {
   fetchUserRequest,
   fetchUsersRequest,
 } from 'modules/users/api';
-import { usersNormalize } from 'modules/users/schemas';
+import { NormalizedUsers, usersNormalize } from 'modules/users/schemas';
 import {
   CreateUserData,
   FetchUserParams,
@@ -21,7 +20,7 @@ import { epicFactory } from 'modules/common/utils/rx';
 export const fetchUserEpic = epicFactory<
   FetchUserParams,
   User,
-  NormalizedEntities<User, { users: string[] }>
+  NormalizedUsers
 >({
   asyncActions: actions.fetchUserAsync,
   request: fetchUserRequest,
@@ -29,11 +28,7 @@ export const fetchUserEpic = epicFactory<
   cancelAction: actions.fetchUserCancel,
 });
 
-export const fetchUsersEpic = epicFactory<
-  void,
-  UserList,
-  NormalizedEntities<User, { users: string[] }>
->({
+export const fetchUsersEpic = epicFactory<void, UserList, NormalizedUsers>({
   asyncActions: actions.fetchUsersAsync,
   request: fetchUsersRequest,
   normalizer: usersNormalize,
@@ -43,7 +38,7 @@ export const fetchUsersEpic = epicFactory<
 export const createUserEpic = epicFactory<
   CreateUserData,
   User,
-  NormalizedEntities<User, { users: string[] }>
+  NormalizedUsers
 >({
   asyncActions: actions.createUserAsync,
   request: createUserRequest,
@@ -51,11 +46,7 @@ export const createUserEpic = epicFactory<
   cancelAction: actions.createUserCancel,
 });
 
-export const fetchPlayersEpic = epicFactory<
-  void,
-  UserList,
-  NormalizedEntities<User, { users: string[] }>
->({
+export const fetchPlayersEpic = epicFactory<void, UserList, NormalizedUsers>({
   asyncActions: actions.fetchPlayersAsync,
   request: fetchPlayersRequest,
   normalizer: usersNormalize,

@@ -1,8 +1,7 @@
 import actionCreatorFactory from 'typescript-fsa';
 
-import { NormalizedEntities } from 'modules/common/schemas';
+import { NormalizedScores } from 'modules/scores/schemas';
 import {
-  CreateScoreData,
   FetchScoreParams,
   FetchScoresByGameParams,
   Score,
@@ -12,7 +11,7 @@ const scoresActionCreator = actionCreatorFactory('SCORES');
 
 export const fetchScoresByGameAsync = scoresActionCreator.async<
   FetchScoresByGameParams,
-  NormalizedEntities<Score, { scores: string[] }>,
+  NormalizedScores,
   Error
 >('BY_GAME/FETCH');
 
@@ -22,7 +21,7 @@ export const fetchScoresByGameCancel = scoresActionCreator<
 
 export const fetchScoreAsync = scoresActionCreator.async<
   FetchScoreParams,
-  NormalizedEntities<Score, { scores: string[] }>,
+  NormalizedScores,
   Error
 >('FETCH');
 
@@ -32,7 +31,7 @@ export const fetchScoreCancel = scoresActionCreator<FetchScoreParams>(
 
 export const createScoreAsync = scoresActionCreator.async<
   Score,
-  NormalizedEntities<Score, { scores: string[] }>,
+  NormalizedScores,
   Error
 >('CREATE');
 

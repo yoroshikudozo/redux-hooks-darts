@@ -34,7 +34,7 @@ export const fetchDartsByGameRequest2 = (
     .get()
     .json<DartList>()
     .catch(handleErrors)
-    .then(data => dartsNormalize<{ darts: string[] }>(data));
+    .then(data => dartsNormalize(data));
 
 export const fetchDartRequest = ({ id }: FetchDartParams) =>
   http(`${endpoint}/${id}`)
@@ -51,7 +51,7 @@ export const fetchDartRequest2 = (
     .get()
     .json<Dart>()
     .catch(handleErrors)
-    .then(data => dartsNormalize<{ darts: string[] }>(data));
+    .then(data => dartsNormalize(data));
 
 export const createDartRequest = (data: CreateDartData) =>
   http(`${endpoint}`, {

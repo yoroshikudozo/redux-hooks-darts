@@ -31,7 +31,7 @@ export const fetchUserRequest2 = (
     })
     .json<User>()
     .catch(handleErrors)
-    .then(data => usersNormalize<{ users: string[] }>(data));
+    .then(data => usersNormalize(data));
 
 export const fetchUsersRequest = () =>
   http(`${endpoint}`)
@@ -59,7 +59,7 @@ export const fetchPlayersRequest2 = (controller: AbortController) =>
     })
     .json<UserList>()
     .catch(handleErrors)
-    .then(data => usersNormalize<{ users: string[] }>(data));
+    .then(data => usersNormalize(data));
 
 export const createUserRequest = (data: CreateUserData) =>
   http(`${endpoint}`, {

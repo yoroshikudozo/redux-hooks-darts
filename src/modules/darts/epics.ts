@@ -1,6 +1,7 @@
 import { combineEpics } from 'redux-observable';
 
-import { NormalizedEntities } from 'modules/common/schemas';
+import { NormalizedSchema } from 'normalizr';
+
 import actions from 'modules/darts/actions';
 import {
   createDartRequest,
@@ -21,7 +22,7 @@ import { epicFactory } from 'modules/common/utils/rx';
 export const fetchDartsByGameEpic = epicFactory<
   FetchDartsByGameParams,
   FetchDartsResponse,
-  NormalizedEntities<Dart, { darts: string[] }>
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartsByGameAsync,
   request: fetchDartsByGameRequest,
@@ -32,7 +33,7 @@ export const fetchDartsByGameEpic = epicFactory<
 export const fetchDartEpic = epicFactory<
   FetchDartParams,
   Dart,
-  NormalizedEntities<Dart, { darts: string[] }>
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>
 >({
   asyncActions: actions.fetchDartAsync,
   request: fetchDartRequest,
@@ -43,7 +44,7 @@ export const fetchDartEpic = epicFactory<
 export const createDartEpic = epicFactory<
   CreateDartData,
   Dart,
-  NormalizedEntities<Dart, { darts: string[] }>
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>
 >({
   asyncActions: actions.createDartAsync,
   request: createDartRequest,

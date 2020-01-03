@@ -1,6 +1,6 @@
 import actionCreatorFactory from 'typescript-fsa';
 
-import { NormalizedEntities } from 'modules/common/schemas';
+import { NormalizedGames } from 'modules/games/schemas';
 import {
   CreateGameData,
   FetchGameParams,
@@ -12,13 +12,13 @@ const gamesActionCreator = actionCreatorFactory('GAMES');
 
 export const fetchGameAsync = gamesActionCreator.async<
   FetchGameParams,
-  NormalizedEntities<Game, { games: string[] }>,
+  NormalizedGames,
   Error
 >('FETCH');
 
 export const fetchGamesAsync = gamesActionCreator.async<
   FetchGamesParams,
-  NormalizedEntities<Game, { games: string[] }>,
+  NormalizedGames,
   Error
 >('FETCH_LIST');
 
@@ -32,7 +32,7 @@ export const fetchGamesCancel = gamesActionCreator<FetchGamesParams>(
 
 export const createGameAsync = gamesActionCreator.async<
   CreateGameData,
-  NormalizedEntities<Game, { games: string[] }>,
+  NormalizedGames,
   Error
 >('CREATE');
 

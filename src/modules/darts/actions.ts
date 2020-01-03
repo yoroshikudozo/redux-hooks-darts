@@ -1,6 +1,6 @@
+import { NormalizedSchema } from 'normalizr';
 import actionCreatorFactory from 'typescript-fsa';
 
-import { NormalizedEntities } from 'modules/common/schemas';
 import {
   CreateDartData,
   Dart,
@@ -12,7 +12,7 @@ const dartsActionCreator = actionCreatorFactory('DARTS');
 
 export const fetchDartsByGameAsync = dartsActionCreator.async<
   FetchDartsByGameParams,
-  NormalizedEntities<Dart, { darts: string[] }>,
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>,
   Error
 >('BY_GAME/FETCH');
 
@@ -22,7 +22,7 @@ export const fetchDartsByGameCancel = dartsActionCreator<
 
 export const fetchDartAsync = dartsActionCreator.async<
   FetchDartParams,
-  NormalizedEntities<Dart, { darts: string[] }>,
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>,
   Error
 >('FETCH');
 
@@ -32,7 +32,7 @@ export const fetchDartCancel = dartsActionCreator<FetchDartParams>(
 
 export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
-  NormalizedEntities<Dart, { darts: string[] }>,
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>,
   Error
 >('CREATE');
 

@@ -1,7 +1,11 @@
-import { normalize, schema } from 'normalizr';
+import { normalize, NormalizedSchema, schema } from 'normalizr';
 
-import { NormalizedEntities } from 'modules/common/schemas';
 import { User, UserList } from 'modules/users/types';
+
+export type NormalizedUsers = NormalizedSchema<
+  { users: { [key: string]: User } },
+  { users: string[] }
+>;
 
 export const userSchema = new schema.Entity('users');
 export const userListSchema = [userSchema];
@@ -14,9 +18,7 @@ function isUserList(data: any): data is UserList {
   return data.users;
 }
 
-export const usersNormalize = <R>(
-  data: User | UserList,
-): NormalizedEntities<User, R> =>
+export const usersNormalize = (data: User | UserList): NormalizedUsers =>
   isUserList(data)
     ? normalize(data, { users: userListSchema })
     : normalize({ users: [data] }, { users: userListSchema });
