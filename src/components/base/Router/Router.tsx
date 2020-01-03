@@ -38,7 +38,7 @@ function Router() {
             <Route path={ROUTES.GAMES.ROOT} exact={true}>
               <GamesPage />
             </Route>
-            <Route path={`${ROUTES.GAMES.COUNT_UP}/:hash`}>
+            <Route path={`${ROUTES.GAMES.COUNT_UP}/:slug`}>
               <CountUpPage />
             </Route>
           </Switch>

@@ -21,7 +21,10 @@ export default function CountUp() {
   const { slug } = useParams<{ slug: string }>();
 
   const players = useSelector(getPlayers);
+
   const game = useSelector((state: AppState) => getGameBySlug(state, slug));
+
+  console.log(game);
 
   if (!game) {
     history.push(`${CONSTS.ROUTES.GAMES.ROOT}`);

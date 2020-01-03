@@ -7,7 +7,11 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import ROUTES from 'consts/routes';
+
 import { epicMiddleware } from 'modules/store/configureStore';
+
+import GamesPage from 'components/pages/Games/Games';
 
 import CountUp from './CountUp';
 
@@ -23,7 +27,12 @@ it('renders without crashing', () => {
     ReactDOM.render(
       <Provider store={store}>
         <BrowserRouter>
-          <Route component={CountUp} />
+          <Route path="/" exact={true}>
+            <CountUp />
+          </Route>
+          <Route path={ROUTES.GAMES.ROOT} exact={true}>
+            <GamesPage />
+          </Route>
         </BrowserRouter>
       </Provider>,
       div,

@@ -1,7 +1,7 @@
 import { normalize, schema } from 'normalizr';
 
 import { NormalizedEntities } from 'modules/common/schemas';
-import { FetchGamesResponse, Game } from 'modules/games/types';
+import { Game, GameList } from 'modules/games/types';
 import { playerListSchema } from 'modules/users/schemas';
 
 export const gameSchema = new schema.Entity('games', {
@@ -10,12 +10,14 @@ export const gameSchema = new schema.Entity('games', {
 
 export const gameListSchema = new schema.Array(gameSchema);
 
-export const gameNormalize = (
-  game: Game,
-): NormalizedEntities<Game, { games: string[] }> =>
-  normalize({ games: [game] }, { games: gameListSchema });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isGamesList(data: any): data is GameList {
+  return data.games;
+}
 
-export const gamesNormalize = (
-  data: FetchGamesResponse,
-): NormalizedEntities<Game, { games: string[] }> =>
-  normalize(data, { games: gameListSchema });
+export const gamesNormalize = <R>(
+  data: Game | GameList,
+): NormalizedEntities<Game, R> =>
+  isGamesList(data)
+    ? normalize(data, { games: gameListSchema })
+    : normalize({ games: [data] }, { games: gameListSchema });

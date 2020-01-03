@@ -10,7 +10,7 @@ import * as schemas from '../schemas';
 describe('gameSchema', () => {
   it('returns normalized entity', async () => {
     const data = game1;
-    const normalizedData = schemas.gameNormalize(data);
+    const normalizedData = schemas.gamesNormalize(data);
 
     expect(normalizedData).toEqual({
       entities: {

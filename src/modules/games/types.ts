@@ -37,7 +37,7 @@ export interface Game {
   url: string;
 }
 
-export interface FetchGamesResponse {
+export interface GameList {
   games: Game[];
 }
 
