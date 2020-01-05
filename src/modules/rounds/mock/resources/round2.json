@@ -1,9 +1,0 @@
-{
-  "darts": ["dart1", "dart2", "dart3"],
-  "id": "round2",
-  "isBusted": false,
-  "isFinished": false,
-  "round": 2,
-  "scoreId": "score1",
-  "summary": 105
-}

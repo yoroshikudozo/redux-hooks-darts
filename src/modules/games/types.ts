@@ -1,17 +1,10 @@
 import { GameIdentifier } from 'config';
 
-import { Dart } from 'modules/darts/types';
 import { CountUpRule } from 'modules/rules/types';
 import { Score } from 'modules/scores/types';
 import { User } from 'modules/users/types';
 
 type Status = 'finished' | 'playing' | 'aborted';
-
-interface Round {
-  id: string;
-  darts: Dart[];
-  scoreId: string;
-}
 
 interface GameBase {
   date: string;

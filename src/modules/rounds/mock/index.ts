@@ -1,32 +1,66 @@
-import MockAdapter from 'axios-mock-adapter';
+import { FetchMockStatic } from 'fetch-mock';
 
 import API from 'consts/endpoints';
+import format from 'date-fns/format';
 
-import round1 from './resources/round1.json';
+import { sleep } from 'modules/common/testHelpers';
 
-// import round2 from './resources/round2.json';
-// import round3 from './resources/round3.json';
-// import round4 from './resources/round4.json';
+import round1 from './resources/round1';
+import round2 from './resources/round2';
+import round3 from './resources/round3';
 
-const endpoint = API.ROUNDS;
+const endpoint = `${API.ROOT}${API.ROUNDS}`;
 
-export function initRoundsMock(mock: MockAdapter): void {
-  mock.onGet(endpoint, { gameId: '1' }).reply(200, {
-    rounds: [round1],
-  });
+console.log(format(Date.now(), 'yyyy/MM/dd HH:mm:ss zz'));
 
-  mock.onPost(endpoint, { point: 20 }).reply(200, {
-    rounds: [round1],
-  });
+export function initGamesMock(mock: FetchMockStatic): void {
+  mock.get(
+    (url, opts) => url === `${endpoint}/1`,
+    sleep(1000).then(() => ({ rounds: [round1, round2, round3] })),
+  );
+  mock.get(
+    (url, opts) => url === `${endpoint}`,
+    sleep(1000).then(() => ({ rounds: [round1, round2, round3] })),
+  );
+  mock.get(
+    (url, opts) => url === `${endpoint}/2`,
+    sleep(1000).then(() => ({
+      status: 404,
+      body: {},
+    })),
+  );
+  mock.get(
+    (url, opts) => url === `${endpoint}/3`,
+    sleep(1000).then(
+      () =>
+        '<!doctype html><head><title>500</title></head><body>internal server error 500</body></html>',
+    ),
+  );
+  mock.get(
+    (url, opts) => url === `${endpoint}/4`,
+    sleep(1000).then(() => ({
+      throws: new Error('network error'),
+    })),
+  );
+  mock.get(
+    (url, opts) => url === `${endpoint}/5`,
+    sleep(1000).then(() => ({
+      status: 403,
+      body: {},
+    })),
+  );
 
-  mock.onPut(`${endpoint}/1`, { point: 20 }).reply(200, {
-    rounds: [round1],
-  });
-
-  mock.onPut(`${endpoint}`, { id: '1', point: 20 }).reply(200, {
-    rounds: [round1],
-  });
-
-  mock.onDelete(`${endpoint}/1`).reply(200);
-  mock.onDelete(endpoint, { id: '1' }).reply(200);
+  let options: {};
+  mock.post(
+    (url, opts) => {
+      console.log(opts.body);
+      options = opts.body as any;
+      return url === `${endpoint}`;
+    },
+    sleep(1000).then(() => ({
+      body: {
+        ...options,
+      },
+    })),
+  );
 }
