@@ -1,7 +1,3 @@
-import user1 from 'modules/users/mock/resources/user1';
-import user2 from 'modules/users/mock/resources/user2';
-import user3 from 'modules/users/mock/resources/user3';
-
 import round1 from '../mock/resources/round1';
 import round2 from '../mock/resources/round2';
 import round3 from '../mock/resources/round3';

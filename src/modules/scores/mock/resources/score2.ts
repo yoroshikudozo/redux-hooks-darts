@@ -1,6 +1,6 @@
-import { Score } from 'modules/scores/types';
+import { ScoreEntity } from 'modules/scores/types';
 
-export const score2: Score = {
+export const score2: ScoreEntity = {
   gameId: '2',
   id: '2',
   playerId: '2',

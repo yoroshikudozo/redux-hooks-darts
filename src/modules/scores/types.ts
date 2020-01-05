@@ -1,17 +1,26 @@
-import { Entity } from 'modules/common/types';
 import { Round } from 'modules/rounds/types';
-import { User } from 'modules/users/types';
 
-export interface Score extends Entity {
+export interface ScoreBase {
   id: string;
   gameId: string;
-  rounds: Round[];
   playerId: string;
   summary: number;
 }
 
+export interface Score extends ScoreBase {
+  rounds: string[];
+}
+
+export interface ScoreEntity extends ScoreBase {
+  rounds: Round[];
+}
+
 export interface ScoreList {
   scores: Score[];
+}
+
+export interface ScoreEntityList {
+  scores: ScoreEntity[];
 }
 
 export interface FetchScoresByGameParams {
@@ -23,5 +32,5 @@ export interface FetchScoreParams {
 }
 
 export interface CreateScoreData {
-  players: User[];
+  playerId: string;
 }

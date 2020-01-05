@@ -5,6 +5,7 @@ import {
   FetchScoreParams,
   FetchScoresByGameParams,
   Score,
+  ScoreEntity,
 } from 'modules/scores/types';
 
 const scoresActionCreator = actionCreatorFactory('SCORES');
@@ -30,7 +31,7 @@ export const fetchScoreCancel = scoresActionCreator<FetchScoreParams>(
 );
 
 export const createScoreAsync = scoresActionCreator.async<
-  Score,
+  ScoreEntity,
   NormalizedScores,
   Error
 >('CREATE');

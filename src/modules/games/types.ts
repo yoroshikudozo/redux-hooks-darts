@@ -1,7 +1,7 @@
 import { GameIdentifier } from 'config';
 
 import { CountUpRule } from 'modules/rules/types';
-import { Score } from 'modules/scores/types';
+import { Score, ScoreEntity } from 'modules/scores/types';
 import { User } from 'modules/users/types';
 
 type Status = 'finished' | 'playing' | 'aborted';
@@ -29,11 +29,15 @@ export interface GameEntity extends GameBase {
 
 export interface CreateGameData extends GameBase {
   players: string[];
-  scores: Score[];
+  scores: ScoreEntity[];
 }
 
 export interface GameList {
   games: Game[];
+}
+
+export interface GameEntityList {
+  games: GameEntity[];
 }
 
 export interface FetchGameParams {
