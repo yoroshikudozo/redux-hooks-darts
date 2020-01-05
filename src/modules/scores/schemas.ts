@@ -1,12 +1,19 @@
 import { normalize, NormalizedSchema, schema } from 'normalizr';
 
+import { roundListSchema } from 'modules/rounds/schemas';
+import { Round } from 'modules/rounds/types';
 import { Score, ScoreList } from 'modules/scores/types';
 
-export const scoreSchema = new schema.Entity<Score>('scores');
+export const scoreSchema = new schema.Entity<Score>('scores', {
+  rounds: roundListSchema,
+});
 export const scoreListSchema = [scoreSchema];
 
 export type NormalizedScores = NormalizedSchema<
-  { scores: { [key: string]: Score } },
+  {
+    scores: { [key: string]: Score };
+    rounds: { [key: string]: Round };
+  },
   { scores: string[] }
 >;
 

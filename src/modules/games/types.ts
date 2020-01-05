@@ -47,10 +47,3 @@ export interface FetchGameParams {
 export interface FetchGamesParams {
   playerId: string;
 }
-
-export interface FetchGamesResult {
-  game: {
-    entities: { [key: string]: Game };
-    result: string[];
-  };
-}

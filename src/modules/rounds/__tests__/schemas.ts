@@ -1,3 +1,7 @@
+import dart1 from 'modules/darts/mock/resources/dart1';
+import dart2 from 'modules/darts/mock/resources/dart2';
+import dart3 from 'modules/darts/mock/resources/dart3';
+
 import round1 from '../mock/resources/round1';
 import round2 from '../mock/resources/round2';
 import round3 from '../mock/resources/round3';
@@ -10,7 +14,8 @@ describe('roundSchema', () => {
 
     expect(normalizedData).toEqual({
       entities: {
-        rounds: { '1': round1 },
+        rounds: { '1': { ...round1, darts: ['1', '2', '3'] } },
+        darts: { '1': dart1, '2': dart2, '3': dart3 },
       },
       result: { rounds: ['1'] },
     });
@@ -25,9 +30,14 @@ describe('roundListSchema', () => {
     expect(normalizedData).toEqual({
       entities: {
         rounds: {
-          '1': round1,
-          '2': round2,
-          '3': round3,
+          '1': { ...round1, darts: ['1', '2', '3'] },
+          '2': { ...round2, darts: ['1', '2'] },
+          '3': { ...round3, darts: ['1', '2', '3'] },
+        },
+        darts: {
+          '1': dart1,
+          '2': dart2,
+          '3': dart3,
         },
       },
       result: { rounds: ['1', '2', '3'] },

@@ -1,6 +1,7 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { ById } from 'modules/common/types';
+import gameActions from 'modules/games/actions';
 import actions from 'modules/rounds/actions';
 import { Round } from 'modules/rounds/types';
 
@@ -12,6 +13,10 @@ const byId = reducerWithInitialState(initialState)
     ...action.result.entities.rounds,
   }))
   .case(actions.fetchRoundAsync.done, (state, action) => ({
+    ...state,
+    ...action.result.entities.rounds,
+  }))
+  .case(gameActions.createGameAsync.done, (state, action) => ({
     ...state,
     ...action.result.entities.rounds,
   }));

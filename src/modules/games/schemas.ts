@@ -1,6 +1,8 @@
 import { normalize, NormalizedSchema, schema } from 'normalizr';
 
+import { Dart } from 'modules/darts/types';
 import { CreateGameData, Game, GameList } from 'modules/games/types';
+import { Round } from 'modules/rounds/types';
 import { scoreListSchema } from 'modules/scores/schemas';
 import { Score } from 'modules/scores/types';
 import { playerListSchema } from 'modules/users/schemas';
@@ -20,8 +22,10 @@ export const gameListSchema = new schema.Array(gameSchema);
 export type NormalizedGames = NormalizedSchema<
   {
     games: { [key: string]: Game };
-    scores: { [key: string]: Score };
     players: { [key: string]: User };
+    rounds: { [key: string]: Round };
+    scores: { [key: string]: Score };
+    darts: { [key: string]: Dart };
   },
   { games: string[] }
 >;
