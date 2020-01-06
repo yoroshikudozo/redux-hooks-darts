@@ -6,6 +6,16 @@ import { CreateGameData } from 'modules/games/types';
 import user1 from 'modules/users/mock/resources/user1';
 import user2 from 'modules/users/mock/resources/user2';
 
+const RealDate = Date;
+
+beforeAll(() => {
+  global.Date.now = jest.fn(() => new Date('2020-01-01T00:00:00Z').getTime());
+});
+
+afterAll(() => {
+  global.Date = RealDate;
+});
+
 jest.mock('cuid', () => {
   const counter = 0;
   function id() {
@@ -21,6 +31,7 @@ describe('makeCountUpGame', () => {
         users: {
           byId: { 1: user1, 2: user2 },
           allIds: ['1', '2'],
+          playerIds: ['2', '1'],
         },
       },
     } as unknown) as AppState;
@@ -44,7 +55,7 @@ describe('makeCountUpGame', () => {
       rule: {
         bullSeparate: false,
       },
-      scores: [makeScore('1', '2'), makeScore('1', '1')],
+      scores: [makeScore('1', '2', true), makeScore('1', '1')],
     };
 
     expect(data).toEqual(result);

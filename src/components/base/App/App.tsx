@@ -9,11 +9,15 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import theme from 'components/themes';
 
+import { useFetchPlayers } from 'components/hooks/useFetchPlayers';
+
 import Router from 'components/base/Router/Router';
 
 import './App.css';
 
 function App() {
+  useFetchPlayers();
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>

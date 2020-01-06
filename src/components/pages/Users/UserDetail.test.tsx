@@ -17,6 +17,14 @@ const store = mockStore({
   entities: { users: { byId: {}, allIds: [] } },
 });
 
+jest.mock('modules/users/api', () => {
+  return {
+    fetchPlayersRequest() {
+      return { users: [{ id: '1' }, { id: '2' }] };
+    },
+  };
+});
+
 it('renders without crashing', () => {
   const div = document.createElement('div');
   act(() => {

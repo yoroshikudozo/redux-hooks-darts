@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
@@ -16,15 +17,25 @@ const store = mockStore({
   entities: { users: { byId: {}, allIds: [] } },
 });
 
+jest.mock('modules/users/api', () => {
+  return {
+    fetchPlayersRequest() {
+      return { users: [{ id: '1' }, { id: '2' }] };
+    },
+  };
+});
+
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <Route component={Home} />
-      </BrowserRouter>
-    </Provider>,
-    div,
-  );
-  ReactDOM.unmountComponentAtNode(div);
+  act(() => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Route component={Home} />
+        </BrowserRouter>
+      </Provider>,
+      div,
+    );
+    ReactDOM.unmountComponentAtNode(div);
+  });
 });

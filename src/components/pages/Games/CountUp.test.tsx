@@ -13,12 +13,23 @@ import { epicMiddleware } from 'modules/store/configureStore';
 
 import GamesPage from 'components/pages/Games/Games';
 
+import user1 from 'modules/users/mock/resources/user1';
+import user2 from 'modules/users/mock/resources/user2';
+
 import CountUp from './CountUp';
 
 const middlewares = [thunk, epicMiddleware];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({
-  entities: { users: { byId: {}, allIds: [] } },
+  entities: { users: { byId: { 1: user1, 2: user2 }, playerIds: ['2', '1'] } },
+});
+
+jest.mock('modules/users/api', () => {
+  return {
+    fetchPlayersRequest() {
+      return { users: [{ id: '1' }, { id: '2' }] };
+    },
+  };
 });
 
 it('renders without crashing', () => {
