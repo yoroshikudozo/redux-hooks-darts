@@ -26,6 +26,6 @@ export const createScore = (
   dispatch,
   getState,
 ) => {
-  const score = makeScore(gameId, playerId);
+  const score = makeScore(gameId, playerId, false);
   dispatch(actions.createScoreAsync.started(score));
 };

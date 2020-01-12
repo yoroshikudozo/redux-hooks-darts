@@ -7,6 +7,7 @@ import { AppState } from 'modules/reducers';
 import { CreateGameData } from 'modules/games/types';
 import { Round } from 'modules/rounds/types';
 import { ScoreEntity } from 'modules/scores/types';
+import { getPlayerIds } from 'modules/users/selectors';
 
 export function makeCountUpGame({
   id,
@@ -19,30 +20,37 @@ export function makeCountUpGame({
   slug: string;
   state: AppState;
 }): CreateGameData {
-  console.log('initCountUpGame');
+  const playerIds = getPlayerIds(state);
   return {
     date: Date.now().toString(),
     gameType: game,
     id,
     url: slug,
     status: 'playing',
-    players: ['2', '1'],
+    players: playerIds,
     round: 1,
-    player: '2',
+    player: playerIds[0],
     rule: {
       bullSeparate: false,
     },
-    scores: ['2', '1'].map(playerId => makeScore(id, playerId)),
+    scores: playerIds.map((playerId, index) => {
+      if (index) return makeScore(id, playerId);
+      return makeScore(id, playerId, true);
+    }),
   };
 }
 
-export const makeScore = (gameId: string, playerId: string): ScoreEntity => {
+export const makeScore = (
+  gameId: string,
+  playerId: string,
+  isFirst = false,
+): ScoreEntity => {
   const id = cuid();
   return {
     id,
     gameId,
     playerId,
-    rounds: [makeRound(id)],
+    rounds: isFirst ? [makeRound(id)] : [],
     summary: 0,
   };
 };

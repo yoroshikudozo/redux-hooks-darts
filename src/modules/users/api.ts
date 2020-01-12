@@ -10,7 +10,7 @@ import {
 
 import http, { handleErrors } from 'modules/common/utils/wretch';
 
-const endpoint = `${CONSTS.API.ROOT}${CONSTS.API.USERS}`;
+const endpoint = `${CONSTS.API.USERS}`;
 
 export const fetchUserRequest = ({ id }: FetchUserParams) =>
   http(`${endpoint}/${id}`)

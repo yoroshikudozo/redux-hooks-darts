@@ -11,7 +11,10 @@ import Button from '@material-ui/core/Button';
 
 import { AppState } from 'modules/reducers';
 
+import { Dartsboard } from 'components/atoms/DartsBoard';
 import QuittingModal from 'components/organisms/QuittingModal';
+import { createDart } from 'modules/darts/operations';
+import { DartsBoardData } from 'modules/darts/types';
 import { getGameBySlug } from 'modules/games/selectors';
 import { getPlayers } from 'modules/users/selectors';
 
@@ -41,6 +44,17 @@ export default function CountUp() {
 
   const handleCancel = useCallback(() => setQuitting(false), []);
 
+  const handleBoardClick = ({
+    currentTarget: {
+      dataset: { value, area, type },
+    },
+  }: React.MouseEvent<SVGElement>) => {
+    console.log(value);
+    console.log(area);
+    console.log(type);
+    createDart({ value: Number(value), area, type } as DartsBoardData);
+  };
+
   return (
     <>
       <Helmet title="Count Up" />
@@ -51,6 +65,8 @@ export default function CountUp() {
 
       <h1>Count Up</h1>
       <h2>asdf</h2>
+
+      <Dartsboard onBoardClick={handleBoardClick} isFinished={false} />
 
       <QuittingModal
         name={config.games.countUp.name}

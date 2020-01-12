@@ -4,8 +4,8 @@ export interface Entity {
 }
 
 type OutOptionType = 'master' | 'double' | 'none';
-type DartType = 'single' | 'double' | 'triple' | 'bull' | 'out';
-type Area = 'inner' | 'outer' | 'none';
+export type DartType = 'single' | 'double' | 'triple' | 'bull' | 'out';
+export type Area = 'inner' | 'outer' | 'none';
 type Index = 0 | 1 | 2;
 
 export interface OutOption {
@@ -16,15 +16,11 @@ export interface OutOption {
 export interface Dart extends Entity {
   area: Area;
   dartType: DartType;
-  date: string;
-  gameId: string;
   id: string;
   index: Index;
   isValid: boolean;
-  playerId: string;
   point: number;
   roundId: string;
-  scoreId: string;
   value: number;
 }
 
@@ -64,4 +60,10 @@ export type FetchDartsResponse = DartList;
 
 export interface CreateDartsParams {
   value: number;
+}
+
+export interface DartsBoardData {
+  value: number;
+  area: Area;
+  type: DartType;
 }

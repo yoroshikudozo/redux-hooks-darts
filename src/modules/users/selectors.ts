@@ -17,6 +17,11 @@ export const getUserAllIds = createSelector(
   entities => entities.users.allIds,
 );
 
+export const getPlayerIds = createSelector(
+  getEntities,
+  entities => entities.users.playerIds,
+);
+
 export const getAllUsers = createSelector(
   getUserEntities,
   getUserAllIds,
@@ -25,8 +30,8 @@ export const getAllUsers = createSelector(
 
 export const getPlayers = createSelector(
   getUserEntities,
-  getUserAllIds,
-  (byId, allIds) => allIds.map(id => byId[id]),
+  getPlayerIds,
+  (byId, playerIds) => playerIds.map(id => byId[id]),
 );
 
 export const getUserById = createCachedSelector(

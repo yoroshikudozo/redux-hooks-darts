@@ -1,24 +1,13 @@
 import { ThunkAction } from 'redux-thunk';
 
 import cuid from 'cuid';
+import { makeDart } from 'logics';
 import { AnyAction } from 'typescript-fsa';
 
 import { AppState } from 'modules/reducers';
 
 import actions from 'modules/darts/actions';
-import { CreateDartData } from 'modules/darts/types';
-
-export const initCreateDartRequestData = (
-  id: string,
-  value: number,
-  state: AppState,
-): CreateDartData => ({
-  area: 'inner',
-  dartType: 'single',
-  id,
-  index: 1,
-  value,
-});
+import { DartsBoardData } from 'modules/darts/types';
 
 export const fetchDart = (
   id: string,
@@ -33,12 +22,11 @@ export const fetchDarts = (
 };
 
 export const createDart = (
-  value: number,
+  data: DartsBoardData,
 ): ThunkAction<void, AppState, undefined, AnyAction> => (
   dispatch,
   getState,
 ) => {
-  const id = cuid();
-  const createDartData = initCreateDartRequestData(id, value, getState());
+  const createDartData = makeDart(data, getState());
   dispatch(actions.createDartAsync.started(createDartData));
 };

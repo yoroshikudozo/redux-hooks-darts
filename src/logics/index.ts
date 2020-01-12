@@ -1,9 +1,13 @@
+import cuid from 'cuid';
+
 import { GameIdentifier } from 'config';
 
 import { makeCountUpGame } from 'logics/countUp';
 import { AppState } from 'modules/reducers';
 
+import { Dart, DartsBoardData } from 'modules/darts/types';
 import { CreateGameData } from 'modules/games/types';
+import { getCurrentRound } from 'modules/scores/selectors';
 
 import score1 from 'modules/scores/mock/resources/score1';
 import score2 from 'modules/scores/mock/resources/score2';
@@ -45,4 +49,23 @@ export const makeCreateGameData = ({
       };
     }
   }
+};
+
+export const makeDart = (
+  { area, value, type }: DartsBoardData,
+  state: AppState,
+): Dart => {
+  const id = cuid();
+  const gameId = '1';
+  const round = getCurrentRound(state, gameId);
+  return {
+    area: area,
+    dartType: type,
+    id,
+    roundId: round.id,
+    index: 1,
+    value,
+    isValid: false,
+    point: value,
+  };
 };

@@ -16,6 +16,10 @@ import { loggingEpic } from 'modules/common/utils/rx';
 
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
+import round1 from 'modules/rounds/mock/resources/round1';
+import round2 from 'modules/rounds/mock/resources/round2';
+import round3 from 'modules/rounds/mock/resources/round3';
+import score1 from 'modules/scores/mock/resources/score1';
 
 import actions from '../actions';
 import dart1 from '../mock/resources/dart1';
@@ -25,6 +29,14 @@ const mockStore = configureMockStore(middlewares);
 const rootEpic = combineEpics(dartsEpic, loggingEpic);
 
 initDartsMock(fetchMock);
+
+jest.mock('cuid', () => {
+  const counter = 0;
+  function id() {
+    return counter + 1;
+  }
+  return id;
+});
 
 describe('darts epics', () => {
   describe('fetchDartsByGame epic', () => {
@@ -152,16 +164,36 @@ describe('darts epics', () => {
 
   describe('createDart epic', () => {
     it('creates dart', async () => {
-      const store = mockStore({});
+      const store = mockStore({
+        entities: {
+          scores: {
+            byId: { 1: { ...score1, rounds: ['1', '2', '3'] } },
+            allIds: ['1'],
+            byGame: { '1': ['1'] },
+          },
+          rounds: {
+            byId: {
+              1: round1,
+              2: round2,
+              3: round3,
+            },
+            allIds: ['1', '2', '3'],
+          },
+          games: {},
+        },
+      });
       epicMiddleware.run(rootEpic);
 
       const expectedActions = [
         {
           type: 'DARTS/CREATE_STARTED',
           payload: {
-            id: 'cuid, so it is not able to testing',
+            id: 1,
             value: 20,
             area: 'inner',
+            isValid: false,
+            point: 20,
+            roundId: '3',
             dartType: 'single',
             index: 1,
           },
@@ -170,9 +202,12 @@ describe('darts epics', () => {
           type: 'DARTS/CREATE_DONE',
           payload: {
             params: {
-              id: 'cuid, so it is not able to testing',
+              id: 1,
               value: 20,
               area: 'inner',
+              isValid: false,
+              point: 20,
+              roundId: '3',
               dartType: 'single',
               index: 1,
             },
@@ -188,25 +223,13 @@ describe('darts epics', () => {
         },
       ];
 
-      store.dispatch<any>(createDart(20));
+      store.dispatch<any>(
+        createDart({ value: 20, area: 'inner', type: 'single' }),
+      );
 
       await sleep(1000).then(() => {
         const actions = store.getActions();
-        expect(actions[0].payload.value).toEqual(
-          expectedActions[0].payload.value,
-        );
-        expect(actions[0].payload.area).toEqual(
-          expectedActions[0].payload.area,
-        );
-        expect(actions[0].payload.dartType).toEqual(
-          expectedActions[0].payload.dartType,
-        );
-        expect(actions[0].payload.index).toEqual(
-          expectedActions[0].payload.index,
-        );
-        expect(actions[1].payload.result).toEqual(
-          expectedActions[1].payload.result,
-        );
+        expect(actions).toEqual(expectedActions);
       });
     });
   });
