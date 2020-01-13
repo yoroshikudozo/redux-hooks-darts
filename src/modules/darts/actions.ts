@@ -4,6 +4,7 @@ import actionCreatorFactory from 'typescript-fsa';
 import {
   CreateDartData,
   Dart,
+  DartsBoardData,
   FetchDartParams,
   FetchDartsByGameParams,
 } from 'modules/darts/types';
@@ -34,6 +35,12 @@ export const createDartAsync = dartsActionCreator.async<
   CreateDartData,
   NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>,
   Error
+>('CREATE_');
+
+export const createDartAction = dartsActionCreator.async<
+  DartsBoardData,
+  NormalizedSchema<{ darts: { [key: string]: Dart } }, { darts: string[] }>,
+  Error
 >('CREATE');
 
 export const createDartCancel = dartsActionCreator<CreateDartData>(
@@ -46,6 +53,7 @@ const actions = {
   fetchDartAsync,
   fetchDartCancel,
   createDartAsync,
+  createDartAction,
   createDartCancel,
 };
 

@@ -14,6 +14,10 @@ const byId = reducerWithInitialState(initialState)
   .case(actions.fetchDartAsync.done, (state, action) => ({
     ...state,
     ...action.result.entities.darts,
+  }))
+  .case(actions.createDartAction.done, (state, action) => ({
+    ...state,
+    ...action.result.entities.darts,
   }));
 
 export default byId;

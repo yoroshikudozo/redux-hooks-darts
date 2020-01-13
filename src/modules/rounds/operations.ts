@@ -25,7 +25,6 @@ export const createGame = (
   getState,
 ) => {
   const createGameData = makeCreateGameData({
-    id: cuid(),
     game: type,
     slug,
     state: getState(),

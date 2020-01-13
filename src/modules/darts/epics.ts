@@ -55,7 +55,7 @@ export const createDartEpic = epicFactory<
 const dartsEpic = combineEpics(
   // fetchDartEpic,
   fetchDartsByGameEpic,
-  createDartEpic,
+  // createDartEpic,
 );
 
 export default dartsEpic;

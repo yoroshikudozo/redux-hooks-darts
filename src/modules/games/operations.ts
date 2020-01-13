@@ -1,6 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
 
-import cuid from 'cuid';
 import { makeCreateGameData } from 'logics';
 import { AnyAction } from 'typescript-fsa';
 
@@ -25,7 +24,6 @@ export const createGame = (
   getState,
 ) => {
   const createGameData = makeCreateGameData({
-    id: cuid(),
     game: type,
     slug,
     state: getState(),

@@ -52,7 +52,9 @@ export default function CountUp() {
     console.log(value);
     console.log(area);
     console.log(type);
-    createDart({ value: Number(value), area, type } as DartsBoardData);
+    dispatch(
+      createDart({ value: Number(value), area, type } as DartsBoardData),
+    );
   };
 
   return (

@@ -4,22 +4,23 @@ import { GameIdentifier } from 'config';
 
 import { AppState } from 'modules/reducers';
 
+import { getCurrentRoundId } from 'logics/countUp/selectors';
+import { Dart, DartsBoardData } from 'modules/darts/types';
 import { CreateGameData } from 'modules/games/types';
 import { Round } from 'modules/rounds/types';
 import { ScoreEntity } from 'modules/scores/types';
 import { getPlayerIds } from 'modules/users/selectors';
 
 export function makeCountUpGame({
-  id,
   game,
   slug,
   state,
 }: {
-  id: string;
   game: GameIdentifier;
   slug: string;
   state: AppState;
 }): CreateGameData {
+  const id = cuid();
   const playerIds = getPlayerIds(state);
   return {
     date: Date.now().toString(),
@@ -50,18 +51,34 @@ export const makeScore = (
     id,
     gameId,
     playerId,
-    rounds: isFirst ? [makeRound(id)] : [],
+    rounds: isFirst ? [makeRound(id, 0)] : [],
     summary: 0,
   };
 };
 
-export const makeRound = (scoreId: string): Round => {
-  const id = cuid();
+export const makeRound = (scoreId: string, index: number): Round => {
   return {
-    id,
+    id: cuid(),
     darts: [],
-    round: 1,
+    round: index + 1,
     scoreId,
     summary: 0,
+  };
+};
+
+export const makeCountUpDart = (
+  { area, value, type }: DartsBoardData,
+  state: AppState,
+): Dart => {
+  const roundId = getCurrentRoundId(state);
+  return {
+    area: area,
+    dartType: type,
+    id: cuid(),
+    roundId,
+    index: 1,
+    value,
+    isValid: false,
+    point: value,
   };
 };

@@ -23,6 +23,11 @@ export const getGameById = createCachedSelector(
   (byId, id) => byId[id],
 )((_state_, id) => id);
 
+export const getScoreIdsByGame = createCachedSelector(
+  getGameById,
+  game => game.scores,
+)((_state_, id) => id);
+
 export const getGameBySlug = createCachedSelector(
   getGameEntities,
   (_state_: AppState, slug: string) => slug,

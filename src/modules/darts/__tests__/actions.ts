@@ -16,6 +16,7 @@ import { loggingEpic } from 'modules/common/utils/rx';
 
 import dart2 from 'modules/darts/mock/resources/dart2';
 import dart3 from 'modules/darts/mock/resources/dart3';
+import game1 from 'modules/games/mock/resources/game1';
 import round1 from 'modules/rounds/mock/resources/round1';
 import round2 from 'modules/rounds/mock/resources/round2';
 import round3 from 'modules/rounds/mock/resources/round3';
@@ -179,7 +180,10 @@ describe('darts epics', () => {
             },
             allIds: ['1', '2', '3'],
           },
-          games: {},
+          games: {
+            byId: { 1: game1 },
+            allIds: ['1'],
+          },
         },
       });
       epicMiddleware.run(rootEpic);

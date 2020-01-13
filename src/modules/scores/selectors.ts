@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import { AppState } from 'modules/reducers';
 
 import { getEntities } from 'modules/common/selectors';
+import { getScoreIdsByGame } from 'modules/games/selectors';
 import { getRoundEntities } from 'modules/rounds/selectors';
 
 const sortByRoundsLength = R.sortBy(score => score.rounds.length);
@@ -48,7 +49,10 @@ export const getRoundIdsByScore = createCachedSelector(
 export const getScoresByGameId = createCachedSelector(
   getScoreEntities,
   getScoreIdsFromGameId,
-  (byId, scoreIds) => scoreIds.map(id => byId[id]),
+  (byId, scoreIds) => {
+    console.log(byId, scoreIds);
+    return scoreIds.map(id => byId[id]);
+  },
 )((_state_, gameId) => gameId);
 
 export const getCurrentScore = createCachedSelector(
@@ -61,8 +65,18 @@ export const getCurrentRound = createCachedSelector(
   getRoundEntities,
   (scores, rounds) => {
     const currentRoundId = scores.rounds[scores.rounds.length - 1];
+    console.log(scores);
     console.log(currentRoundId);
     console.log(rounds);
     return rounds[currentRoundId];
   },
 )((_state_, id) => id);
+
+export const getScoresByGameId2 = createCachedSelector(
+  getScoreEntities,
+  getScoreIdsByGame,
+  (byId, scoreIds) => {
+    console.log(byId, scoreIds);
+    return scoreIds.map(id => byId[id]);
+  },
+)((_state_, gameId) => gameId);
